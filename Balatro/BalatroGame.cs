@@ -1,4 +1,5 @@
-﻿using Cards.Models;
+﻿using Balatro.Models;
+using Cards.Models;
 using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
@@ -9,12 +10,13 @@ namespace Cards.Balatro
 {
     internal class BalatroGame
     {
-        private Player player;
+        public Player player { get; }
         private RelayCommand<Card> cardPressedCommand;
         private RelayCommand discardCommand;
         private RelayCommand confirmCommand;
         private List<Card> cards;
-        private int threshold;
+        public int threshold { get; }
+        
 
         public BalatroGame()
         {
@@ -38,10 +40,11 @@ namespace Cards.Balatro
         private void ConfirmedCards()
         {
             --player.RemainingHands;
-            player.applyJokers();
-            player.calculatePoints();
-            if (player.Points >= threshold) nextRound();
-            else if (player.Points < threshold && player.RemainingHands == 0) endGame();
+
+            player.calculateChips();
+
+            if (player.TotalChips >= threshold) nextRound();
+            else if (player.TotalChips < threshold && player.RemainingHands == 0) endGame();
         }
 
         private void DiscardedCards()

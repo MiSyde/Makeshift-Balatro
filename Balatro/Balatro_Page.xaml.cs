@@ -1,3 +1,4 @@
+using Cards.Balatro;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -13,9 +14,6 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
-
 namespace Balatro
 {
     /// <summary>
@@ -23,9 +21,16 @@ namespace Balatro
     /// </summary>
     public sealed partial class Balatro_Page : Page
     {
+        BalatroGame game;
         public Balatro_Page()
         {
+            game = new BalatroGame();
             InitializeComponent();
+        }
+
+        public string ConvertEnumDictToInt(Dictionary<Hand, int> dict, Hand hand)
+        {
+            return dict.GetValueOrDefault(hand).ToString();
         }
     }
 }

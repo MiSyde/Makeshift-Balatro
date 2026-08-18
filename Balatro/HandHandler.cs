@@ -8,6 +8,22 @@ namespace Cards.Balatro
 {
     internal class HandHandler
     {
+        public int NeededCards4FlushAndStraight
+        {
+            get;
+            set
+            {
+                if (field != value)
+                {
+                    field = value;
+                }
+            }
+        }
+
+        public HandHandler(int cardcount)
+        {
+            NeededCards4FlushAndStraight = cardcount;
+        }
         private void insertionSort(IList<Card> list)
         {
             if (list.Count == 1) return;
@@ -30,9 +46,11 @@ namespace Cards.Balatro
             }
         }
 
-        public void calculateHand(IList<Card> selectedCards, ref Hand highestHand)
+        public void calculateHand(IList<Card> selectedCards, ref Hand highestHand, IList<Hand> playedHands)
         {
             highestHand = Hand.HIGH_CARD;
+            playedHands.Add(Hand.HIGH_CARD);
+
             if (selectedCards.Count == 1) return;
 
             insertionSort(selectedCards);
@@ -56,22 +74,58 @@ namespace Cards.Balatro
                         highestKind = kind;
                         kind = 1;
                     }
-                    else if (kind == 2 && highestKind == 2) highestHand = Hand.TWO_PAIR;
+                    else if (kind == 2 && highestKind == 2) 
+                    { 
+                        highestHand = Hand.TWO_PAIR;
+                        playedHands.Add(Hand.TWO_PAIR);
+                        playedHands.Add(Hand.PAIR);
+                    }
                 }
                 if (currentCard.SuitType == previousCard.SuitType) ++flush;
 
                 previousCard = currentCard;
             }
-            if (highestKind == 2 && highestHand != Hand.TWO_PAIR) highestHand = Hand.PAIR;
-            if (highestKind == 3) highestHand = Hand.THREE_OF_A_KIND;
-            else if (highestKind == 4) highestHand = Hand.FOUR_OF_A_KIND;
 
-            if (straight == 5) highestHand = Hand.STRAIGHT;
-            else if (flush == 5) highestHand = Hand.FLUSH;
+            if (highestKind == 2 && highestHand != Hand.TWO_PAIR)
+            {
+                highestHand = Hand.PAIR;
+                playedHands.Add(Hand.PAIR);
+            }
+            else if (highestKind == 3)
+            { 
+                highestHand = Hand.THREE_OF_A_KIND;
+                playedHands.Add(Hand.THREE_OF_A_KIND);
+            }
 
-            if (highestKind == 3 && kind == 2) highestHand = Hand.FULL_HOUSE;
+            if (straight == 5) 
+            { 
+                highestHand = Hand.STRAIGHT;
+                playedHands.Add(Hand.STRAIGHT);
+            }
 
-            if (straight == 5 && flush == 5) highestHand = Hand.STRAIGHT_FLUSH;
+            else if (flush == 5) 
+            { 
+                highestHand = Hand.FLUSH;
+                playedHands.Add(Hand.FLUSH);
+            }
+
+            if (highestKind == 3 && kind == 2) 
+            { 
+                highestHand = Hand.FULL_HOUSE;
+                playedHands.Add(Hand.FULL_HOUSE);
+            }
+            else if (highestKind == 4)
+            {
+                highestHand = Hand.FOUR_OF_A_KIND;
+                playedHands.Add(Hand.FOUR_OF_A_KIND);
+            }
+
+            if (straight == 5 && flush == 5) 
+            { 
+                highestHand = Hand.STRAIGHT_FLUSH; 
+                playedHands.Add(Hand.STRAIGHT_FLUSH);
+            }
+            // royal flush
         }
     }
 }
