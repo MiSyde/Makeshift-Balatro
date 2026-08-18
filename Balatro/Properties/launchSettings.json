@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Balatro (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "Balatro (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
