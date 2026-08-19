@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Balatro
+namespace Balatro.Converter
 {
     internal class IntValueEnumKeyDictConverter : IValueConverter
     {

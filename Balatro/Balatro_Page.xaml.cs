@@ -1,3 +1,4 @@
+using Balatro.Models;
 using Cards.Balatro;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -28,9 +29,14 @@ namespace Balatro
             InitializeComponent();
         }
 
-        public string ConvertEnumDictToInt(Dictionary<Hand, int> dict, Hand hand)
+        public string ConvertEnumDictToIntString(ObservableDictionary<Hand, int> dict, Hand hand)
         {
-            return dict.GetValueOrDefault(hand).ToString();
+            return dict[hand].ToString();
+        }
+
+        public string ConvertRoundToBlind(int round)
+        {
+            return game.Blinds[round % 3];
         }
     }
 }

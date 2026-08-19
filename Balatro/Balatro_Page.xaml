@@ -6,11 +6,14 @@
     xmlns:local="using:Balatro"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
+    mc:Ignorable="d"
+    xmlns:converter="using:Balatro.Converter"
+    >
 
     <Page.Resources>
-        <local:EnumToStringConverter x:Key="EnumDescription"/>
-        <local:IntValueEnumKeyDictConverter x:Key="IntValue"/>
+        <converter:EnumToStringConverter x:Key="EnumDescription"/>
+        <converter:IntValueEnumKeyDictConverter x:Key="IntValue"/>
+        <converter:VisibleOver0 x:Key="Over0"/>
     </Page.Resources>
     
     <Grid Name="BaseGrid">
@@ -35,7 +38,7 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
 
-                <TextBlock Name="BlindName" Grid.Row="0"/>
+                <TextBlock Name="BlindName" Grid.Row="0" Text="{x:Bind ConvertRoundToBlind(game.Round), Mode=OneWay}"/>
 
                 <Grid Name="InnerNameGrid" Grid.Row="1">
                     <Grid.ColumnDefinitions>
@@ -45,7 +48,7 @@
 
                     <Image Name="BlindImage" Grid.Column="0"/>
 
-                    <TextBlock Name="MinimumScore" Grid.Column="1" Text="{x:Bind game.threshold, Mode=OneWay}"/>
+                    <TextBlock Name="MinimumScore" Grid.Column="1" Text="{x:Bind game.Threshold, Mode=OneWay}"/>
                 </Grid>
             </Grid>
 
@@ -72,8 +75,10 @@
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
 
-                    <TextBlock Name="HandName" Grid.Column="0" Text="{x:Bind game.player.HighestHand, Mode=OneWay, Converter={StaticResource EnumDescription}}"/>
-                    <TextBlock Name="HandLevel" Grid.Column="1" Text="{x:Bind ConvertEnumDictToInt(game.player.HandLevels, game.player.HighestHand), Mode=OneWay}"/>
+                    <TextBlock Name="HandName" Grid.Column="0" Text="{x:Bind game.player.HighestHand, Mode=OneWay, Converter={StaticResource EnumDescription}}" 
+                               Visibility="{x:Bind game.player.SelectedCards.Count, Mode=OneWay, Converter={StaticResource Over0}}"/>
+                    <TextBlock Name="HandLevel" Grid.Column="1" Text="{x:Bind ConvertEnumDictToIntString(game.player.HandLevels, game.player.HighestHand), Mode=OneWay}"
+                               Visibility="{x:Bind game.player.SelectedCards.Count, Mode=OneWay, Converter={StaticResource Over0}}"/>
                 </Grid>
 
                 <Grid Name="ScoreCalculationGrid" Grid.Row="1">
@@ -95,11 +100,14 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
-                <Grid Name="Options" Grid.Column="0">
+                <Grid Grid.Column="0">
                     <Grid.RowDefinitions>
                         <RowDefinition/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
+
+                    <Button Name="RunInfo" Grid.Row="0"/>
+                    <Button Name="Options" Grid.Row="1"/>
                 </Grid>
 
                 <Grid Name="OtherInfo" Grid.Column="1">
@@ -142,7 +150,7 @@
                         </Grid.RowDefinitions>
 
                         <TextBlock Text="Ante" Grid.Row="0"/>
-                        <TextBlock Grid.Row="1"/>
+                        <TextBlock Grid.Row="1" Text="{x:Bind game.Ante.ToString(), Mode=OneWay}"/>
                     </Grid>
 
                     <Grid Name="RoundGrid" Grid.Row="2" Grid.Column="1">

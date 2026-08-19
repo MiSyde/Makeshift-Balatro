@@ -24,7 +24,7 @@ namespace Balatro.Models.Jokers.Common
 
         public void AddEffect(Player player)
         {
-            if (player.playedHands.Contains(Hand.STRAIGHT)) player.Chips += 100;
+            if (player.PlayedHands.Contains(Hand.STRAIGHT)) player.Chips += 100;
         }
     }
 }

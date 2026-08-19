@@ -6,7 +6,7 @@ using System.ComponentModel;
 using System.Reflection;
 using System.Text;
 
-namespace Balatro
+namespace Balatro.Converter
 {
     internal class EnumToStringConverter : IValueConverter
     {

@@ -23,12 +23,12 @@ namespace Balatro.Models.Jokers.Uncommon
 
         public void AddEffect(Player player)
         {
-            player.handHandler.NeededCards4FlushAndStraight = 4;
+            player.HandHandler.NeededCards4FlushAndStraight = 4;
         }
 
         public void DeactivateEffect(Player p)
         {
-            p.handHandler.NeededCards4FlushAndStraight = 5;
+            p.HandHandler.NeededCards4FlushAndStraight = 5;
         }
     }
 }

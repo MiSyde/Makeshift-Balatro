@@ -24,7 +24,7 @@ namespace Balatro.Models.Jokers.Common
 
         public void AddEffect(Player player)
         {
-            if (player.playedHands.Contains(Hand.PAIR)) player.Multiplier += 8;
+            if (player.PlayedHands.Contains(Hand.PAIR)) player.Multiplier += 8;
         }
     }
 }

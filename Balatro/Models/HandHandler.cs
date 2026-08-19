@@ -1,23 +1,18 @@
-﻿using Cards.Models;
+﻿using Cards.Balatro;
+using Cards.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Cards.Balatro
+namespace Balatro.Models
 {
     internal class HandHandler
     {
         public int NeededCards4FlushAndStraight
         {
             get;
-            set
-            {
-                if (field != value)
-                {
-                    field = value;
-                }
-            }
+            set { if (field != value) { field = value; } }
         }
 
         public HandHandler(int cardcount)
@@ -97,13 +92,13 @@ namespace Cards.Balatro
                 playedHands.Add(Hand.THREE_OF_A_KIND);
             }
 
-            if (straight == 5) 
+            if (straight == NeededCards4FlushAndStraight) 
             { 
                 highestHand = Hand.STRAIGHT;
                 playedHands.Add(Hand.STRAIGHT);
             }
 
-            else if (flush == 5) 
+            else if (flush == NeededCards4FlushAndStraight) 
             { 
                 highestHand = Hand.FLUSH;
                 playedHands.Add(Hand.FLUSH);
@@ -120,7 +115,7 @@ namespace Cards.Balatro
                 playedHands.Add(Hand.FOUR_OF_A_KIND);
             }
 
-            if (straight == 5 && flush == 5) 
+            if (straight == NeededCards4FlushAndStraight && flush == NeededCards4FlushAndStraight) 
             { 
                 highestHand = Hand.STRAIGHT_FLUSH; 
                 playedHands.Add(Hand.STRAIGHT_FLUSH);
