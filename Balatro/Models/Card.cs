@@ -1,7 +1,9 @@
-﻿using Cards.Enums;
+﻿using Balatro.Enums;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media.Imaging;
 using System;
 
-namespace Cards.Models
+namespace Balatro.Models
 {
     public class Card
     {
@@ -13,13 +15,17 @@ namespace Cards.Models
         public bool IsFaceCard { get { return isFaceCard; } }
         public FaceCard? FaceCardType { get { return faceCardType; } }
         public SuitType SuitType { get { return suitType; } }
+        public BitmapImage Image { get; }
+        public Guid Id { get; }
 
-        public Card(int Value, bool IsFaceCard, SuitType SType, FaceCard? FCType = null)
+        public Card(BitmapImage Image, int Value, bool IsFaceCard, SuitType SType, FaceCard? FCType = null)
         {
             value = Value;
             isFaceCard = IsFaceCard;
             faceCardType = FCType;
             suitType = SType;
+            this.Image = Image;
+            Id = new Guid();
         }
     }
 }

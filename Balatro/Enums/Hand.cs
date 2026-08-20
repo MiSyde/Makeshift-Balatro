@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
 
-namespace Cards.Balatro
+namespace Balatro.Enums
 {
     public enum Hand
     {
@@ -26,6 +26,12 @@ namespace Cards.Balatro
         [Description("Straight Flush")]
         STRAIGHT_FLUSH,
         [Description("Royal Flush")]
-        ROYAL_FLUSH
+        ROYAL_FLUSH,
+        [Description("Five of a Kind")]
+        FIVE_OF_A_KIND,
+        [Description("Flush House")]
+        FLUSH_HOUSE,
+        [Description("Flush Five")]
+        FLUSH_FIVE
     }
 }

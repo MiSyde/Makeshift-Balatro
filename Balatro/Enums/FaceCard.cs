@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace Cards.Enums
+namespace Balatro.Enums
 {
     public enum FaceCard
     {

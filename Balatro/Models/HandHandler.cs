@@ -1,7 +1,8 @@
-﻿using Cards.Balatro;
-using Cards.Models;
+﻿using Balatro.Enums;
+using Balatro.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 
@@ -19,74 +20,98 @@ namespace Balatro.Models
         {
             NeededCards4FlushAndStraight = cardcount;
         }
-        private void insertionSort(IList<Card> list)
+        private List<Card> InsertionSort(IList<Card> selectedCards)
         {
-            if (list.Count == 1) return;
-
-            for (int i = 0; i < list.Count; ++i)
+            var sorted = new List<Card>(selectedCards);
+            for (int i = 1; i < selectedCards.Count; ++i)
             {
-                int j = i + 1;
-                while (j >= 0)
+                var current = sorted[i];
+                int j = i-1;
+
+                while (j >= 0 && sorted[j].Value > current.Value)
                 {
-                    Card atJ = list.ElementAt(j);
-                    Card atI = list.ElementAt(i);
-                    if (atJ.Value < atI.Value)
-                    {
-                        Card temp = atI;
-                        atI = atJ;
-                        atJ = temp;
-                    }
+                    sorted[j + 1] = sorted[j];
                     --j;
                 }
+                sorted[j+1] = current;
             }
+            return sorted;
         }
 
-        public void calculateHand(IList<Card> selectedCards, ref Hand highestHand, IList<Hand> playedHands)
+        public Hand CalculateHand(IList<Card> selectedCards, IList<Hand> playedHands)
         {
-            highestHand = Hand.HIGH_CARD;
+            Hand highestHand = Hand.HIGH_CARD;
             playedHands.Add(Hand.HIGH_CARD);
 
-            if (selectedCards.Count == 1) return;
+            if (selectedCards.Count == 1) return highestHand;
 
-            insertionSort(selectedCards);
+            var sorted = InsertionSort(selectedCards);
 
-            Card previousCard = selectedCards.ElementAt(0);
+            Card previousCard = sorted[0];
             int straight = 1;
             int flush = 1;
             int kind = 1;
-            int highestKind = 1;
+            int pair = 0;
+            int four = 0;
+            int three = 0;
 
-            for (int i = 1; i < selectedCards.Count - 1; ++i)
+            for (int i = 1; i < selectedCards.Count; ++i)
             {
-                Card currentCard = selectedCards.ElementAt(i);
+                Card currentCard = sorted[i];
 
                 if (currentCard.Value == previousCard.Value + 1) ++straight;
-                if (currentCard.Value == previousCard.Value) ++kind;
-                else
+                if (currentCard.Value == previousCard.Value && !currentCard.IsFaceCard && !previousCard.IsFaceCard) 
                 {
-                    if (kind > highestKind)
+                    ++kind;
+                    if (kind == 2)
                     {
-                        highestKind = kind;
-                        kind = 1;
+                        ++pair;
                     }
-                    else if (kind == 2 && highestKind == 2) 
-                    { 
-                        highestHand = Hand.TWO_PAIR;
-                        playedHands.Add(Hand.TWO_PAIR);
-                        playedHands.Add(Hand.PAIR);
+                    else if(kind == 3)
+                    {
+                        ++three;
+                    } 
+                    else if(kind == 4)
+                    {
+                        ++four;
                     }
                 }
+                else if(currentCard.Value == previousCard.Value && currentCard.IsFaceCard && previousCard.IsFaceCard)
+                {
+                    ++kind;
+                    if (kind == 2)
+                    {
+                        ++pair;
+                    }
+                    else if (kind == 3)
+                    {
+                        ++three;
+                    }
+                    else if (kind == 4)
+                    {
+                        ++four;
+                    }
+                }
+                else { kind = 1; }
+
                 if (currentCard.SuitType == previousCard.SuitType) ++flush;
 
                 previousCard = currentCard;
             }
 
-            if (highestKind == 2 && highestHand != Hand.TWO_PAIR)
+            if (pair == 1)
             {
                 highestHand = Hand.PAIR;
                 playedHands.Add(Hand.PAIR);
             }
-            else if (highestKind == 3)
+            else if(pair == 2)
+            {
+                highestHand = Hand.TWO_PAIR;
+                playedHands.Add(Hand.PAIR);
+                playedHands.Add(Hand.TWO_PAIR);
+            }
+
+            if (three == 1)
             { 
                 highestHand = Hand.THREE_OF_A_KIND;
                 playedHands.Add(Hand.THREE_OF_A_KIND);
@@ -104,12 +129,12 @@ namespace Balatro.Models
                 playedHands.Add(Hand.FLUSH);
             }
 
-            if (highestKind == 3 && kind == 2) 
+            if (three == 1 && pair == 1) 
             { 
                 highestHand = Hand.FULL_HOUSE;
                 playedHands.Add(Hand.FULL_HOUSE);
             }
-            else if (highestKind == 4)
+            else if (four == 4)
             {
                 highestHand = Hand.FOUR_OF_A_KIND;
                 playedHands.Add(Hand.FOUR_OF_A_KIND);
@@ -121,6 +146,7 @@ namespace Balatro.Models
                 playedHands.Add(Hand.STRAIGHT_FLUSH);
             }
             // royal flush
+            return highestHand;
         }
     }
 }

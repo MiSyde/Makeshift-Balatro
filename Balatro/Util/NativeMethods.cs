@@ -22,6 +22,15 @@ namespace Balatro.Util
         [DllImport("user32.dll")]
         public static extern bool GetWindowRect(IntPtr hWnd, out RECT lpRect);
 
+        [DllImport("user32.dll", SetLastError = true)]
+        public static extern uint GetDpiForWindow(nint hwnd);
+
+        [DllImport("user32.dll")]
+        public static extern int GetSystemMetrics(int smIndex);
+
+        public const int SM_CXSCREEN = 0;
+        public const int SM_CYSCREEN = 1;
+
         public const int GWLP_WNDPROC = -4;
         public const uint WM_WINDOWPOSCHANGING = 0x0046;
 
@@ -38,6 +47,11 @@ namespace Balatro.Util
             public IntPtr hwndInsertAfter;
             public int x, y, cx, cy;
             public uint flags;
+        }
+
+        public static int DipToPhysical(double dip, uint dpi)
+        {
+            return (int)(dip * dpi / 96.0);
         }
     }
 }

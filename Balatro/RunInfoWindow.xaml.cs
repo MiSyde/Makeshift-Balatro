@@ -1,5 +1,6 @@
 using Balatro.Util;
-using Cards.Balatro;
+using Balatro.Enums;
+using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -9,8 +10,10 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
@@ -22,13 +25,51 @@ namespace Balatro
     /// <summary>
     /// A pop-up window displaying info about the current run.
     /// </summary>
-    public sealed partial class RunInfoWindow : Window
+    public sealed partial class RunInfoWindow : Window, INotifyPropertyChanged
     {
         private IntPtr hwnd;
         private IntPtr parentHwnd;
         private NativeMethods.WndProcDelegate? newWndProc;
         private IntPtr oldWndProc;
         private BalatroGame game => App.CurrentGame;
+        private Visibility pokerHandsVisibility
+        {
+            get;
+            set
+            {
+                if (value != pokerHandsVisibility)
+                {
+                    field = value;
+                    OnPropertyChanged();
+                }  
+            }
+        }
+        private Visibility blindsVisibility
+        {
+            get;
+            set
+            {
+                if (value != blindsVisibility)
+                {
+                    field = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+        private Visibility vouchersVisibility
+        {
+            get;
+            set
+            {
+                if (value != vouchersVisibility)
+                {
+                    field = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         public RunInfoWindow(IntPtr parentHwnd)
         {
@@ -40,9 +81,21 @@ namespace Balatro
             oldWndProc = NativeMethods.SetWindowLongPtr(hwnd, NativeMethods.GWLP_WNDPROC, newWndProc);
 
             var windowId = Microsoft.UI.Win32Interop.GetWindowIdFromWindow(hwnd);
-            var appWindow = Microsoft.UI.Windowing.AppWindow.GetFromWindowId(windowId);
+            var appWindow = AppWindow.GetFromWindowId(windowId);
             appWindow.TitleBar.ExtendsContentIntoTitleBar = true;
-            appWindow.SetPresenter(Microsoft.UI.Windowing.OverlappedPresenter.CreateForContextMenu());
+            appWindow.SetPresenter(OverlappedPresenter.CreateForContextMenu());
+
+            var dpi = NativeMethods.GetDpiForWindow((nint)appWindow.Id.Value);
+            var height = NativeMethods.DipToPhysical(1100, dpi);
+            var width = NativeMethods.DipToPhysical(1100, dpi);
+
+            appWindow.MoveAndResize(new Windows.Graphics.RectInt32
+            {
+                Height = height,
+                Width = width,
+                X = NativeMethods.GetSystemMetrics(NativeMethods.SM_CXSCREEN) / 2 - width / 2,
+                Y = NativeMethods.GetSystemMetrics(NativeMethods.SM_CYSCREEN) / 2 - height / 2,
+            });
 
             Activated += Activated_Event;
         }
@@ -80,5 +133,28 @@ namespace Balatro
         {
             Close();
         }
+
+        private void PokerHands_Click(object sender, RoutedEventArgs e)
+        {
+            pokerHandsVisibility = Visibility.Visible;
+            blindsVisibility = Visibility.Collapsed;
+            vouchersVisibility = Visibility.Collapsed;
+        }
+
+        private void Blinds_Click(object sender, RoutedEventArgs e)
+        {
+            pokerHandsVisibility = Visibility.Collapsed;
+            blindsVisibility = Visibility.Visible;
+            vouchersVisibility = Visibility.Collapsed;
+        }
+
+        private void Vouchers_Click(object sender, RoutedEventArgs e)
+        {
+            pokerHandsVisibility = Visibility.Collapsed;
+            blindsVisibility = Visibility.Collapsed;
+            vouchersVisibility = Visibility.Visible;
+        }
+
+        private void OnPropertyChanged([CallerMemberName] string? name = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
     }
 }

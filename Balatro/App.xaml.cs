@@ -1,4 +1,4 @@
-﻿using Cards.Balatro;
+﻿using Balatro.Enums;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -29,6 +29,7 @@ namespace Balatro
     {
         private Window? _window;
         public static BalatroGame CurrentGame { get; } = new();
+        public static Frame MainFrame { get; } = new();
 
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code

@@ -1,5 +1,4 @@
-﻿using Cards.Models;
-using Microsoft.UI.Xaml;
+﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Data;
 using System;
 using System.Collections.Generic;

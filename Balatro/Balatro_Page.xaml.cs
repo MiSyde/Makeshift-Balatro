@@ -1,7 +1,7 @@
 using Balatro.Models;
 using Balatro.Util;
-using Cards.Balatro;
 using Microsoft.UI;
+using Balatro.Enums;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -84,6 +84,14 @@ namespace Balatro
         private void Options_Closed(object sender, WindowEventArgs args)
         {
             runInfoWindow = null;
+        }
+
+        private void Card_Selected(object sender, ItemClickEventArgs e)
+        {
+            if (e.ClickedItem is Card clickedCard)
+            {
+                game.CardPressed(clickedCard);
+            }
         }
     }
 }

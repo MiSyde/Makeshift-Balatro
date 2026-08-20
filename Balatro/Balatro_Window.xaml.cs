@@ -22,6 +22,7 @@ namespace Balatro
     /// </summary>
     public sealed partial class MainWindow : Window
     {
+        private Frame MainFrame => App.MainFrame;
         public MainWindow()
         {
             InitializeComponent();
@@ -29,7 +30,7 @@ namespace Balatro
             var appWindow = AppWindow;
             appWindow.SetPresenter(AppWindowPresenterKind.FullScreen);
 
-            MainFrame.Navigate(typeof(Balatro_Page));
+            MainFrame.Navigate(typeof(MenuPage));
         }
     }
 }

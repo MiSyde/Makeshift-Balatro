@@ -1,6 +1,6 @@
-﻿using Balatro.Models;
+﻿using Balatro.Enums;
+using Balatro.Models;
 using Balatro.Models.Jokers;
-using Cards.Models;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,7 +12,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cards.Balatro
+namespace Balatro
 {
     public class Player : INotifyPropertyChanged
     {
@@ -114,6 +114,8 @@ namespace Cards.Balatro
         public ObservableDictionary<Hand, HandData> HandData { get; }
         public ObservableDictionary<Hand, int> HandLevels { get; }
         public ObservableDictionary<Hand, int> HandTimes { get; }
+        public ObservableCollection<Card> Cards { get; }
+        public int CurrentCardHoldingSize { get; }
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -124,7 +126,9 @@ namespace Cards.Balatro
             Discards = 3;
             Money = 10;
             RemainingHands = 4;
+            CurrentCardHoldingSize = 8;
 
+            Cards = new ObservableCollection<Card>();
             deck = new Deck();
             TarotCards = new ObservableCollection<ITarot>();
             SelectedCards = new ObservableCollection<Card>();
@@ -137,11 +141,15 @@ namespace Cards.Balatro
             HandTimes = new ObservableDictionary<Hand, int>(() => OnPropertyChanged(nameof(HandTimes)));
 
             SetUpHandDictionaries();
-
             SelectedCards.CollectionChanged += CalculateHand;
         }
 
-        public Card DrawFromDeck() => deck.Cards.ElementAt(Random.Shared.Next(0, deck.Cards.Count - 1));
+        public Card DrawFromDeck()
+        {
+            Card c = deck.Cards[Random.Shared.Next(0, deck.CurrentSize)];
+            deck.Remove(c);
+            return c;
+        }
       
         private void CalculateHand(object? sender, NotifyCollectionChangedEventArgs e)
         {
@@ -153,8 +161,8 @@ namespace Cards.Balatro
                 Multiplier = 0;
                 return;
             }
-            
-            HandHandler.calculateHand(SelectedCards, ref _highestHand, PlayedHands);
+
+            HighestHand = HandHandler.CalculateHand(SelectedCards, PlayedHands);
 
             HandData.TryGetValue(HighestHand, out HandData? handInfo);
             Chips = handInfo.Chips;
@@ -178,38 +186,47 @@ namespace Cards.Balatro
 
         private void SetUpHandDictionaries()
         {
-            HandData[Hand.HIGH_CARD] = new HandData(5, 1);
-            HandData[Hand.PAIR] = new HandData(10, 2);
-            HandData[Hand.TWO_PAIR] = new HandData(20, 2);
-            HandData[Hand.THREE_OF_A_KIND] = new HandData(30, 3);
-            HandData[Hand.STRAIGHT] = new HandData(30, 4);
-            HandData[Hand.FLUSH] = new HandData(35, 4);
-            HandData[Hand.FULL_HOUSE] = new HandData(40, 4);
-            HandData[Hand.FOUR_OF_A_KIND] = new HandData(60, 7);
-            HandData[Hand.STRAIGHT_FLUSH] = new HandData(100, 8);
+            HandData[Hand.FLUSH_FIVE] = new HandData(160, 16);
+            HandData[Hand.FLUSH_HOUSE] = new HandData(140, 14);
+            HandData[Hand.FIVE_OF_A_KIND] = new HandData(120, 12);
             HandData[Hand.ROYAL_FLUSH] = new HandData(100, 8);
+            HandData[Hand.STRAIGHT_FLUSH] = new HandData(100, 8);
+            HandData[Hand.FOUR_OF_A_KIND] = new HandData(60, 7);
+            HandData[Hand.FULL_HOUSE] = new HandData(40, 4);
+            HandData[Hand.FLUSH] = new HandData(35, 4);
+            HandData[Hand.STRAIGHT] = new HandData(30, 4);
+            HandData[Hand.THREE_OF_A_KIND] = new HandData(30, 3);
+            HandData[Hand.TWO_PAIR] = new HandData(20, 2);
+            HandData[Hand.PAIR] = new HandData(10, 2);
+            HandData[Hand.HIGH_CARD] = new HandData(5, 1);
 
-            HandLevels[Hand.HIGH_CARD] = 1;
-            HandLevels[Hand.PAIR] = 1;
-            HandLevels[Hand.TWO_PAIR] = 1;
-            HandLevels[Hand.THREE_OF_A_KIND] = 1;
-            HandLevels[Hand.STRAIGHT] = 1;
-            HandLevels[Hand.FLUSH] = 1;
-            HandLevels[Hand.FULL_HOUSE] = 1;
-            HandLevels[Hand.FOUR_OF_A_KIND] = 1;
-            HandLevels[Hand.STRAIGHT_FLUSH] = 1;
+            HandLevels[Hand.FLUSH_FIVE] = 1;
+            HandLevels[Hand.FLUSH_HOUSE] = 1;
+            HandLevels[Hand.FIVE_OF_A_KIND] = 1;
             HandLevels[Hand.ROYAL_FLUSH] = 1;
+            HandLevels[Hand.STRAIGHT_FLUSH] = 1;
+            HandLevels[Hand.FOUR_OF_A_KIND] = 1;
+            HandLevels[Hand.FULL_HOUSE] = 1;
+            HandLevels[Hand.FLUSH] = 1;
+            HandLevels[Hand.STRAIGHT] = 1;
+            HandLevels[Hand.THREE_OF_A_KIND] = 1;
+            HandLevels[Hand.TWO_PAIR] = 1;
+            HandLevels[Hand.PAIR] = 1;
+            HandLevels[Hand.HIGH_CARD] = 1;
 
-            HandTimes[Hand.HIGH_CARD] = 1;
-            HandTimes[Hand.PAIR] = 1;
-            HandTimes[Hand.TWO_PAIR] = 1;
-            HandTimes[Hand.THREE_OF_A_KIND] = 1;
-            HandTimes[Hand.STRAIGHT] = 1;
-            HandTimes[Hand.FLUSH] = 1;
-            HandTimes[Hand.FULL_HOUSE] = 1;
-            HandTimes[Hand.FOUR_OF_A_KIND] = 1;
-            HandTimes[Hand.STRAIGHT_FLUSH] = 1;
-            HandTimes[Hand.ROYAL_FLUSH] = 1;
+            HandTimes[Hand.FLUSH_FIVE] = 0;
+            HandTimes[Hand.FLUSH_HOUSE] = 0;
+            HandTimes[Hand.FIVE_OF_A_KIND] = 0;
+            HandTimes[Hand.ROYAL_FLUSH] = 0;
+            HandTimes[Hand.STRAIGHT_FLUSH] = 0;
+            HandTimes[Hand.FOUR_OF_A_KIND] = 0;
+            HandTimes[Hand.FULL_HOUSE] = 0;
+            HandTimes[Hand.FLUSH] = 0;
+            HandTimes[Hand.STRAIGHT] = 0;
+            HandTimes[Hand.THREE_OF_A_KIND] = 0;
+            HandTimes[Hand.TWO_PAIR] = 0;
+            HandTimes[Hand.PAIR] = 0;
+            HandTimes[Hand.HIGH_CARD] = 0;
         }
 
         private void OnPropertyChanged([CallerMemberName] string? name = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));

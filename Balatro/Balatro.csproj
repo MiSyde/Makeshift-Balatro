@@ -15,6 +15,8 @@
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Balatro_Page.xaml" />
+    <None Remove="End_Window.xaml" />
+    <None Remove="MenuPage.xaml" />
     <None Remove="OptionsWindow.xaml" />
     <None Remove="RunInfoWindow.xaml" />
   </ItemGroup>
@@ -54,6 +56,23 @@
   <ItemGroup>
     <Folder Include="Models\Jokers\Legendary\" />
     <Folder Include="Models\Jokers\Rare\" />
+    <Folder Include="Models\Planets\" />
+    <Folder Include="Models\Tarots\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="End_Window.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="MenuPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="ShopPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="OptionsWindow.xaml">

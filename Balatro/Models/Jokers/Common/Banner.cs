@@ -1,5 +1,5 @@
 ﻿using Balatro.Enums;
-using Cards.Balatro;
+using Balatro.Enums;
 using System;
 using System.Collections.Generic;
 using System.Text;

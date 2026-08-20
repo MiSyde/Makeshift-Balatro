@@ -1,6 +1,9 @@
 ﻿using Balatro.Models;
-using Cards.Models;
+using Balatro.Util;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.UI;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -8,16 +11,15 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using WinRT.Interop;
 
-namespace Cards.Balatro
+namespace Balatro
 {
     public class BalatroGame : INotifyPropertyChanged
     {
-        public Player player { get; }
-        private RelayCommand<Card> cardPressedCommand;
-        private RelayCommand discardCommand;
-        private RelayCommand confirmCommand;
-        private ObservableCollection<Card> cards;
+        public Player Player { get; }
+        public RelayCommand DiscardCommand { get; }
+        public RelayCommand ConfirmCommand { get; }
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -65,88 +67,89 @@ namespace Cards.Balatro
             Threshold = 300;
             Round = 1;
 
-            player = new Player();
-            cards = new ObservableCollection<Card>();
+            Player = new Player();
             Blinds = new Dictionary<int, string>();
             SetUpBlinds();
 
-            cardPressedCommand = new RelayCommand<Card>((c) => CardPressed(c));
-            discardCommand = new RelayCommand(DiscardedCards, CanAct);
-            confirmCommand = new RelayCommand(ConfirmedCards, CanAct);
+            DiscardCommand = new RelayCommand(DiscardedCards, CanAct);
+            ConfirmCommand = new RelayCommand(ConfirmedCards, CanAct);
+            DealCards();
         }   
 
 
-        private void CardPressed(Card c)
+        public void CardPressed(Card c)
         {
-            if (!player.SelectedCards.Remove(c)) player.SelectedCards.Add(c);
+            if (!Player.SelectedCards.Remove(c)) Player.SelectedCards.Add(c);
         }
 
         private void ConfirmedCards()
         {
-            --player.RemainingHands;
-            ++player.HandTimes[player.HighestHand];
 
-            player.CalculateChips();
+            Player.SelectedCards.Clear();
+            --Player.RemainingHands;
+            ++Player.HandTimes[Player.HighestHand];
 
-            if (player.TotalChips >= Threshold) NextRound();
-            else if (player.TotalChips < Threshold && player.RemainingHands == 0) EndGame();
+            Player.CalculateChips();
+
+            if (Player.TotalChips >= Threshold) NextRound();
+            else if (Player.TotalChips < Threshold && Player.RemainingHands == 0) EndGame();
+            else DealCards();
         }
 
         private void DiscardedCards()
         {
-            foreach(Card c in player.SelectedCards)
+            foreach(Card c in Player.SelectedCards)
             {
-                cards.Remove(c);
+                Player.Cards.Remove(c);
             }
 
-            for(int i = 0; i < player.SelectedCards.Count; ++i)
-            {
-                cards.Add(player.DrawFromDeck());
-            }
-
-            player.SelectedCards.Clear();
+            Player.SelectedCards.Clear();
+            
+            DealCards();
         }
 
-        private bool CanAct() => player.SelectedCards.Count != 0;
+        private bool CanAct() => Player.SelectedCards.Count != 0;
 
         private async void NextRound()
         {
             await Task.Delay(250);
             GiveMoney();
-            player.RemainingHands = 4;
-            player.Discards = 3;
-            player.SelectedCards.Clear();
-            cards.Clear();
+            Player.RemainingHands = 4;
+            Player.Discards = 3;
+            Player.SelectedCards.Clear();
+            Player.Cards.Clear();
             ++Round;
-            if (Round % 3 == 0) NextStage();
-        }
-
-        private async void NextStage()
-        {
-            ++Ante;
+            if (Round % 4 == 0) App.MainFrame.Navigate(typeof(ShopPage));
         }
 
         private async void EndGame()
         {
             await Task.Delay(250);
+
         }
 
         private void SetUpBlinds()
         {
             Blinds[1] = "Small Blind";
             Blinds[2] = "Big Blind";
-            Blinds[0] = "Boss Blind"; // Round 3 mod 3 
+            Blinds[3] = "Boss Blind";
         }
 
         private void GiveMoney()
         {
-            int basePrize = Round % 3;
-            if(basePrize == 0)
+            int basePrize = Round % 4;
+            Player.Money += (basePrize + 2);
+
+            Player.Money += Player.RemainingHands;
+        }
+
+        private async void DealCards()
+        {
+            await Task.Delay(150);
+            while(Player.Cards.Count != Player.CurrentCardHoldingSize)
             {
-                player.Money += 10;
-                return;
+                Player.Cards.Add(Player.DrawFromDeck());
             }
-            player.Money += (basePrize + 2);
         }
 
         private void OnPropertyChanged([CallerMemberName] string? name = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
