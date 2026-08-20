@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Balatro.Enums
 {
-    internal enum Modifier
+    public enum Modifier
     {
         [Description("Base")]
         BASE,

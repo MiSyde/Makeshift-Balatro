@@ -3,6 +3,7 @@ using Cards.Models;
 using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -10,13 +11,13 @@ using System.Threading.Tasks;
 
 namespace Cards.Balatro
 {
-    internal class BalatroGame : INotifyPropertyChanged
+    public class BalatroGame : INotifyPropertyChanged
     {
         public Player player { get; }
         private RelayCommand<Card> cardPressedCommand;
         private RelayCommand discardCommand;
         private RelayCommand confirmCommand;
-        private List<Card> cards;
+        private ObservableCollection<Card> cards;
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -65,7 +66,7 @@ namespace Cards.Balatro
             Round = 1;
 
             player = new Player();
-            cards = new List<Card>();
+            cards = new ObservableCollection<Card>();
             Blinds = new Dictionary<int, string>();
             SetUpBlinds();
 
@@ -77,15 +78,15 @@ namespace Cards.Balatro
 
         private void CardPressed(Card c)
         {
-            if (player.SelectedCards.Contains(c)) player.SelectedCards.Remove(c);
-            else player.SelectedCards.Add(c);
+            if (!player.SelectedCards.Remove(c)) player.SelectedCards.Add(c);
         }
 
         private void ConfirmedCards()
         {
             --player.RemainingHands;
+            ++player.HandTimes[player.HighestHand];
 
-            player.calculateChips();
+            player.CalculateChips();
 
             if (player.TotalChips >= Threshold) NextRound();
             else if (player.TotalChips < Threshold && player.RemainingHands == 0) EndGame();
@@ -100,7 +101,7 @@ namespace Cards.Balatro
 
             for(int i = 0; i < player.SelectedCards.Count; ++i)
             {
-                cards.Add(player.drawFromDeck());
+                cards.Add(player.DrawFromDeck());
             }
 
             player.SelectedCards.Clear();
@@ -111,6 +112,8 @@ namespace Cards.Balatro
         private async void NextRound()
         {
             await Task.Delay(250);
+            GiveMoney();
+            player.RemainingHands = 4;
             player.Discards = 3;
             player.SelectedCards.Clear();
             cards.Clear();
@@ -133,6 +136,17 @@ namespace Cards.Balatro
             Blinds[1] = "Small Blind";
             Blinds[2] = "Big Blind";
             Blinds[0] = "Boss Blind"; // Round 3 mod 3 
+        }
+
+        private void GiveMoney()
+        {
+            int basePrize = Round % 3;
+            if(basePrize == 0)
+            {
+                player.Money += 10;
+                return;
+            }
+            player.Money += (basePrize + 2);
         }
 
         private void OnPropertyChanged([CallerMemberName] string? name = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));

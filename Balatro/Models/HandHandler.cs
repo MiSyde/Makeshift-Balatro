@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Balatro.Models
 {
-    internal class HandHandler
+    public class HandHandler
     {
         public int NeededCards4FlushAndStraight
         {

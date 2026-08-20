@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Cards.Balatro
 {
-    internal class Player : INotifyPropertyChanged
+    public class Player : INotifyPropertyChanged
     {
         public int MaxJokerCount { get; }
         private int _multiplier;
@@ -51,7 +51,18 @@ namespace Cards.Balatro
                 } 
             }
         }
-        public int Money { get; }
+        public int Money 
+        { 
+            get; 
+            set
+            {
+                if(value != field)
+                {
+                    field = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
         public int Discards 
         {
             get;
@@ -100,8 +111,9 @@ namespace Cards.Balatro
                 } 
             }
         }
-        public ObservableDictionary<Hand, HandData> HandData;
-        public ObservableDictionary<Hand, int> HandLevels;
+        public ObservableDictionary<Hand, HandData> HandData { get; }
+        public ObservableDictionary<Hand, int> HandLevels { get; }
+        public ObservableDictionary<Hand, int> HandTimes { get; }
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -110,6 +122,8 @@ namespace Cards.Balatro
             MaxJokerCount = 5;
             TotalChips = 0;
             Discards = 3;
+            Money = 10;
+            RemainingHands = 4;
 
             deck = new Deck();
             TarotCards = new ObservableCollection<ITarot>();
@@ -120,15 +134,16 @@ namespace Cards.Balatro
             PlayedHands = new List<Hand>();
             HandData = new ObservableDictionary<Hand, HandData>(() => OnPropertyChanged(nameof(HandData)));
             HandLevels = new ObservableDictionary<Hand, int>(() => OnPropertyChanged(nameof(HandLevels)));
+            HandTimes = new ObservableDictionary<Hand, int>(() => OnPropertyChanged(nameof(HandTimes)));
 
-            setUpHands();
+            SetUpHandDictionaries();
 
-            SelectedCards.CollectionChanged += calculateHand;
+            SelectedCards.CollectionChanged += CalculateHand;
         }
 
-        public Card drawFromDeck() => deck.Cards.ElementAt(Random.Shared.Next(0, deck.Cards.Count - 1));
+        public Card DrawFromDeck() => deck.Cards.ElementAt(Random.Shared.Next(0, deck.Cards.Count - 1));
       
-        private void calculateHand(object? sender, NotifyCollectionChangedEventArgs e)
+        private void CalculateHand(object? sender, NotifyCollectionChangedEventArgs e)
         {
             PlayedHands.Clear();
 
@@ -146,7 +161,7 @@ namespace Cards.Balatro
             Multiplier = handInfo.Multiplier;
         }
 
-        public async void applyJokers()
+        public async void ApplyJokers()
         {
             foreach(IJoker joker in ActiveJokers)
             {
@@ -155,12 +170,13 @@ namespace Cards.Balatro
             }
         }
 
-        public void calculateChips()
+        public void CalculateChips()
         {
+            ApplyJokers();
             TotalChips += _chips * _multiplier;
         }
 
-        private void setUpHands()
+        private void SetUpHandDictionaries()
         {
             HandData[Hand.HIGH_CARD] = new HandData(5, 1);
             HandData[Hand.PAIR] = new HandData(10, 2);
@@ -183,6 +199,17 @@ namespace Cards.Balatro
             HandLevels[Hand.FOUR_OF_A_KIND] = 1;
             HandLevels[Hand.STRAIGHT_FLUSH] = 1;
             HandLevels[Hand.ROYAL_FLUSH] = 1;
+
+            HandTimes[Hand.HIGH_CARD] = 1;
+            HandTimes[Hand.PAIR] = 1;
+            HandTimes[Hand.TWO_PAIR] = 1;
+            HandTimes[Hand.THREE_OF_A_KIND] = 1;
+            HandTimes[Hand.STRAIGHT] = 1;
+            HandTimes[Hand.FLUSH] = 1;
+            HandTimes[Hand.FULL_HOUSE] = 1;
+            HandTimes[Hand.FOUR_OF_A_KIND] = 1;
+            HandTimes[Hand.STRAIGHT_FLUSH] = 1;
+            HandTimes[Hand.ROYAL_FLUSH] = 1;
         }
 
         private void OnPropertyChanged([CallerMemberName] string? name = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));

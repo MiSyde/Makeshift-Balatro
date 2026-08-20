@@ -1,23 +1,16 @@
-﻿using Balatro.Util;
-using Cards.Balatro;
-using Microsoft.UI.Xaml.Data;
+﻿using Microsoft.UI.Xaml.Data;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Reflection;
 using System.Text;
 
 namespace Balatro.Converter
 {
-    internal class EnumToStringConverter : IValueConverter
+    public class LevelConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            if(value is Hand handValue)
-            {
-                return handValue.GetDescription();
-            }
-            return string.Empty;
+            if (value == null) return "lvl.1";
+            return "lvl." + value.ToString();
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)

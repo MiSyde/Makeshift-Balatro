@@ -106,8 +106,8 @@
                         <RowDefinition/>
                     </Grid.RowDefinitions>
 
-                    <Button Name="RunInfo" Grid.Row="0"/>
-                    <Button Name="Options" Grid.Row="1"/>
+                    <Button Name="RunInfo"  Content="Run Info" Grid.Row="0" Click="Show_RunInfo" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+                    <Button Name="Options" Content="Options" Grid.Row="1" Click="Show_Options" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
                 </Grid>
 
                 <Grid Name="OtherInfo" Grid.Column="1">
@@ -164,6 +164,48 @@
                     </Grid>
                 </Grid>
             </Grid>
+        </Grid>
+
+        <Grid Name="TableGrid" Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <Grid Name="TopGrid" Grid.Row="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                
+            </Grid>
+
+            <Grid Name="MiddleGrid" Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                
+                
+            </Grid>
+
+            <Grid Name="BottomGrid" Grid.Row="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                
+            </Grid>
+            
         </Grid>
     </Grid>
 </Page>

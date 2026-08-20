@@ -4,5 +4,5 @@ using System.Text;
 
 namespace Balatro.Models
 {
-    internal record HandData(int Chips, int Multiplier);
+    public record HandData(int Chips, int Multiplier);
 }

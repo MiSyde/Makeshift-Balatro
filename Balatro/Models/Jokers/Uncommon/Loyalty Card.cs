@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Balatro.Models.Jokers.Uncommon
 {
-    internal class Loyalty_Card : IJoker
+    public class Loyalty_Card : IJoker
     {
         public string Description { get; }
         public int Price { get; }

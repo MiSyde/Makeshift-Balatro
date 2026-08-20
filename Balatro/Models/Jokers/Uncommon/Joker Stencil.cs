@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Balatro.Models.Jokers.Uncommon
 {
-    internal class Joker_Stencil : IJoker
+    public class Joker_Stencil : IJoker
     {
         public string Description { get; }
         public int Price { get; }

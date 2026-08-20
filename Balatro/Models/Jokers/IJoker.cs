@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Balatro.Models.Jokers
 {
-    internal interface IJoker
+    public interface IJoker
     {
         public string Description { get; }
         public int Price { get; }

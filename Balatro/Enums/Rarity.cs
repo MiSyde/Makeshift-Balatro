@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Balatro.Enums
 {
-    internal enum Rarity
+    public enum Rarity
     {
         [Description("Common")]
         COMMON,

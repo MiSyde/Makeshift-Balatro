@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Balatro.Models
 {
-    internal interface ITarot
+    public interface ITarot
     {
     }
 }

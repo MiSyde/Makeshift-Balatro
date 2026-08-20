@@ -41,7 +41,8 @@ namespace Balatro.Models
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-
+        public Dictionary<TKey, TValue>.ValueCollection getValues() { return _dictionary.Values; } 
+        public Dictionary<TKey, TValue>.KeyCollection getKeys() { return _dictionary.Keys; } 
 
     }
 }

@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Reflection;
 using System.Text;
 
-namespace Balatro
+namespace Balatro.Util
 {
     internal static class EnumDiscHelper
     {
