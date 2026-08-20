@@ -37,7 +37,7 @@ namespace Balatro
         public ObservableCollection<IJoker> ActiveJokers { get; }
         public ObservableCollection<IJoker> PassiveJokers { get; }
         public ObservableCollection<ITarot> TarotCards { get; }
-        private Deck deck;
+        private readonly Deck _deck;
         public ObservableCollection<Card> SelectedCards { get; }
         public int RemainingHands
         {
@@ -129,7 +129,7 @@ namespace Balatro
             CurrentCardHoldingSize = 8;
 
             Cards = new ObservableCollection<Card>();
-            deck = new Deck();
+            _deck = new Deck();
             TarotCards = new ObservableCollection<ITarot>();
             SelectedCards = new ObservableCollection<Card>();
             HandHandler = new HandHandler(5);
@@ -146,8 +146,8 @@ namespace Balatro
 
         public Card DrawFromDeck()
         {
-            Card c = deck.Cards[Random.Shared.Next(0, deck.CurrentSize)];
-            deck.Remove(c);
+            Card c = _deck.Cards[Random.Shared.Next(0, _deck.CurrentSize)];
+            _deck.Remove(c);
             return c;
         }
       

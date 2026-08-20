@@ -1,6 +1,7 @@
 ﻿using Balatro.Enums;
 using Balatro.Models;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -52,8 +53,10 @@ namespace Balatro.Models
             int flush = 1;
             int kind = 1;
             int pair = 0;
+            List<int> pairValues = new();
             int four = 0;
             int three = 0;
+            int five = 0;
 
             for (int i = 1; i < selectedCards.Count; ++i)
             {
@@ -65,6 +68,7 @@ namespace Balatro.Models
                     ++kind;
                     if (kind == 2)
                     {
+                        pairValues.Add(currentCard.Value);
                         ++pair;
                     }
                     else if(kind == 3)
@@ -74,6 +78,10 @@ namespace Balatro.Models
                     else if(kind == 4)
                     {
                         ++four;
+                    } 
+                    else if(kind == 5)
+                    {
+                        ++five;
                     }
                 }
                 else if(currentCard.Value == previousCard.Value && currentCard.IsFaceCard && previousCard.IsFaceCard)
@@ -81,6 +89,7 @@ namespace Balatro.Models
                     ++kind;
                     if (kind == 2)
                     {
+                        pairValues.Add(currentCard.Value);
                         ++pair;
                     }
                     else if (kind == 3)
@@ -90,6 +99,10 @@ namespace Balatro.Models
                     else if (kind == 4)
                     {
                         ++four;
+                    }
+                    else if (kind == 5)
+                    {
+                        ++five;
                     }
                 }
                 else { kind = 1; }
@@ -129,7 +142,7 @@ namespace Balatro.Models
                 playedHands.Add(Hand.FLUSH);
             }
 
-            if (three == 1 && pair == 1) 
+            if (three == 1 && pair == 1 && pairValues.Count != 1) 
             { 
                 highestHand = Hand.FULL_HOUSE;
                 playedHands.Add(Hand.FULL_HOUSE);
@@ -144,8 +157,42 @@ namespace Balatro.Models
             { 
                 highestHand = Hand.STRAIGHT_FLUSH; 
                 playedHands.Add(Hand.STRAIGHT_FLUSH);
+
+                bool ace = false, king = false, queen = false, jack = false, ten = false;
+
+                foreach(Card c in selectedCards)
+                {
+                    if (c.IsFaceCard && c.FaceCardType == FaceCard.King) king = true;
+                    if (c.IsFaceCard && c.FaceCardType == FaceCard.Queen) queen = true;
+                    if (c.IsFaceCard && c.FaceCardType == FaceCard.Jack) jack = true;
+                    if (c.IsFaceCard && c.FaceCardType == FaceCard.Ace) ace = true;
+                    if (!c.IsFaceCard && c.Value == 10) ten = true;
+                }
+
+                if(ace && king && queen && jack && ten)
+                {
+                    highestHand = Hand.STRAIGHT_FLUSH;
+                    playedHands.Add(Hand.ROYAL_FLUSH);
+                }
             }
-            // royal flush
+
+            if(five == 1)
+            {
+                highestHand = Hand.FIVE_OF_A_KIND;
+                playedHands.Add(Hand.FIVE_OF_A_KIND);
+            }
+            else if(flush == 5 && three == 1 && pair == 1 && pairValues.Count != 1)
+            {
+                highestHand = Hand.FLUSH_HOUSE;
+                playedHands.Add(Hand.FLUSH_HOUSE);
+            }
+            
+            if(flush == 5 && five == 1)
+            {
+                highestHand = Hand.FLUSH_FIVE;
+                playedHands.Add(Hand.FLUSH_FIVE);
+            }
+
             return highestHand;
         }
     }
