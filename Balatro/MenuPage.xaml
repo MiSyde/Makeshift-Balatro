@@ -9,6 +9,25 @@
     mc:Ignorable="d">
 
     <Grid>
-        <Button Content="Play" Click="Play_Click"/>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center"  Margin="175, 100, 25, 100" Orientation="Horizontal">
+            <TextBlock Text="Balatro" FontFamily="{StaticResource PixelBig}" FontSize="500" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <TextBlock Text="Makeshift" FontSize="200" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="{StaticResource PixelBig}">
+                <TextBlock.RenderTransform>
+                    <CompositeTransform ScaleX="0.6" ScaleY="0.6" TranslateY="-4"/>
+                </TextBlock.RenderTransform>
+            </TextBlock>
+        </StackPanel>
+        
+
+        <Border Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="100" Style="{StaticResource ChipsContainer}" Width="350" Height="200">
+            <Button Content="Play" Click="Play_Click" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" CornerRadius="0" 
+                    FontFamily="{StaticResource PixelBig}" FontSize="150" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        </Border>
+        
     </Grid>
 </Page>

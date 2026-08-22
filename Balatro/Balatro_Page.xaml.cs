@@ -48,7 +48,7 @@ namespace Balatro
 
         private async void Balatro_Page_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            SetBorderDimensions();
+            SetDimensions();
 
             if (game.Round % 4 == 1)
             {
@@ -122,7 +122,7 @@ namespace Balatro
             }
         }
 
-        private void SetBorderDimensions()
+        private void SetDimensions()
         {
             CurrentSelectionInfoBorder.Height = this.ActualHeight * 0.1944;
 

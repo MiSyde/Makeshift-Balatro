@@ -19,9 +19,9 @@
     <Grid Name="BaseGrid">
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="3.4765625*"/>
-            <ColumnDefinition Width="22,6171875*"/>
-            <ColumnDefinition Width="73,90625*"/>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="23*"/>
+            <ColumnDefinition Width="74*"/>
         </Grid.ColumnDefinitions>
 
         <Grid Grid.Column="0" Name="SpaceGrid" Background="Green"/>
@@ -256,12 +256,14 @@
                             
                             <Border Name="PlayCardsButtonBorder" Style="{StaticResource ChipsContainer}">
                                 <Button Name="PlayCards" Content="Play Hand" Command="{x:Bind game.ConfirmCommand}" HorizontalAlignment="Center" VerticalAlignment="Center"
-                                        Background="Transparent" FontFamily="{StaticResource PixelBig}" FontSize="50" BorderThickness="0" CornerRadius="0" IsEnabledChanged="PlayHand_IsEnabledChanged"/>
+                                        Background="Transparent" FontFamily="{StaticResource PixelBig}" FontSize="50" BorderThickness="0" CornerRadius="0" 
+                                        IsEnabledChanged="PlayHand_IsEnabledChanged"/>
                             </Border>
 
                             <Border Name="DiscardButtonBorder" Style="{StaticResource MultiplierContainer}">
                                 <Button Name="DiscardCards" Content="Discard" Command="{x:Bind game.DiscardCommand}" HorizontalAlignment="Center" VerticalAlignment="Center"
-                                        Background="Transparent" FontFamily="{StaticResource PixelBig}" FontSize="50" BorderThickness="0" CornerRadius="0" IsEnabledChanged="DiscardCards_IsEnabledChanged"/>
+                                        Background="Transparent" FontFamily="{StaticResource PixelBig}" FontSize="50" BorderThickness="0" CornerRadius="0" 
+                                        IsEnabledChanged="DiscardCards_IsEnabledChanged"/>
                             </Border>
                             
                         </StackPanel>
