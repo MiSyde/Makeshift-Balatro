@@ -6,6 +6,44 @@
     xmlns:local="using:Balatro">
     <Application.Resources>
         <ResourceDictionary>
+            <ImageBrush x:Key="DarkBackground" ImageSource="/Assets/Borders/DarkBorder.png"  Stretch="Fill"/>
+            <ImageBrush x:Key="ChipsBackground" ImageSource="/Assets/Borders/ChipsBorder.png"  Stretch="Fill"/>
+            <ImageBrush x:Key="MultiplierBackground" ImageSource="/Assets/Borders/MultiplierBorder.png"  Stretch="Fill"/>
+            <ImageBrush x:Key="InactiveButtonBrush" ImageSource="/Assets/Borders/InactiveButton.png" Stretch="Fill"/>
+
+            <FontFamily x:Key="Pixel">/Assets/Fonts/m6x11.ttf#m6x11</FontFamily>
+            <FontFamily x:Key="PixelBig">/Assets/Fonts/m6x11plus.ttf#m6x11plus</FontFamily>
+
+            <Style x:Key="DarkContainer" TargetType="Border">
+                <Setter Property="Background" Value="{StaticResource DarkBackground}"/>
+                <Setter Property="Margin" Value="5,2,5,2"/>
+            </Style>
+
+            <Style x:Key="InactiveButtonContainer" TargetType="Border">
+                <Setter Property="Background" Value="{StaticResource InactiveButtonBrush}"/>
+                <Setter Property="Margin" Value="5,2,5,2"/>
+            </Style>
+
+            <Style x:Key="ChipsContainer" TargetType="Border">
+                <Setter Property="Background" Value="{StaticResource ChipsBackground}"/>
+                <Setter Property="Margin" Value="5,2,5,2"/>
+            </Style>
+
+            <Style x:Key="MultiplierContainer" TargetType="Border">
+                <Setter Property="Background" Value="{StaticResource MultiplierBackground}"/>
+                <Setter Property="Margin" Value="5,2,5,2"/>
+            </Style>
+
+            <SolidColorBrush x:Key="ButtonBackground" Color="Transparent"/>
+            <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="Transparent"/>
+            <SolidColorBrush x:Key="ButtonBackgroundPressed" Color="Transparent"/>
+            <SolidColorBrush x:Key="ButtonBackgroundDisabled" Color="Transparent"/>
+
+            <SolidColorBrush x:Key="ButtonBorderBrush" Color="Transparent"/>
+            <SolidColorBrush x:Key="ButtonBorderBrushPointerOver" Color="Transparent"/>
+            <SolidColorBrush x:Key="ButtonBorderBrushPressed" Color="Transparent"/>
+            <SolidColorBrush x:Key="ButtonBorderBrushDisabled" Color="Transparent"/>
+
             <ResourceDictionary.MergedDictionaries>
                 <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
                 <!-- Other merged dictionaries here -->

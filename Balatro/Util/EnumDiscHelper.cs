@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Balatro.Util
 {
-    internal static class EnumDiscHelper
+    public static class EnumDiscHelper
     {
         public static string GetDescription(this Enum value)
         {

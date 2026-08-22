@@ -13,6 +13,13 @@
         <MicaBackdrop />
     </Window.SystemBackdrop>
     <Grid Name="BaseGrid">
-        <Frame Content="{x:Bind MainFrame}"/>
+        <Frame Content="{x:Bind MainFrame}">
+            <Frame.ContentTransitions>
+                <TransitionCollection>
+                    <NavigationThemeTransition/>
+                </TransitionCollection>
+            </Frame.ContentTransitions>
+
+        </Frame>
     </Grid>
 </Window>

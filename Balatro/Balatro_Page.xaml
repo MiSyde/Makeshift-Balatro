@@ -19,11 +19,14 @@
     <Grid Name="BaseGrid">
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="3.4765625*"/>
+            <ColumnDefinition Width="22,6171875*"/>
+            <ColumnDefinition Width="73,90625*"/>
         </Grid.ColumnDefinitions>
 
-        <Grid Name="InfoGrid" Grid.Column="0">
+        <Grid Grid.Column="0" Name="SpaceGrid" Background="Green"/>
+
+        <Grid Name="InfoGrid" Grid.Column="1" Background="#2f3a39" BorderThickness="2,0,2,0" BorderBrush="{x:Bind game.BlindColor}">
 
             <Grid.RowDefinitions>
                 <RowDefinition/>
@@ -37,63 +40,93 @@
                     <RowDefinition/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-
                 <TextBlock Name="BlindName" Grid.Row="0" Text="{x:Bind ConvertRoundToBlind(game.Round), Mode=OneWay}"/>
 
-                <Grid Name="InnerNameGrid" Grid.Row="1">
+
+                <Border Name="InnerNameGridBorder" Grid.Row="1">
+                    <Border.Background>
+                        <ImageBrush Stretch="Fill"/>
+                    </Border.Background>
+                    
+                    <Grid Name="InnerNameGrid">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+
+                        <Image Name="BlindImage" Grid.Column="0"/>
+
+
+                        <TextBlock Name="MinimumScore" Grid.Column="1" Text="{x:Bind game.Threshold, Mode=OneWay}"/>
+                    </Grid>
+                </Border>
+            </Grid>
+
+            <Border Grid.Row="1" Style="{StaticResource DarkContainer}" Name="ScoreBorder">
+                <Grid Name="ScoreGrid" Grid.Row="1">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
 
-                    <Image Name="BlindImage" Grid.Column="0"/>
+                    <TextBlock Text="Round score" Grid.Column="0"/>
+                    
+                    <Border Grid.Column="1">
+                        <Grid Name="RoundScoreGrid">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
 
-                    <TextBlock Name="MinimumScore" Grid.Column="1" Text="{x:Bind game.Threshold, Mode=OneWay}"/>
+                            <TextBlock Name="CurrentScore" Grid.Column="1" Text="{x:Bind game.Player.TotalChips, Mode=OneWay}"  VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                        </Grid>
+
+                    </Border>
+                    
                 </Grid>
-            </Grid>
+            </Border>
+            
 
-            <Grid Name="ScoreGrid" Grid.Row="1">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
+            <Border Style="{StaticResource DarkContainer}" Grid.Row="2" Name="CurrentSelectionInfoBorder">
+                <Grid Name="HandInfoGrid">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
 
-                <TextBlock Text="Round score" Grid.Column="0"/>
+                    <Grid Name="InnerHandInfoGrid" Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
 
-                <TextBlock Name="CurrentScore" Grid.Column="1" Text="{x:Bind game.Player.TotalChips, Mode=OneWay}"/>
-            </Grid>
+                        <TextBlock Name="HandName" Grid.Column="0" Text="{x:Bind game.Player.HighestHand, Mode=OneWay, Converter={StaticResource EnumDescription}}" 
+                                   Visibility="{x:Bind game.Player.SelectedCards.Count, Mode=OneWay, Converter={StaticResource Over0}}"/>
+                        <TextBlock Name="HandLevel" Grid.Column="1" Text="{x:Bind ConvertEnumDictToIntString(game.Player.HandLevels, game.Player.HighestHand), Mode=OneWay}"
+                                   Visibility="{x:Bind game.Player.SelectedCards.Count, Mode=OneWay, Converter={StaticResource Over0}}"/>
+                    </Grid>
 
-            <Grid Name="HandInfoGrid" Grid.Row="2">
-                <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
-
-                <Grid Name="InnerHandInfoGrid" Grid.Row="0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-
-                    <TextBlock Name="HandName" Grid.Column="0" Text="{x:Bind game.Player.HighestHand, Mode=OneWay, Converter={StaticResource EnumDescription}}" 
-                               Visibility="{x:Bind game.Player.SelectedCards.Count, Mode=OneWay, Converter={StaticResource Over0}}"/>
-                    <TextBlock Name="HandLevel" Grid.Column="1" Text="{x:Bind ConvertEnumDictToIntString(game.Player.HandLevels, game.Player.HighestHand), Mode=OneWay}"
-                               Visibility="{x:Bind game.Player.SelectedCards.Count, Mode=OneWay, Converter={StaticResource Over0}}"/>
+                    <Grid Name="ScoreCalculationGrid" Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <Border Grid.Column="0" Name="ChipsBorder" Style="{StaticResource ChipsContainer}">
+                            <TextBlock Name="Chips" Text="{x:Bind game.Player.Chips, Mode=OneWay}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                        </Border>
+                        
+                        <TextBlock Text="X" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        
+                        <Border Grid.Column="2" Name="MultiplierBorder" Style="{StaticResource MultiplierContainer}">
+                            <TextBlock Name="Multiplier" Text="{x:Bind game.Player.Multiplier, Mode=OneWay}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                        </Border>
+                        
+                    </Grid>
                 </Grid>
-
-                <Grid Name="ScoreCalculationGrid" Grid.Row="1">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-
-                    <TextBlock Name="Chips" Grid.Column="0" Text="{x:Bind game.Player.Chips, Mode=OneWay}"/>
-                    <TextBlock Text="X" Grid.Column="1"/>
-                    <TextBlock Name="Multiplier" Grid.Column="2" Text="{x:Bind game.Player.Multiplier, Mode=OneWay}"/>
-                </Grid>
-            </Grid>
-
+            </Border>
+            
             <Grid Name="OtherGrid" Grid.Row="3">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
@@ -150,7 +183,7 @@
                         </Grid.RowDefinitions>
 
                         <TextBlock Text="Ante" Grid.Row="0"/>
-                        <TextBlock Grid.Row="1" Text="{x:Bind game.Ante.ToString(), Mode=OneWay}"/>
+                        <TextBlock Grid.Row="1" Text="{x:Bind game.Ante, Mode=OneWay}"/>
                     </Grid>
 
                     <Grid Name="RoundGrid" Grid.Row="2" Grid.Column="1">
@@ -166,15 +199,13 @@
             </Grid>
         </Grid>
 
-        <Grid Name="TableGrid" Grid.Column="1">
+        <Grid Name="PlayGrid" Grid.Column="2">
             <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition/>
                 <RowDefinition/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
-            <Grid Name="TopGrid" Grid.Row="0">
+            <Grid Name="ConsumableAndJokerGrid" Grid.Row="0">
                 <Grid.RowDefinitions>
                     <RowDefinition/>
                     <RowDefinition/>
@@ -186,43 +217,76 @@
                 
             </Grid>
 
-            <Grid Name="MiddleGrid" Grid.Row="1">
+            <Grid Name="TableGrid" Grid.Row="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <GridView ItemsSource="{x:Bind game.Player.Cards, Mode=OneWay}" HorizontalAlignment="Center" VerticalAlignment="Center" ItemClick="Card_Selected" IsItemClickEnabled="True" 
-                          SelectionMode="Multiple" IsMultiSelectCheckBoxEnabled="False">
-                    <GridView.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <ItemsWrapGrid Orientation="Vertical"/>
-                        </ItemsPanelTemplate>
-                    </GridView.ItemsPanel>
-                    <GridView.ItemTemplate>
-                        <DataTemplate x:DataType="model:Card">
-                            <Image Source="{x:Bind Image}" Height="201" Width="150"/>
-                        </DataTemplate>
-                    </GridView.ItemTemplate>
-                </GridView>
-            </Grid>
+                <Grid Name="CardGrid" Grid.Column="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
 
-            <Grid Name="BottomGrid" Grid.Row="2">
-                <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
+                    <GridView Name="SelectedCardsGridView" Grid.Row="0">
+
+                    </GridView>
+
+                    <GridView ItemsSource="{x:Bind game.Player.Cards, Mode=OneWay}" HorizontalAlignment="Center" VerticalAlignment="Center" ItemClick="Card_Selected" IsItemClickEnabled="True" 
+          SelectionMode="Multiple" IsMultiSelectCheckBoxEnabled="False" Grid.Row="1">
+                        <GridView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <ItemsWrapGrid Orientation="Vertical"/>
+                            </ItemsPanelTemplate>
+                        </GridView.ItemsPanel>
+                        <GridView.ItemTemplate>
+                            <DataTemplate x:DataType="model:Card">
+                                <Image Source="{x:Bind Image}" Height="201" Width="150"/>
+                            </DataTemplate>
+                        </GridView.ItemTemplate>
+                    </GridView>
+
+                    <TextBlock Name="CardCount" Grid.Row="3"/>
+
+                    <Grid Name="ActionGrid" Grid.Row="4">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            
+                            <Border Name="PlayCardsButtonBorder" Style="{StaticResource ChipsContainer}">
+                                <Button Name="PlayCards" Content="Play Hand" Command="{x:Bind game.ConfirmCommand}" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                        Background="Transparent" FontFamily="{StaticResource PixelBig}" FontSize="50" BorderThickness="0" CornerRadius="0" IsEnabledChanged="PlayHand_IsEnabledChanged"/>
+                            </Border>
+
+                            <Border Name="DiscardButtonBorder" Style="{StaticResource MultiplierContainer}">
+                                <Button Name="DiscardCards" Content="Discard" Command="{x:Bind game.DiscardCommand}" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                        Background="Transparent" FontFamily="{StaticResource PixelBig}" FontSize="50" BorderThickness="0" CornerRadius="0" IsEnabledChanged="DiscardCards_IsEnabledChanged"/>
+                            </Border>
+                            
+                        </StackPanel>
+                    </Grid>
+
+                </Grid>
+
+                <Grid Name="DeckAndTagGrid" Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <ItemsControl Name="TagList" Grid.Row="0">
+
+                    </ItemsControl>
+
+                    <Grid Name="DeckGrid" Grid.Row="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                    </Grid>
+                </Grid>
             </Grid>
-            
-            <Grid Name="ActionGrid" Grid.Row="3">
-                <Button Name="PlayCards" Command="{x:Bind game.ConfirmCommand}"/>
-                <Button Name="DiscardCards" Command="{x:Bind game.DiscardCommand}"/>
-            </Grid>
-            
         </Grid>
     </Grid>
 </Page>

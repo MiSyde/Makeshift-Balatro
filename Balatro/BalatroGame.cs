@@ -1,22 +1,49 @@
-﻿using Balatro.Models;
+﻿using Balatro.Enums;
+using Balatro.Models;
 using Balatro.Util;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.UI;
 using WinRT.Interop;
 
 namespace Balatro
 {
     public class BalatroGame : INotifyPropertyChanged
     {
+        public BossBlind BossBlind {
+            get;
+            set
+            {
+                if (value != field)
+                {
+                    field = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+        public SolidColorBrush BlindColor 
+        { 
+            get;
+            set
+            {
+                if(value != field)
+                {
+                    field = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
         public Player Player { get; }
         public RelayCommand DiscardCommand { get; }
         public RelayCommand ConfirmCommand { get; }
@@ -60,19 +87,23 @@ namespace Balatro
                 }
             }
         }
+        private int baseScore;
         
 
         public BalatroGame()
         {
-            Threshold = 300;
+            baseScore = 300;
             Round = 1;
+            Threshold = 300;
+            BlindColor = new SolidColorBrush(Color.FromArgb(255, 0, 104, 173));
 
             Player = new Player();
+            Player.SelectedCards.CollectionChanged += RefreshCommands;
             Blinds = new Dictionary<int, string>();
             SetUpBlinds();
 
-            DiscardCommand = new RelayCommand(DiscardedCards, CanAct);
-            ConfirmCommand = new RelayCommand(ConfirmedCards, CanAct);
+            DiscardCommand = new RelayCommand(DiscardedCards, CanDiscard);
+            ConfirmCommand = new RelayCommand(ConfirmedCards, CanConfirm);
             DealCards();
         }   
 
@@ -82,14 +113,25 @@ namespace Balatro
             if (!Player.SelectedCards.Remove(c)) Player.SelectedCards.Add(c);
         }
 
+        private void RefreshCommands(object? sender, NotifyCollectionChangedEventArgs e)
+        {
+            ConfirmCommand.NotifyCanExecuteChanged();
+            DiscardCommand.NotifyCanExecuteChanged();
+        }
+
         private void ConfirmedCards()
         {
-
-            Player.SelectedCards.Clear();
             --Player.RemainingHands;
             ++Player.HandTimes[Player.HighestHand];
 
             Player.CalculateChips();
+
+            foreach (Card c in Player.SelectedCards)
+            {
+                Player.Cards.Remove(c);
+            }
+
+            Player.SelectedCards.Clear();
 
             if (Player.TotalChips >= Threshold) NextRound();
             else if (Player.TotalChips < Threshold && Player.RemainingHands == 0) EndGame();
@@ -104,28 +146,96 @@ namespace Balatro
             }
 
             Player.SelectedCards.Clear();
-            
+            --Player.Discards;
             DealCards();
         }
 
         private bool CanAct() => Player.SelectedCards.Count != 0;
+        private bool CanDiscard() => Player.Discards != 0 && CanAct();
+        private bool CanConfirm() => Player.RemainingHands != 0 && CanAct();
 
         private async void NextRound()
         {
             await Task.Delay(250);
+            ++Round;
+
             GiveMoney();
+
             Player.RemainingHands = 4;
             Player.Discards = 3;
+
             Player.SelectedCards.Clear();
             Player.Cards.Clear();
-            ++Round;
-            if (Round % 4 == 0) App.MainFrame.Navigate(typeof(ShopPage));
+
+            DealCards();
+
+            ChangeThreshold();
+
+            if (Round % 4 == 0) { App.MainFrame.Navigate(typeof(ShopPage)); }
+        }
+
+        private void ChangeThreshold()
+        {
+            switch(Round % 4)
+            {
+                case 1: Threshold = baseScore;
+                    return;
+                case 2: Threshold = (int)(baseScore * 1.5);
+                    return;
+                case 3:
+                    Threshold = BossBlindThreshold();
+                    return;
+                default:
+                    ++Ante;
+                    IncreaseBaseScore();
+                    return;
+            }
+        }
+
+        private void IncreaseBaseScore()
+        {
+            switch(Ante)
+            {
+                case -1:
+                case 0:
+                    baseScore = 100;
+                    return;
+                case 1:
+                    baseScore = 300;
+                    return;
+                case 2:
+                    baseScore = 800;
+                    return;
+                case 3:
+                    baseScore = 2000;
+                    return;
+                case 4:
+                    baseScore = 5000;
+                    return;
+                case 5:
+                    baseScore = 10000;
+                    return;
+                case 6:
+                    baseScore = 20000;
+                    return;
+                case 7:
+                    baseScore = 35000;
+                    return;
+                case 8:
+                    baseScore = 50000;
+                    return;
+            }
         }
 
         private async void EndGame()
         {
             await Task.Delay(250);
 
+        }
+
+        private int BossBlindThreshold()
+        {
+            return baseScore * 2;
         }
 
         private void SetUpBlinds()
