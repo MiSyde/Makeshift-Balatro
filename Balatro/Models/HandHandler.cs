@@ -39,7 +39,7 @@ namespace Balatro.Models
             return sorted;
         }
 
-        public Hand CalculateHand(IList<Card> selectedCards, IList<Hand> playedHands)
+        public Hand CalculateHand(IList<Card> selectedCards, IList<Hand> playedHands, IList<Card> playedCards)
         {
             Hand highestHand = Hand.HIGH_CARD;
             playedHands.Add(Hand.HIGH_CARD);
@@ -54,6 +54,10 @@ namespace Balatro.Models
             int kind = 1;
             int pair = 0;
             List<int> pairValues = new();
+            List<bool> pairFaceValues = new();
+            List<Card> straightCards = new();
+            List<Card> flushCards = new();
+            List<Card> multKindCards = new();
             int four = 0;
             int three = 0;
             int five = 0;
@@ -62,18 +66,28 @@ namespace Balatro.Models
             {
                 Card currentCard = sorted[i];
 
-                if (currentCard.Value == previousCard.Value + 1) ++straight;
+                if (currentCard.Value == previousCard.Value + 1) 
+                { 
+                    ++straight;
+                    if (!straightCards.Contains(previousCard)) 
+                        straightCards.Add(previousCard);
+
+                    straightCards.Add(currentCard);
+
+                }
                 if (currentCard.Value == previousCard.Value && !currentCard.IsFaceCard && !previousCard.IsFaceCard) 
                 {
                     ++kind;
                     if (kind == 2)
                     {
                         pairValues.Add(currentCard.Value);
+                        pairFaceValues.Add(false);
                         ++pair;
                     }
                     else if(kind == 3)
                     {
                         ++three;
+
                     } 
                     else if(kind == 4)
                     {
@@ -89,6 +103,7 @@ namespace Balatro.Models
                     ++kind;
                     if (kind == 2)
                     {
+                        pairFaceValues.Add(true);
                         pairValues.Add(currentCard.Value);
                         ++pair;
                     }
@@ -107,7 +122,14 @@ namespace Balatro.Models
                 }
                 else { kind = 1; }
 
-                if (currentCard.SuitType == previousCard.SuitType) ++flush;
+                if (currentCard.SuitType == previousCard.SuitType) 
+                { 
+                    ++flush;
+                    if (!flushCards.Contains(previousCard)) 
+                        flushCards.Add(previousCard);
+
+                    flushCards.Add(currentCard);
+                }
 
                 previousCard = currentCard;
             }
@@ -116,47 +138,79 @@ namespace Balatro.Models
             {
                 highestHand = Hand.PAIR;
                 playedHands.Add(Hand.PAIR);
+                foreach(Card c in selectedCards)
+                {
+                    if (pairValues.Contains(c.Value) && pairFaceValues.Contains(c.IsFaceCard))
+                        playedCards.Add(c);
+                }
             }
             else if(pair == 2)
             {
                 highestHand = Hand.TWO_PAIR;
                 playedHands.Add(Hand.PAIR);
                 playedHands.Add(Hand.TWO_PAIR);
+                foreach (Card c in selectedCards)
+                {
+                    if (pairValues.Contains(c.Value) && pairFaceValues.Contains(c.IsFaceCard))
+                        playedCards.Add(c);
+                }
             }
 
             if (three == 1)
             { 
                 highestHand = Hand.THREE_OF_A_KIND;
                 playedHands.Add(Hand.THREE_OF_A_KIND);
+                foreach (Card c in selectedCards)
+                {
+                    if (pairValues.Contains(c.Value) && pairFaceValues.Contains(c.IsFaceCard))
+                        playedCards.Add(c);
+                }
             }
 
             if (straight == NeededCards4FlushAndStraight) 
             { 
                 highestHand = Hand.STRAIGHT;
                 playedHands.Add(Hand.STRAIGHT);
+                foreach (Card c in selectedCards)
+                {
+                    if (straightCards.Contains(c))
+                        playedCards.Add(c);
+                }
             }
 
             else if (flush == NeededCards4FlushAndStraight) 
             { 
                 highestHand = Hand.FLUSH;
                 playedHands.Add(Hand.FLUSH);
+                foreach (Card c in selectedCards)
+                {
+                    if (flushCards.Contains(c))
+                        playedCards.Add(c);
+                }
             }
 
             if (three == 1 && pair == 1 && pairValues.Count != 1) 
             { 
                 highestHand = Hand.FULL_HOUSE;
                 playedHands.Add(Hand.FULL_HOUSE);
+                playedCards = selectedCards;
             }
             else if (four == 4)
             {
                 highestHand = Hand.FOUR_OF_A_KIND;
                 playedHands.Add(Hand.FOUR_OF_A_KIND);
+                foreach (Card c in selectedCards)
+                {
+                    if (pairValues.Contains(c.Value) && pairFaceValues.Contains(c.IsFaceCard))
+                        playedCards.Add(c);
+                }
             }
 
             if (straight == NeededCards4FlushAndStraight && flush == NeededCards4FlushAndStraight) 
             { 
                 highestHand = Hand.STRAIGHT_FLUSH; 
                 playedHands.Add(Hand.STRAIGHT_FLUSH);
+                playedCards = selectedCards;
 
                 bool ace = false, king = false, queen = false, jack = false, ten = false;
 
@@ -180,17 +234,20 @@ namespace Balatro.Models
             {
                 highestHand = Hand.FIVE_OF_A_KIND;
                 playedHands.Add(Hand.FIVE_OF_A_KIND);
+                playedCards = selectedCards;
             }
-            else if(flush == 5 && three == 1 && pair == 1 && pairValues.Count != 1)
+            if(flush == NeededCards4FlushAndStraight && three == 1 && pair == 1 && pairValues.Count != 1)
             {
                 highestHand = Hand.FLUSH_HOUSE;
                 playedHands.Add(Hand.FLUSH_HOUSE);
+                playedCards = selectedCards;
             }
             
-            if(flush == 5 && five == 1)
+            if(flush == NeededCards4FlushAndStraight && five == 1)
             {
                 highestHand = Hand.FLUSH_FIVE;
                 playedHands.Add(Hand.FLUSH_FIVE);
+                playedCards = selectedCards;
             }
 
             return highestHand;

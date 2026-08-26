@@ -1,6 +1,7 @@
 ﻿using Balatro.Enums;
 using Balatro.Models;
 using Balatro.Models.Jokers;
+using Balatro.Models.Vouchers;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -16,7 +17,31 @@ namespace Balatro
 {
     public class Player : INotifyPropertyChanged
     {
-        public int MaxJokerCount { get; }
+        public int MaxConsumableCount
+        {
+            get;
+            set
+            {
+                if (field != value)
+                {
+                    field = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+        public int MaxJokerCount 
+        { 
+            get; 
+            set
+            {
+                if(field != value)
+                {
+                    field = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+        public ObservableCollection<IJoker> Jokers { get; }
         private int _multiplier;
         private int _chips;
         private Hand _highestHand;
@@ -34,9 +59,7 @@ namespace Balatro
         }
         public List<Hand> PlayedHands { get; }
         public HandHandler HandHandler { get; }
-        public ObservableCollection<IJoker> ActiveJokers { get; }
-        public ObservableCollection<IJoker> PassiveJokers { get; }
-        public ObservableCollection<ITarot> TarotCards { get; }
+        public ObservableCollection<IEffect> Consumables { get; }
         private readonly Deck _deck;
         public ObservableCollection<Card> SelectedCards { get; }
         public int RemainingHands
@@ -115,8 +138,20 @@ namespace Balatro
         public ObservableDictionary<Hand, int> HandLevels { get; }
         public ObservableDictionary<Hand, int> HandTimes { get; }
         public ObservableCollection<Card> Cards { get; }
-        public int CurrentCardHoldingSize { get; }
-
+        public IList<Card> PlayedCards { get; }
+        public ObservableCollection<IVoucher> Vouchers { get; }
+        public int CurrentCardHoldingSize
+        {
+            get;
+            set
+            {
+                if (value != field)
+                {
+                    field = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
         public event PropertyChangedEventHandler? PropertyChanged;
 
         public Player()
@@ -127,22 +162,26 @@ namespace Balatro
             Money = 10;
             RemainingHands = 4;
             CurrentCardHoldingSize = 8;
+            MaxConsumableCount = 2;
 
             Cards = new ObservableCollection<Card>();
             _deck = new Deck();
-            TarotCards = new ObservableCollection<ITarot>();
+            Consumables = new ObservableCollection<IEffect>();
             SelectedCards = new ObservableCollection<Card>();
             HandHandler = new HandHandler(5);
-            ActiveJokers = new ObservableCollection<IJoker>();
-            PassiveJokers = new ObservableCollection<IJoker>();
+            Jokers = new ObservableCollection<IJoker>();
             PlayedHands = new List<Hand>();
             HandData = new ObservableDictionary<Hand, HandData>(() => OnPropertyChanged(nameof(HandData)));
             HandLevels = new ObservableDictionary<Hand, int>(() => OnPropertyChanged(nameof(HandLevels)));
             HandTimes = new ObservableDictionary<Hand, int>(() => OnPropertyChanged(nameof(HandTimes)));
+            PlayedCards = new List<Card>();
+            Vouchers = new ObservableCollection<IVoucher>();
 
             SetUpHandDictionaries();
             SelectedCards.CollectionChanged += CalculateHand;
         }
+
+        public void AddJoker(IJoker joker) => Jokers.Add(joker);
 
         public Card DrawFromDeck()
         {
@@ -154,6 +193,7 @@ namespace Balatro
         private void CalculateHand(object? sender, NotifyCollectionChangedEventArgs e)
         {
             PlayedHands.Clear();
+            PlayedCards.Clear();
 
             if (SelectedCards.Count == 0)
             {
@@ -162,7 +202,7 @@ namespace Balatro
                 return;
             }
 
-            HighestHand = HandHandler.CalculateHand(SelectedCards, PlayedHands);
+            HighestHand = HandHandler.CalculateHand(SelectedCards, PlayedHands, PlayedCards);
 
             HandData.TryGetValue(HighestHand, out HandData? handInfo);
             Chips = handInfo.Chips;
@@ -171,9 +211,12 @@ namespace Balatro
 
         public async void ApplyJokers()
         {
-            foreach(IJoker joker in ActiveJokers)
+            foreach(IJoker joker in Jokers)
             {
                 await Task.Delay(150);
+                ApplyModifier(joker);
+                await Task.Delay(150);
+                if (joker is IPassiveJoker) continue;
                 joker.AddEffect(this);
             }
         }
@@ -182,6 +225,11 @@ namespace Balatro
         {
             ApplyJokers();
             TotalChips += _chips * _multiplier;
+        }
+
+        private void ApplyModifier(IJoker joker)
+        {
+
         }
 
         private void SetUpHandDictionaries()

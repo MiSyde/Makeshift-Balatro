@@ -217,7 +217,7 @@
                 
             </Grid>
 
-            <Grid Name="TableGrid" Grid.Row="1">
+            <Grid Name="TableGrid" Grid.Row="1" Background="Beige">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
@@ -236,7 +236,7 @@
                     </GridView>
 
                     <GridView ItemsSource="{x:Bind game.Player.Cards, Mode=OneWay}" HorizontalAlignment="Center" VerticalAlignment="Center" ItemClick="Card_Selected" IsItemClickEnabled="True" 
-          SelectionMode="Multiple" IsMultiSelectCheckBoxEnabled="False" Grid.Row="1">
+            SelectionMode="Multiple" IsMultiSelectCheckBoxEnabled="False" Name="PlayerCards" Grid.Row="1">
                         <GridView.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <ItemsWrapGrid Orientation="Vertical"/>
@@ -249,6 +249,7 @@
                         </GridView.ItemTemplate>
                     </GridView>
 
+
                     <TextBlock Name="CardCount" Grid.Row="3"/>
 
                     <Grid Name="ActionGrid" Grid.Row="4">
@@ -256,13 +257,13 @@
                             
                             <Border Name="PlayCardsButtonBorder" Style="{StaticResource ChipsContainer}">
                                 <Button Name="PlayCards" Content="Play Hand" Command="{x:Bind game.ConfirmCommand}" HorizontalAlignment="Center" VerticalAlignment="Center"
-                                        Background="Transparent" FontFamily="{StaticResource PixelBig}" FontSize="50" BorderThickness="0" CornerRadius="0" 
+                                        Background="Transparent" FontFamily="{StaticResource PixelBig}" FontSize="54" BorderThickness="0" CornerRadius="0" 
                                         IsEnabledChanged="PlayHand_IsEnabledChanged"/>
                             </Border>
 
                             <Border Name="DiscardButtonBorder" Style="{StaticResource MultiplierContainer}">
                                 <Button Name="DiscardCards" Content="Discard" Command="{x:Bind game.DiscardCommand}" HorizontalAlignment="Center" VerticalAlignment="Center"
-                                        Background="Transparent" FontFamily="{StaticResource PixelBig}" FontSize="50" BorderThickness="0" CornerRadius="0" 
+                                        Background="Transparent" FontFamily="{StaticResource PixelBig}" FontSize="54" BorderThickness="0" CornerRadius="0" 
                                         IsEnabledChanged="DiscardCards_IsEnabledChanged"/>
                             </Border>
                             

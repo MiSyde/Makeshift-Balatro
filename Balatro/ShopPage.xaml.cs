@@ -12,19 +12,77 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
-
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
+using CommunityToolkit.Mvvm.Input;
+using System.Collections.ObjectModel;
+using Balatro.Models;
+using System.Reflection;
+using Balatro.Util;
+using Balatro.Models.Jokers;
+using Balatro.Models.Vouchers;
 
 namespace Balatro;
 
 /// <summary>
-/// An empty page that can be used on its own or navigated to within a Frame.
+/// The shop that shows up between Antes
 /// </summary>
 public sealed partial class ShopPage : Page
 {
+    BalatroGame Game => App.CurrentGame;
+    Shop Shop { get; }
     public ShopPage()
     {
         InitializeComponent();
+
+        Shop = new Shop();
+
+        NavigationCacheMode = NavigationCacheMode.Required;
+
+        SizeChanged += ShopPage_SizeChanged;
     }
+
+    protected override void OnNavigatedTo(NavigationEventArgs e)
+    {
+        base.OnNavigatedTo(e);
+        Shop.CurrentShop.Clear();
+
+        Shop.RerollPrice = 5;
+
+        foreach (IVoucher v in Game.Player.Vouchers)
+        {
+            v.ApplyEffect(Shop);
+        }
+
+        Shop.FillUpShop();
+    }
+
+    private void ShopPage_SizeChanged(object sender, SizeChangedEventArgs e)
+    {
+        SolidColorBrush opaque = new SolidColorBrush(Windows.UI.Color.FromArgb(50, 35, 35, 35));
+        SolidColorBrush gray = new SolidColorBrush(Windows.UI.Color.FromArgb(255,59, 81, 85));
+
+        JokersGridView.Background = opaque;
+        ConsumablesGridView.Background = opaque;
+
+        PacksGridView.Background = gray;
+        BuyableItemsGridView.Background = gray;
+    }
+
+    private void NextRound_Click(object sender, RoutedEventArgs e) => App.MainFrame.Navigate(typeof(SelectionPage));
+
+    private void RerollButton_IsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
+    {
+        if(e.NewValue is bool isEnabled && !isEnabled)
+        {
+            var style = (Style)Application.Current.Resources["InactiveButtonContainer"];
+            RerollBorder.Style = style;
+        } 
+        else 
+        {
+            var style = (Style)Application.Current.Resources["RerollContainer"];
+            RerollBorder.Style = style;
+        }
+
+    }
+    private string XDashY(int x, int y) => Helper.XDashY(x, y);
+
 }

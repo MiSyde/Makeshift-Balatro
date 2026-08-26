@@ -1,4 +1,5 @@
 ﻿using Balatro.Enums;
+using Balatro.Models.Achievement;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -28,8 +29,9 @@ namespace Balatro
     public partial class App : Application
     {
         private Window? _window;
-        public static BalatroGame CurrentGame { get; } = new();
+        public static BalatroGame CurrentGame { get; set; } = new();
         public static Frame MainFrame { get; } = new();
+        public static AchievementManager AchievementManager { get; } = new(AchievementStorage.Load());
 
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code

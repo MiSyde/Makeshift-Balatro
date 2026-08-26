@@ -107,7 +107,6 @@ namespace Balatro
             DealCards();
         }   
 
-
         public void CardPressed(Card c)
         {
             if (!Player.SelectedCards.Remove(c)) Player.SelectedCards.Add(c);

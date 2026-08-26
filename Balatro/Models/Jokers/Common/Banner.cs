@@ -1,5 +1,6 @@
 ﻿using Balatro.Enums;
 using Balatro.Enums;
+using Microsoft.UI.Xaml.Media;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,6 +9,8 @@ namespace Balatro.Models.Jokers.Common
 {
     public class Banner : IJoker
     {
+        public ImageSource Image { get; }
+        public int MinAnte { get; }
         public string Description { get; }
         public int Price { get; }
         public Rarity Rarity { get; }

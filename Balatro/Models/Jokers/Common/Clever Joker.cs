@@ -1,5 +1,6 @@
 ﻿using Balatro.Enums;
 using Balatro.Models;
+using Microsoft.UI.Xaml.Media;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -12,6 +13,8 @@ namespace Balatro.Models.Jokers.Common
         public int Price { get; }
         public Rarity Rarity { get; }
         public Modifier Modifier { get; }
+        public ImageSource Image { get; }
+        public int MinAnte { get; }
 
         public Clever_Joker(Modifier modifier = Modifier.BASE)
         {

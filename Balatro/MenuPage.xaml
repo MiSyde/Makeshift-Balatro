@@ -14,13 +14,13 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center"  Margin="175, 100, 25, 100" Orientation="Horizontal">
-            <TextBlock Text="Balatro" FontFamily="{StaticResource PixelBig}" FontSize="500" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <StackPanel Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center"  Margin="25, 100, 175, 100" Orientation="Horizontal">
             <TextBlock Text="Makeshift" FontSize="200" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="{StaticResource PixelBig}">
                 <TextBlock.RenderTransform>
-                    <CompositeTransform ScaleX="0.6" ScaleY="0.6" TranslateY="-4"/>
+                    <CompositeTransform ScaleX="0.6" ScaleY="0.6" TranslateY="-4" TranslateX="-5"/>
                 </TextBlock.RenderTransform>
             </TextBlock>
+            <TextBlock Text="Balatro" FontFamily="{StaticResource PixelBig}" FontSize="500" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         </StackPanel>
         
 

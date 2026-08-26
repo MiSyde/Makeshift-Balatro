@@ -50,6 +50,8 @@ namespace Balatro
         {
             SetDimensions();
 
+            PlayCards.Background = new SolidColorBrush(Windows.UI.Color.FromArgb(50, 35, 35, 35));
+
             if (game.Round % 4 == 1)
             {
                 ((ImageBrush)InnerNameGridBorder.Background).ImageSource = new BitmapImage(new Uri("ms-appx:///Assets/Borders/SmallBlindBorder.png"));

@@ -1,16 +1,19 @@
 ﻿using Balatro.Enums;
+using Microsoft.UI.Xaml.Media;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Balatro.Models.Jokers.Uncommon
 {
-    public class Four_Fingers : IJoker, IPassiveJoker
+    public class Four_Fingers : IPassiveJoker
     {
         public string Description { get; }
         public int Price { get; }
         public Rarity Rarity { get; }
         public Modifier Modifier { get; }
+        public ImageSource Image { get; }
+        public int MinAnte { get; }
 
         public Four_Fingers(Modifier modifier = Modifier.BASE)
         {

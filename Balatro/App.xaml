@@ -10,6 +10,15 @@
             <ImageBrush x:Key="ChipsBackground" ImageSource="/Assets/Borders/ChipsBorder.png"  Stretch="Fill"/>
             <ImageBrush x:Key="MultiplierBackground" ImageSource="/Assets/Borders/MultiplierBorder.png"  Stretch="Fill"/>
             <ImageBrush x:Key="InactiveButtonBrush" ImageSource="/Assets/Borders/InactiveButton.png" Stretch="Fill"/>
+            <ImageBrush x:Key="DarkBackgroundNoShadow" ImageSource="/Assets/Borders/DarkNoShadow.png"/>
+            <ImageBrush x:Key="DarkBackgroundSmallShadow" ImageSource="/Assets/Borders/DarkSmallShadow.png"/>
+            <ImageBrush x:Key="GrayBorderSmallShadow" ImageSource="/Assets/Borders/GrayBorderSmallShadow.png"/>
+            <ImageBrush x:Key="GrayBorderNoShadow" ImageSource="/Assets/Borders/GrayBorderNoShadow.png"/>
+            <ImageBrush x:Key="ShopItemsBigBorder" ImageSource="/Assets/Borders/ShopBorder.png"/>
+            <ImageBrush x:Key="RerollBorder" ImageSource="/Assets/Borders/RerollBorder.png"/>
+            <ImageBrush x:Key="NextRoundBorder" ImageSource="/Assets/Borders/NextRoundBorder.png"/>
+            <ImageBrush x:Key="GraySmallShadow" ImageSource="/Assets/Borders/GraySmallShadow.png"/>
+            
 
             <FontFamily x:Key="Pixel">/Assets/Fonts/m6x11.ttf#m6x11</FontFamily>
             <FontFamily x:Key="PixelBig">/Assets/Fonts/m6x11plus.ttf#m6x11plus</FontFamily>
@@ -31,6 +40,51 @@
 
             <Style x:Key="MultiplierContainer" TargetType="Border">
                 <Setter Property="Background" Value="{StaticResource MultiplierBackground}"/>
+                <Setter Property="Margin" Value="5,2,5,2"/>
+            </Style>
+
+            <Style x:Key="ShopItemsContainer" TargetType="Border">
+                <Setter Property="Background" Value="{StaticResource ShopItemsBigBorder}"/>
+                <Setter Property="Margin" Value="5,2,5,2"/>
+            </Style>
+
+            <Style x:Key="GrayContainer" TargetType="Border">
+                <Setter Property="Background" Value="{StaticResource GrayBorderSmallShadow}"/>
+                <Setter Property="Margin" Value="5,2,5,2"/>
+            </Style>
+
+            <Style x:Key="GrayShadowlessContainer" TargetType="Border">
+                <Setter Property="Background" Value="{StaticResource GrayBorderNoShadow}"/>
+                <Setter Property="Margin" Value="5,2,5,2"/>
+            </Style>
+
+            <Style x:Key="GrayShadowlessContainer" TargetType="Border">
+                <Setter Property="Background" Value="{StaticResource GrayBorderNoShadow}"/>
+                <Setter Property="Margin" Value="5,2,5,2"/>
+            </Style>
+
+            <Style x:Key="DarkShadowlessContainer" TargetType="Border">
+                <Setter Property="Background" Value="{StaticResource DarkBackgroundNoShadow}"/>
+                <Setter Property="Margin" Value="5,2,5,2"/>
+            </Style>
+
+            <Style x:Key="DarkSmallShadowContainer" TargetType="Border">
+                <Setter Property="Background" Value="{StaticResource DarkBackgroundSmallShadow}"/>
+                <Setter Property="Margin" Value="5,2,5,2"/>
+            </Style>
+
+            <Style x:Key="RerollContainer" TargetType="Border">
+                <Setter Property="Background" Value="{StaticResource RerollBorder}"/>
+                <Setter Property="Margin" Value="5,2,5,2"/>
+            </Style>
+
+            <Style x:Key="NextRoundContainer" TargetType="Border">
+                <Setter Property="Background" Value="{StaticResource NextRoundBorder}"/>
+                <Setter Property="Margin" Value="5,2,5,2"/>
+            </Style>
+
+            <Style x:Key="GraySmallShadowContainer" TargetType="Border">
+                <Setter Property="Background" Value="{StaticResource GraySmallShadow}"/>
                 <Setter Property="Margin" Value="5,2,5,2"/>
             </Style>
 

@@ -1,3 +1,4 @@
+using Balatro.Models.Achievement;
 using Microsoft.UI;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
@@ -31,7 +32,14 @@ namespace Balatro
             var appWindow = AppWindow;
             appWindow.SetPresenter(AppWindowPresenterKind.FullScreen);
 
+            Closed += SaveProgress;
+
             MainFrame.Navigate(typeof(MenuPage), null, new ContinuumNavigationTransitionInfo());
+        }
+
+        private void SaveProgress(object sender, WindowEventArgs args)
+        {
+            App.AchievementManager.SaveProgress();
         }
     }
 }

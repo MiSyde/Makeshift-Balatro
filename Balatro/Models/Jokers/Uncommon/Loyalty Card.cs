@@ -1,4 +1,5 @@
 ﻿using Balatro.Enums;
+using Microsoft.UI.Xaml.Media;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,6 +12,8 @@ namespace Balatro.Models.Jokers.Uncommon
         public int Price { get; }
         public Rarity Rarity { get; }
         public Modifier Modifier { get; }
+        public ImageSource Image { get; }
+        public int MinAnte { get; }
         private int remainingHands;
 
         public Loyalty_Card(Modifier modifier = Modifier.BASE)

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Balatro.Models.Jokers
 {
-    internal interface IPassiveJoker
+    public interface IPassiveJoker : IJoker
     {
         public abstract void DeactivateEffect(Player p);
     }

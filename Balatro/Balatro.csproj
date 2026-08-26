@@ -19,6 +19,7 @@
     <None Remove="MenuPage.xaml" />
     <None Remove="OptionsWindow.xaml" />
     <None Remove="RunInfoWindow.xaml" />
+    <None Remove="SelectionPage.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -58,6 +59,11 @@
     <Folder Include="Models\Jokers\Rare\" />
     <Folder Include="Models\Planets\" />
     <Folder Include="Models\Tarots\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="SelectionPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="End_Window.xaml">
