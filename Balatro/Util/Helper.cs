@@ -1,4 +1,5 @@
-﻿using Balatro.Models.Achievement;
+﻿using Balatro.Enums;
+using Balatro.Models.Achievement;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -80,6 +81,15 @@ namespace Balatro.Util
             }
 
             return result;
+        }
+
+        public static string GetBossDescription(BossBlind BossBlind)
+        {
+            switch(BossBlind)
+            {
+                default:
+                    return string.Empty;
+            }
         }
     }
 }

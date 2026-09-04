@@ -44,7 +44,11 @@ namespace Balatro.Models
             Hand highestHand = Hand.HIGH_CARD;
             playedHands.Add(Hand.HIGH_CARD);
 
-            if (selectedCards.Count == 1) return highestHand;
+            if (selectedCards.Count == 1)
+            {
+                playedCards.Add(selectedCards[0]);
+                return highestHand;
+            }
 
             var sorted = InsertionSort(selectedCards);
 
@@ -248,6 +252,17 @@ namespace Balatro.Models
                 highestHand = Hand.FLUSH_FIVE;
                 playedHands.Add(Hand.FLUSH_FIVE);
                 playedCards = selectedCards;
+            }
+
+            if(highestHand == Hand.HIGH_CARD)
+            {
+                Card HighestCard = selectedCards[0];
+                foreach(Card c in selectedCards)
+                {
+                    if (c.Value > HighestCard.Value)
+                        HighestCard = c;
+                }
+                playedCards.Add(HighestCard);
             }
 
             return highestHand;

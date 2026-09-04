@@ -21,6 +21,9 @@ namespace Balatro
 {
     public class BalatroGame : INotifyPropertyChanged
     {
+        private RelayCommand? SmallBCmd;
+        private RelayCommand? BigBCmd;
+        private RelayCommand? BossBCmd;
         public BossBlind BossBlind {
             get;
             set
@@ -72,6 +75,7 @@ namespace Balatro
                 {
                     field = value;
                     OnPropertyChanged();
+                    UpdateSelectionCommands();
                 }
             }
         }
@@ -110,6 +114,29 @@ namespace Balatro
         public void CardPressed(Card c)
         {
             if (!Player.SelectedCards.Remove(c)) Player.SelectedCards.Add(c);
+        }
+
+        private void UpdateSelectionCommands()
+        {
+            switch(Round % 4)
+            {
+                case 1:
+                    SmallBCmd?.NotifyCanExecuteChanged();
+                    break;
+                case 2:
+                    BigBCmd?.NotifyCanExecuteChanged();
+                    break;
+                case 3:
+                    BossBCmd?.NotifyCanExecuteChanged();
+                    break;
+            }
+        }
+
+        public void AssignBlindCommands(RelayCommand Small, RelayCommand Big, RelayCommand Boss)
+        {
+            SmallBCmd = Small;
+            BigBCmd = Big;
+            BossBCmd = Boss;
         }
 
         private void RefreshCommands(object? sender, NotifyCollectionChangedEventArgs e)

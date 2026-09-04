@@ -257,15 +257,34 @@
 
                             <Grid Grid.Row="1" Name="PacksAndVouchers">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition/>
+                                    <ColumnDefinition Width="*"/>
                                     <ColumnDefinition/>
                                 </Grid.ColumnDefinitions>
 
                                 <Border Grid.Column="0" Style="{StaticResource GraySmallShadowContainer}">
                                     <Border Style="{StaticResource DarkShadowlessContainer}">
-                                        <GridView Name="VouchersGridView">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition/>
+                                                <ColumnDefinition/>
+                                            </Grid.ColumnDefinitions>
 
-                                        </GridView>
+                                            <TextBlock Grid.Column="0" Text="{x:Bind GetAnteString(), Mode=OneWay}">
+                                                <TextBlock.RenderTransform>
+                                                    <TransformGroup>
+                                                        <ScaleTransform/>
+                                                        <SkewTransform/>
+                                                        <RotateTransform Angle="-90"/>
+                                                        <TranslateTransform/>
+                                                    </TransformGroup>
+                                                </TextBlock.RenderTransform>
+                                            </TextBlock>
+
+                                            <GridView Grid.Column="1" Name="VouchersGridView">
+
+                                            </GridView>
+                                        </Grid>
+                                        
                                     </Border>
                                 </Border>
 
