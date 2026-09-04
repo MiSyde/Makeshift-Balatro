@@ -153,7 +153,7 @@ namespace Balatro
         private bool CanDiscard() => Player.Discards != 0 && CanAct();
         private bool CanConfirm() => Player.RemainingHands != 0 && CanAct();
 
-        private async void NextRound()
+        public async void NextRound()
         {
             await Task.Delay(250);
             ++Round;

@@ -1,3 +1,5 @@
+using Balatro.Util;
+using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -13,19 +15,25 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
-
 namespace Balatro
 {
     /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// The page where the player selects blinds and is shows between blinds
     /// </summary>
     public sealed partial class SelectionPage : Page
     {
+        BalatroGame Game => App.CurrentGame;
+        private RelayCommand SelectSmallBindCommand;
         public SelectionPage()
         {
             InitializeComponent();
+            SelectSmallBindCommand = new RelayCommand(SelectBind, CanSelectSmallBind);
         }
+
+        private string XDashY(int X, int Y) => Helper.XDashY(X, Y);
+
+        private void SelectBind() => Game.NextRound();
+
+        private bool CanSelectSmallBind() => Game.Round % 4 == 1;
     }
 }
