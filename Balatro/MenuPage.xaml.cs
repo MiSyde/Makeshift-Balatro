@@ -28,6 +28,6 @@ public sealed partial class MenuPage : Page
 
     private void Play_Click(object sender, RoutedEventArgs e)
     {
-        MainFrame.Navigate(typeof(Balatro_Page));
+        MainFrame.Navigate(typeof(SelectionPage));
     }
 }

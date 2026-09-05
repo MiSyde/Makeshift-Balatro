@@ -1,8 +1,10 @@
 ﻿using Balatro.Enums;
 using Microsoft.UI.Xaml.Media;
+using Microsoft.UI.Xaml.Media.Imaging;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Xml.Linq;
 
 namespace Balatro.Models.Jokers.Uncommon
 {
@@ -11,7 +13,8 @@ namespace Balatro.Models.Jokers.Uncommon
         public string Description { get; }
         public int Price { get; }
         public Rarity Rarity { get; }
-        public Modifier Modifier { get; }
+        public Modifier Modifier { get; set; }
+        public string Name { get; }
         public ImageSource Image { get; }
         public int MinAnte { get; }
         private int remainingHands;
@@ -23,6 +26,8 @@ namespace Balatro.Models.Jokers.Uncommon
             Modifier = modifier;
             Price = 5;
             remainingHands = 6;
+            Name = "Loyalty Card";
+            Image = new BitmapImage(new Uri("ms-appx:///Assets/JokerImages/Loyalty_Card.png"));
         }
 
         public void AddEffect(Player player)

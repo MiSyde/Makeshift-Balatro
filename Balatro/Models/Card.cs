@@ -1,4 +1,5 @@
 ﻿using Balatro.Enums;
+using Balatro.Models.Seals;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media.Imaging;
 using System;
@@ -18,7 +19,7 @@ namespace Balatro.Models
         public SuitType SuitType { get => suitType; }
         public BitmapImage Image { get; }
         public Guid Id { get; }
-        public Seal? Seal { get; set; }
+        public IEffect? Seal { get; set; }
         public Modifier Modifier { get; set; }
         public IList<Enhancement> Enhancements { get; }
 

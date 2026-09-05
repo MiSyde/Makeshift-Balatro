@@ -82,14 +82,5 @@ namespace Balatro.Util
 
             return result;
         }
-
-        public static string GetBossDescription(BossBlind BossBlind)
-        {
-            switch(BossBlind)
-            {
-                default:
-                    return string.Empty;
-            }
-        }
     }
 }

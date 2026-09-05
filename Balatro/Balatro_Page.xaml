@@ -3,12 +3,11 @@
     x:Class="Balatro.Balatro_Page"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:Balatro"
+    xmlns:local="using:Balatro.Models"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    xmlns:converter="using:Balatro.Converter"
-    xmlns:model="using:Balatro.Models">
+    xmlns:converter="using:Balatro.Converter">
 
     <Page.Resources>
         <converter:EnumToStringConverter x:Key="EnumDescription"/>
@@ -243,7 +242,7 @@
                             </ItemsPanelTemplate>
                         </GridView.ItemsPanel>
                         <GridView.ItemTemplate>
-                            <DataTemplate x:DataType="model:Card">
+                            <DataTemplate x:DataType="local:Card">
                                 <Image Source="{x:Bind Image}" Height="201" Width="150"/>
                             </DataTemplate>
                         </GridView.ItemTemplate>

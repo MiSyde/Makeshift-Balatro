@@ -24,7 +24,7 @@ namespace Balatro
         private RelayCommand? SmallBCmd;
         private RelayCommand? BigBCmd;
         private RelayCommand? BossBCmd;
-        public BossBlind BossBlind {
+        public IEffect BossBlind {
             get;
             set
             {

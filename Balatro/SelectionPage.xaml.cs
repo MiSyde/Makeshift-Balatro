@@ -1,6 +1,7 @@
 using Balatro.Enums;
 using Balatro.Util;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.UI;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -15,6 +16,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using WinRT.Interop;
 
 namespace Balatro
 {
@@ -27,9 +29,15 @@ namespace Balatro
         private RelayCommand SelectSmallBlindCommand;
         private RelayCommand SelectBigBlindCommand;
         private RelayCommand SelectBossBlindCommand;
+        RunInfoWindow? runInfoWindow;
+        OptionsWindow? optionsWindow;
+        IntPtr mainHwnd;
+        private const int GWLP_HWNDPARENT = -8;
         public SelectionPage()
         {
             InitializeComponent();
+
+            NavigationCacheMode = NavigationCacheMode.Required;
 
             SelectSmallBlindCommand = new RelayCommand(SelectBlind, CanSelectSmallBlind);
             SelectBigBlindCommand = new RelayCommand(SelectBlind, CanSelectBigBlind);
@@ -40,7 +48,11 @@ namespace Balatro
 
         private string XDashY(int X, int Y) => Helper.XDashY(X, Y);
 
-        private void SelectBlind() => Game.NextRound();
+        private void SelectBlind()
+        {
+            Game.NextRound();
+            App.MainFrame.Navigate(typeof(Balatro_Page));
+        }
 
         private bool CanSelectSmallBlind() => Game.Round % 4 == 1;
 
@@ -48,8 +60,44 @@ namespace Balatro
 
         private bool CanSelectBossBlind() => Game.Round % 4 == 3;
 
-        private string GetBossDescription(BossBlind BossBlind) => Helper.GetBossDescription(BossBlind);
-        private string GetBossName(BossBlind BossBlind) => Helper.GetDescription(BossBlind);
-        private string GetBossImage(BossBlind BossBlind) => Helper.GetBossDescription(BossBlind);
+        private void Show_RunInfo(object sender, RoutedEventArgs e)
+        {
+            var windowId = XamlRoot.ContentIslandEnvironment.AppWindowId;
+            mainHwnd = Win32Interop.GetWindowFromWindowId(windowId);
+
+            runInfoWindow = new RunInfoWindow(mainHwnd);
+            runInfoWindow.Closed += RunInfo_Closed;
+
+            var runInfoHwnd = WindowNative.GetWindowHandle(runInfoWindow);
+
+            NativeMethods.SetWindowLongPtr(runInfoHwnd, GWLP_HWNDPARENT, mainHwnd);
+
+            runInfoWindow.Activate();
+        }
+
+        private void Show_Options(object sender, RoutedEventArgs e)
+        {
+            var windowId = XamlRoot.ContentIslandEnvironment.AppWindowId;
+            mainHwnd = Win32Interop.GetWindowFromWindowId(windowId);
+
+            optionsWindow = new OptionsWindow(mainHwnd);
+            optionsWindow.Closed += Options_Closed;
+
+            var runInfoHwnd = WindowNative.GetWindowHandle(runInfoWindow);
+
+            NativeMethods.SetWindowLongPtr(runInfoHwnd, GWLP_HWNDPARENT, mainHwnd);
+
+            optionsWindow.Activate();
+        }
+
+        private void RunInfo_Closed(object sender, WindowEventArgs args)
+        {
+            runInfoWindow = null;
+        }
+
+        private void Options_Closed(object sender, WindowEventArgs args)
+        {
+            runInfoWindow = null;
+        }
     }
 }

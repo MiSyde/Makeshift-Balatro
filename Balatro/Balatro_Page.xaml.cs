@@ -42,7 +42,6 @@ namespace Balatro
 
             SizeChanged += Balatro_Page_SizeChanged;
             
-
             NavigationCacheMode = NavigationCacheMode.Required;
         }
 
@@ -62,7 +61,7 @@ namespace Balatro
             }
             else if (game.Round % 4 == 3)
             {
-                ((ImageBrush)InnerNameGridBorder.Background).ImageSource = new BitmapImage(new Uri("ms-appx:///Assets/Borders/" + game.BossBlind.GetDescription() + "BlindBorder.png"));
+                ((ImageBrush)InnerNameGridBorder.Background).ImageSource = new BitmapImage(new Uri("ms-appx:///Assets/Borders/" + game.BossBlind.Description + "BlindBorder.png"));
             }
         }
 

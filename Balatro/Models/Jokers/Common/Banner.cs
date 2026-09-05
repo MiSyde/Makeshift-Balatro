@@ -8,6 +8,7 @@ namespace Balatro.Models.Jokers.Common
 {
     public class Banner : IJoker
     {
+        public string Name { get; }
         public ImageSource Image { get; }
         public int MinAnte { get; }
         public string Description { get; }
@@ -17,6 +18,7 @@ namespace Balatro.Models.Jokers.Common
 
         public Banner(Modifier modifier = Modifier.BASE)
         {
+            Name = "Banner";
             Description = "+30 Chips for each remaining discard";
             Rarity = Rarity.COMMON;
             Modifier = modifier;

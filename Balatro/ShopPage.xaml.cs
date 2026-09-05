@@ -1,10 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
+using Balatro.Models;
+using Balatro.Models.Jokers;
+using Balatro.Models.Vouchers;
+using Balatro.Util;
+using CommunityToolkit.Mvvm.Input;
+using Microsoft.UI;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -12,13 +11,16 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
-using CommunityToolkit.Mvvm.Input;
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using Balatro.Models;
+using System.IO;
+using System.Linq;
 using System.Reflection;
-using Balatro.Util;
-using Balatro.Models.Jokers;
-using Balatro.Models.Vouchers;
+using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.Foundation;
+using Windows.Foundation.Collections;
+using WinRT.Interop;
 
 namespace Balatro;
 
@@ -29,6 +31,10 @@ public sealed partial class ShopPage : Page
 {
     BalatroGame Game => App.CurrentGame;
     Shop Shop { get; }
+    RunInfoWindow? runInfoWindow;
+    OptionsWindow? optionsWindow;
+    IntPtr mainHwnd;
+    private const int GWLP_HWNDPARENT = -8;
     public ShopPage()
     {
         InitializeComponent();
@@ -87,4 +93,43 @@ public sealed partial class ShopPage : Page
 
     private string GetAnteString() => "ANTE " + Game.Ante.ToString() + " VOUCHER";
 
+    private void Show_RunInfo(object sender, RoutedEventArgs e)
+    {
+        var windowId = XamlRoot.ContentIslandEnvironment.AppWindowId;
+        mainHwnd = Win32Interop.GetWindowFromWindowId(windowId);
+
+        runInfoWindow = new RunInfoWindow(mainHwnd);
+        runInfoWindow.Closed += RunInfo_Closed;
+
+        var runInfoHwnd = WindowNative.GetWindowHandle(runInfoWindow);
+
+        NativeMethods.SetWindowLongPtr(runInfoHwnd, GWLP_HWNDPARENT, mainHwnd);
+
+        runInfoWindow.Activate();
+    }
+
+    private void Show_Options(object sender, RoutedEventArgs e)
+    {
+        var windowId = XamlRoot.ContentIslandEnvironment.AppWindowId;
+        mainHwnd = Win32Interop.GetWindowFromWindowId(windowId);
+
+        optionsWindow = new OptionsWindow(mainHwnd);
+        optionsWindow.Closed += Options_Closed;
+
+        var runInfoHwnd = WindowNative.GetWindowHandle(runInfoWindow);
+
+        NativeMethods.SetWindowLongPtr(runInfoHwnd, GWLP_HWNDPARENT, mainHwnd);
+
+        optionsWindow.Activate();
+    }
+
+    private void RunInfo_Closed(object sender, WindowEventArgs args)
+    {
+        runInfoWindow = null;
+    }
+
+    private void Options_Closed(object sender, WindowEventArgs args)
+    {
+        runInfoWindow = null;
+    }
 }

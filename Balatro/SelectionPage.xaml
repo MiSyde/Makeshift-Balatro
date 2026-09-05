@@ -205,14 +205,37 @@
                 <?empty column?>
 
                 <Grid Name="SmallBlind" Grid.Column="1">
-                    <Button Content="Select" Command="{x:Bind SelectSmallBlindCommand}"/>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" Text="Small Blind"/>
+
+                    <Image Grid.Row="1" Source="/Assets/BlindImages/Small_Blind.png"/>
+
+                    <Border Grid.Row="2" Style="{StaticResource ChipsContainer}">
+                        <Button Content="Select" FontFamily="{StaticResource PixelBig}" FontSize="54" Command="{x:Bind SelectSmallBlindCommand}"/>
+                    </Border>
+                    
                 </Grid>
                 
                 <Grid Grid.Column="2" Background="Green"/>
                 <?empty column?>
 
                 <Grid Name="BigBlind" Grid.Column="3">
-                    <Button Content="Select" Command="{x:Bind SelectBigBlindCommand}"/>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" Text="Small Blind"/>
+
+                    <Image Grid.Row="1" Source="/Assets/BlindImages/Big_Blind.png"/>
+                    
+                    <Button Grid.Row="2" Content="Select" Command="{x:Bind SelectBigBlindCommand}"/>
                 </Grid>
 
                 <Grid Grid.Column="4" Background="Green"/>
@@ -225,9 +248,9 @@
                         <RowDefinition/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
-                    <TextBlock Grid.Row="0" Text="{x:Bind GetBossName(Game.BossBlind), Mode=OneWay}"/>
-                    <TextBlock Grid.Row="1" Text="{x:Bind GetBossImage(Game.BossBlind), Mode=OneWay}"/>
-                    <TextBlock Grid.Row="2" Text="{x:Bind GetBossDescription(Game.BossBlind), Mode=OneWay}"/>
+                    <TextBlock Grid.Row="0" Text="{x:Bind Game.BossBlind.Name, Mode=OneWay}"/>
+                    <Image Grid.Row="1" Source="{x:Bind Game.BossBlind.Image, Mode=OneWay}"/>
+                    <TextBlock Grid.Row="2" Text="{x:Bind Game.BossBlind.Description, Mode=OneWay}"/>
                     <Button Grid.Row="3" Content="Select" Command="{x:Bind SelectBossBlindCommand}"/>
                 </Grid>
 
@@ -246,6 +269,9 @@
                             <RowDefinition/>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
+
+                        <Image Grid.Row="0" Source="{x:Bind Game.Player.Deck.Image}"/>
+                        <TextBlock Grid.Row="1" Text="{x:Bind XDashY(Game.Player.Deck.CurrentSize, Game.Player.Deck.MaxSize)}"/>
                     </Grid>
                 </Grid>
             </Grid>

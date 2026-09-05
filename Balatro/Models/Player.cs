@@ -1,5 +1,5 @@
 ﻿using Balatro.Enums;
-using Balatro.Models;
+using Balatro.Models.Decks;
 using Balatro.Models.Jokers;
 using Balatro.Models.Vouchers;
 using System;
@@ -13,9 +13,9 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Balatro
+namespace Balatro.Models
 {
-    public class Player : INotifyPropertyChanged
+    public partial class Player : INotifyPropertyChanged
     {
         public int MaxConsumableCount
         {
@@ -60,7 +60,7 @@ namespace Balatro
         public List<Hand> PlayedHands { get; }
         public HandHandler HandHandler { get; }
         public ObservableCollection<IEffect> Consumables { get; }
-        private readonly Deck _deck;
+        public IDeck Deck { get; set; }
         public ObservableCollection<Card> SelectedCards { get; }
         public int RemainingHands
         {
@@ -165,7 +165,7 @@ namespace Balatro
             MaxConsumableCount = 2;
 
             Cards = new ObservableCollection<Card>();
-            _deck = new Deck();
+            Deck = new Red_Deck();
             Consumables = new ObservableCollection<IEffect>();
             SelectedCards = new ObservableCollection<Card>();
             HandHandler = new HandHandler(5);
@@ -185,8 +185,8 @@ namespace Balatro
 
         public Card DrawFromDeck()
         {
-            Card c = _deck.Cards[Random.Shared.Next(0, _deck.CurrentSize)];
-            _deck.Remove(c);
+            Card c = Deck.Cards[Random.Shared.Next(0, Deck.CurrentSize)];
+            Deck.Remove(c);
             return c;
         }
       

@@ -17,7 +17,7 @@ namespace Balatro.Models.Vouchers
         {
             Id = "Hone";
             Description = "Foil, Holographic, and Polychrome cards appear 2x more often";
-            Image = new BitmapImage(new Uri("ms-appx:///Assets/CardImages/Hearts/2")); //placeholder
+            Image = new BitmapImage(new Uri("ms-appx:///Assets/VoucherImages/Hone.png"));
         }
 
         public void ApplyEffect(Shop shop)

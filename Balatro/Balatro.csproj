@@ -58,6 +58,7 @@
     <Folder Include="Models\Jokers\Legendary\" />
     <Folder Include="Models\Jokers\Rare\" />
     <Folder Include="Models\Planets\" />
+    <Folder Include="Models\Stickers\" />
     <Folder Include="Models\Tarots\" />
   </ItemGroup>
   <ItemGroup>
