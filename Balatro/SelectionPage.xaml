@@ -156,14 +156,10 @@
             </Grid>
         </Grid>
 
-
-
-
-
         <Grid Name="SelectionGrid" Grid.Column="2">
             <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition/>
+                <RowDefinition Height="0.2778*" />
+                <RowDefinition Height="0.7222*"/>
             </Grid.RowDefinitions>
 
             <Grid Name="ConsumableAndJokerGrid" Grid.Row="0">
@@ -192,69 +188,63 @@
 
             <Grid Name="TableGrid" Grid.Row="1" Background="Beige">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="2.5*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="2.5*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="2.5*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
-                <Grid Grid.Column="0" Background="Green"/>
-                <?empty column?>
+                <Border Grid.Column="0" Name="SmallBlindBorder" Style="{StaticResource DarkContainer}">
+                    <Grid Name="SmallBlind">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
 
-                <Grid Name="SmallBlind" Grid.Column="1">
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" Text="Small Blind"/>
 
-                    <TextBlock Grid.Row="0" Text="Small Blind"/>
+                        <Image Grid.Row="1" Source="/Assets/BlindImages/Small_Blind.png"/>
 
-                    <Image Grid.Row="1" Source="/Assets/BlindImages/Small_Blind.png"/>
+                        <Border Grid.Row="2" Style="{StaticResource ChipsContainer}">
+                            <Button Content="Select" FontFamily="{StaticResource PixelBig}" FontSize="54" Command="{x:Bind SelectSmallBlindCommand}"/>
+                        </Border>
 
-                    <Border Grid.Row="2" Style="{StaticResource ChipsContainer}">
-                        <Button Content="Select" FontFamily="{StaticResource PixelBig}" FontSize="54" Command="{x:Bind SelectSmallBlindCommand}"/>
-                    </Border>
-                    
-                </Grid>
-                
-                <Grid Grid.Column="2" Background="Green"/>
-                <?empty column?>
+                    </Grid>
+                </Border>
 
-                <Grid Name="BigBlind" Grid.Column="3">
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
+                <Border Name="BigBlindBorder" Grid.Column="1">
+                    <Grid Name="BigBlind">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
 
-                    <TextBlock Grid.Row="0" Text="Small Blind"/>
+                        <TextBlock Grid.Row="0" Text="Small Blind"/>
 
-                    <Image Grid.Row="1" Source="/Assets/BlindImages/Big_Blind.png"/>
-                    
-                    <Button Grid.Row="2" Content="Select" Command="{x:Bind SelectBigBlindCommand}"/>
-                </Grid>
+                        <Image Grid.Row="1" Source="/Assets/BlindImages/Big_Blind.png"/>
 
-                <Grid Grid.Column="4" Background="Green"/>
-                <?empty column?>
-                
-                <Grid Name="BossBlind" Grid.Column="5">
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <TextBlock Grid.Row="0" Text="{x:Bind Game.BossBlind.Name, Mode=OneWay}"/>
-                    <Image Grid.Row="1" Source="{x:Bind Game.BossBlind.Image, Mode=OneWay}"/>
-                    <TextBlock Grid.Row="2" Text="{x:Bind Game.BossBlind.Description, Mode=OneWay}"/>
-                    <Button Grid.Row="3" Content="Select" Command="{x:Bind SelectBossBlindCommand}"/>
-                </Grid>
+                        <Button Grid.Row="2" Content="Select" Command="{x:Bind SelectBigBlindCommand}"/>
+                    </Grid>
+                </Border>
 
-                <Grid Name="DeckAndTagGrid" Grid.Column="6">
+                <Border Name="BossBlindBorder" Grid.Column="2">
+                    <Grid Name="BossBlind">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" Text="{x:Bind Game.BossBlind.Name, Mode=OneWay}"/>
+                        <Image Grid.Row="1" Source="{x:Bind Game.BossBlind.Image, Mode=OneWay}"/>
+                        <TextBlock Grid.Row="2" Text="{x:Bind Game.BossBlind.Description, Mode=OneWay}"/>
+                        <Button Grid.Row="3" Content="Select" Command="{x:Bind SelectBossBlindCommand}"/>
+                    </Grid>
+                </Border>
+
+                <Grid Name="DeckAndTagGrid" Grid.Column="3">
                     <Grid.RowDefinitions>
                         <RowDefinition/>
                         <RowDefinition/>
@@ -264,7 +254,7 @@
 
                     </ItemsControl>
 
-                    <Grid Name="DeckGrid" Grid.Row="1">
+                    <Grid Name="DeckGrid" Grid.Row="1" Background="AliceBlue">
                         <Grid.RowDefinitions>
                             <RowDefinition/>
                             <RowDefinition/>

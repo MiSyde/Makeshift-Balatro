@@ -36,6 +36,7 @@ namespace Balatro
         public SelectionPage()
         {
             InitializeComponent();
+            SizeChanged += SelectionPage_SizeChanged;
 
             NavigationCacheMode = NavigationCacheMode.Required;
 
@@ -44,6 +45,75 @@ namespace Balatro
             SelectBossBlindCommand = new RelayCommand(SelectBlind, CanSelectBossBlind);
 
             Game.AssignBlindCommands(SelectSmallBlindCommand, SelectBigBlindCommand, SelectBossBlindCommand);
+        }
+
+        private void SelectionPage_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            SetDimensions();
+        }
+        private void SetDimensions()
+        {
+            double SmallBlindWidthMult = 0, BigBlindWidthMult = 0, BossBlindWidthMult = 0, SmallBlindHeightMult = 0, BigBlindHeightMult = 0, BossBlindHeightMult = 0;
+
+            GetBlindDimMults(ref SmallBlindWidthMult, ref BigBlindWidthMult, ref BossBlindWidthMult, ref SmallBlindHeightMult, ref BigBlindHeightMult, ref BossBlindHeightMult);
+
+            CurrentSelectionInfoBorder.Height = this.ActualHeight * 0.1944;
+
+            ChipsBorder.Height = this.ActualHeight * 0.082;
+
+            MultiplierBorder.Height = this.ActualHeight * 0.082;
+
+            ScoreBorder.Height = this.ActualHeight * 0.07;
+
+            SmallBlindBorder.Height = this.ActualHeight * SmallBlindHeightMult;
+            SmallBlindBorder.Width = this.ActualWidth * SmallBlindWidthMult;
+            SmallBlindBorder.Margin = new Thickness(this.ActualWidth * 0.02, 0, 0, 0);
+
+            BigBlindBorder.Height = this.ActualWidth * BigBlindHeightMult;
+            BigBlindBorder.Width = this.ActualHeight * BigBlindWidthMult;
+            BigBlindBorder.Margin = new Thickness(this.ActualWidth * 0.02, 0, this.ActualWidth * 0.02, 0);
+
+            BossBlindBorder.Height = this.ActualHeight * BossBlindHeightMult;
+            BossBlindBorder.Width = this.ActualWidth * BossBlindWidthMult; 
+            BossBlindBorder.Margin = new Thickness(0, 0, this.ActualWidth * 0.02, 0);
+
+            DeckAndTagGrid.Width = this.ActualWidth * 0.1665;
+        }
+
+        private void GetBlindDimMults(ref double SmallBlindWidthMult, ref double BigBlindWidthMult, ref double BossBlindWidthMult, 
+            ref double SmallBlindHeightMult, ref double BigBlindHeightMult, ref double BossBlindHeightMult)
+        {
+            switch (Game.Round % 4)
+            {
+                case 0:
+                case 1:
+                    SmallBlindWidthMult = 0.1665;
+                    BigBlindWidthMult = 0.163;
+                    BossBlindWidthMult = BigBlindWidthMult;
+
+                    SmallBlindHeightMult = 0.7166;
+                    BigBlindHeightMult = 0.6576;
+                    BossBlindHeightMult = BigBlindHeightMult;
+                    break;
+                case 2:
+                    SmallBlindWidthMult = 0.163;
+                    BigBlindWidthMult = 0.1665;
+                    BossBlindWidthMult = SmallBlindWidthMult;
+
+                    SmallBlindHeightMult = 0.6576;
+                    BigBlindHeightMult = 0.7166;
+                    BossBlindHeightMult = SmallBlindHeightMult;
+                    break;
+                case 3:
+                    SmallBlindWidthMult = 0.163;
+                    BigBlindWidthMult = SmallBlindWidthMult;
+                    BossBlindWidthMult = 0.1665;
+
+                    SmallBlindHeightMult = 0.6576;
+                    BigBlindHeightMult = SmallBlindHeightMult;
+                    BossBlindHeightMult = 0.7166;
+                    break;
+            }
         }
 
         private string XDashY(int X, int Y) => Helper.XDashY(X, Y);
