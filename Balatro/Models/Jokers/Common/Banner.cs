@@ -12,7 +12,7 @@ namespace Balatro.Models.Jokers.Common
         public ImageSource Image { get; }
         public int MinAnte { get; }
         public string Description { get; }
-        public int Price { get; }
+        public int Price { get; set; }
         public Rarity Rarity { get; }
         public Modifier Modifier { get; set; }
 

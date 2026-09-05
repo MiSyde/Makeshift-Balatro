@@ -6,15 +6,21 @@ using Microsoft.UI.Xaml.Navigation;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
+using System.Reflection.Metadata.Ecma335;
+using System.Reflection.PortableExecutable;
 using System.Text;
 
 namespace Balatro.Models
 {
     public class Shop
     {
+        BalatroGame Game => App.CurrentGame;
         public readonly RelayCommand RerollCommand;
         public int RerollPrice { get; set; } = 5;
-        public ObservableCollection<IEffect> CurrentShop;
+        public ObservableCollection<object> CurrentShop;
+        public List<IEffect> Tarots;
+        public List<IEffect> Planets;
         public List<IJoker> CommonJokers;
         public List<IJoker> UncommonJokers;
         public List<IJoker> RareJokers;
@@ -22,12 +28,18 @@ namespace Balatro.Models
         public int ShopSize { get; set; } = 2;
         public double PriceModifier { get; set; } = 1;
         public int ChanceModifier { get; set; } = 1;
+        public int TarotWeight { get; set; }
+        public int PlanetWeight { get; set; }
+        public int JokerWeight { get; set; }
+        public int CardWeight { get; set; }
 
         public Shop()
         {
             RerollCommand = new RelayCommand(RerollShop, CanReroll);
-            CurrentShop = new ObservableCollection<IEffect>();
+            CurrentShop = new ObservableCollection<object>();
             Random = new Random();
+            Tarots = new List<IEffect>();
+            Planets = new List<IEffect>();
 
             FillLists();
         }
@@ -52,10 +64,10 @@ namespace Balatro.Models
             double baseHoloChance = basePolyChance - ChanceModifier * 1.4;
             double baseFoilChance = baseHoloChance - ChanceModifier * 2;
 
-            if (rVal > baseFoilChance && rVal <= baseHoloChance) { joker.Modifier = Enums.Modifier.FOIL; } 
-            else if(rVal > baseHoloChance && rVal <= basePolyChance) { joker.Modifier = Enums.Modifier.HOLOGRAPHIC; }
-            else if(rVal > basePolyChance && rVal <= 99.7) { joker.Modifier = Enums.Modifier.POLYCHROME; }
-            else if(rVal > 99.7 && rVal <= 100) { joker.Modifier = Enums.Modifier.NEGATIVE; }
+            if (rVal > baseFoilChance && rVal <= baseHoloChance) { joker.Modifier = Enums.Modifier.FOIL; joker.Price += 2; } 
+            else if(rVal > baseHoloChance && rVal <= basePolyChance) { joker.Modifier = Enums.Modifier.HOLOGRAPHIC; joker.Price += 3; }
+            else if(rVal > basePolyChance && rVal <= 99.7) { joker.Modifier = Enums.Modifier.POLYCHROME; joker.Price += 5; }
+            else if(rVal > 99.7 && rVal <= 100) { joker.Modifier = Enums.Modifier.NEGATIVE; joker.Price += 5; }
             else { joker.Modifier = Enums.Modifier.BASE; }
 
             return joker;
@@ -74,24 +86,66 @@ namespace Balatro.Models
         {
             do
             {
-                int rVal = Random.Next(1, 100);
-                IJoker joker;
-                switch (rVal)
+                int wValue = Random.Next(0, CardWeight + JokerWeight + PlanetWeight + TarotWeight);
+                if(wValue <= JokerWeight)
                 {
-                    case <= 70:
-                        joker = CommonJokers[Random.Next(0, CommonJokers.Count - 1)];
-                        CurrentShop.Add(ModifyModifier(joker));
-                        break;
-                    case > 70 and <= 95:
-                        joker = UncommonJokers[Random.Next(0, UncommonJokers.Count - 1)];
-                        CurrentShop.Add(ModifyModifier(joker));
-                        break;
-                    default:
-                        joker = RareJokers[Random.Next(0, RareJokers.Count - 1)];
-                        CurrentShop.Add(joker);
-                        break;
+                    int jVal = Random.Next(1, 100);
+                    switch (jVal)
+                    {
+                        case <= 70:
+                            CurrentShop.Add(ModifyModifier(GetJoker(CommonJokers)));
+                            break;
+                        case > 70 and <= 95:
+                            CurrentShop.Add(ModifyModifier(GetJoker(UncommonJokers)));
+                            break;
+                        default:
+                            CurrentShop.Add(GetJoker(RareJokers));
+                            break;
+                    }
+                } 
+                else if(JokerWeight + PlanetWeight <= wValue && wValue > JokerWeight)
+                {
+                    CurrentShop.Add(Planets[Random.Next(0, Planets.Count - 1)]);
+                } 
+                else if(JokerWeight + PlanetWeight > wValue && wValue <= JokerWeight + PlanetWeight + TarotWeight)
+                {
+                    CurrentShop.Add(Tarots[Random.Next(0, Tarots.Count - 1)]);
+                } 
+                else
+                {
+                    CurrentShop.Add(GetCard());
                 }
+                
             } while (CurrentShop.Count != ShopSize);
         }
+
+        private IJoker GetJoker(List<IJoker> Jokers) {
+            IJoker Joker;
+
+            do
+            {
+                Joker = Jokers[Random.Next(0, Jokers.Count - 1)];
+            } while (Joker.MinAnte > Game.Ante);
+
+            return Joker;
+        }
+
+        private Card GetCard()
+        {
+            return null;
+        }
+
+        public void VoucherEffects()
+        {
+            foreach(IVoucher v in Game.Player.Vouchers)
+            {
+                switch(v)
+                {
+                    case Hone:
+                        break;
+                }
+            }
+        }
+
     }
 }

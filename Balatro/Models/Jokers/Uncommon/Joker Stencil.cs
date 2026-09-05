@@ -12,7 +12,7 @@ namespace Balatro.Models.Jokers.Uncommon
     public class Joker_Stencil : IJoker
     {
         public string Description { get; }
-        public int Price { get; }
+        public int Price { get; set; }
         public Rarity Rarity { get; }
         public Modifier Modifier { get; set; }
         public string Name { get; }

@@ -11,7 +11,7 @@ namespace Balatro.Models.Jokers.Common
     public class Mystic_Summit : IJoker
     {
         public string Description { get; }
-        public int Price { get; }
+        public int Price { get; set; }
         public Rarity Rarity { get; }
         public string Name { get; }
         public Modifier Modifier { get; set; }
