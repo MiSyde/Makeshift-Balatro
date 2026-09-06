@@ -11,6 +11,7 @@ using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
+using Microsoft.UI.Xaml.Media.Imaging;
 using Microsoft.UI.Xaml.Navigation;
 using System;
 using System.Collections.Generic;
@@ -32,13 +33,12 @@ namespace Balatro
         private RelayCommand SelectSmallBlindCommand;
         private RelayCommand SelectBigBlindCommand;
         private RelayCommand SelectBossBlindCommand;
-        private RelayCommand SkipSmallBlindCommand;
-        private RelayCommand SkipBigBlindCommand;
+        private RelayCommand<ITag> SkipSmallBlindCommand;
+        private RelayCommand<ITag> SkipBigBlindCommand;
         RunInfoWindow? runInfoWindow;
         OptionsWindow? optionsWindow;
         IntPtr mainHwnd;
         private const int GWLP_HWNDPARENT = -8;
-
         ITag[] CurrentTags { get; }
         List<ITag> Tags { get; }
         public SelectionPage()
@@ -52,8 +52,8 @@ namespace Balatro
             SelectBigBlindCommand = new RelayCommand(SelectBlind, CanSelectBigBlind);
             SelectBossBlindCommand = new RelayCommand(SelectBlind, CanSelectBossBlind);
 
-            SkipSmallBlindCommand = new RelayCommand(SkipBlind, CanSelectSmallBlind);
-            SkipBigBlindCommand = new RelayCommand(SkipBlind, CanSelectBigBlind);
+            SkipSmallBlindCommand = new RelayCommand<ITag>(Tag => SkipBlind(Tag!), Tag => CanSelectSmallBlind());
+            SkipBigBlindCommand = new RelayCommand<ITag>(Tag => SkipBlind(Tag!), Tag => CanSelectBigBlind());
 
             CurrentTags = new ITag[2];
             Tags = Helper.GenerateClassesInNamespace<ITag>("Balatro.Models.Tags");
@@ -194,11 +194,26 @@ namespace Balatro
             optionsWindow = null;
         }
 
-        private void SkipBlind()
+        private void SkipBlind(ITag tag)
         {
             ++Game.Round;
+            Game.Player.TotalSavedDiscardsCount += Game.Player.Discards;
 
+            SkipBigBlindCommand.NotifyCanExecuteChanged();
+            SkipSmallBlindCommand.NotifyCanExecuteChanged();
+            SelectBigBlindCommand.NotifyCanExecuteChanged();
+            SelectBossBlindCommand.NotifyCanExecuteChanged();
+            SelectSmallBlindCommand.NotifyCanExecuteChanged();
+
+            switch(tag)
+            {
+                case Negative:
+                case Rare:
+                case Uncommon:
+                    tag.ApplyEffect(App.Shop);
+                    break;
+            }
+            Game.Player.Tags.Add(tag.Image);
         }
-
     }
 }

@@ -16,13 +16,12 @@ namespace Balatro.Models.Jokers.Common
         public Modifier Modifier { get; set; }
         public string Name { get; }
         public ImageSource Image { get; }
-        public int MinAnte { get; }
 
-        public Sly_Joker(Modifier modifier = Modifier.BASE)
+        public Sly_Joker()
         {
             Description = "+50 Chips if played hand contains a Pair";
             Rarity = Rarity.COMMON;
-            Modifier = modifier;
+            Modifier = Modifier.BASE;
             Price = 3;
             Name = "Sly Joker";
             Image = new BitmapImage(new Uri("ms-appx:///Assets/JokerImages/Sly_Joker.png"));

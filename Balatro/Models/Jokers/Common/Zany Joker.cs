@@ -16,13 +16,12 @@ namespace Balatro.Models.Jokers.Common
         public Modifier Modifier { get; set; }
         public string Name { get; }
         public ImageSource Image { get; }
-        public int MinAnte { get; }
 
-        public Zany_Joker(Modifier modifier = Modifier.BASE)
+        public Zany_Joker()
         {
             Description = "+12 Mult if played hand contains a Three of a Kind";
             Rarity = Rarity.COMMON;
-            Modifier = modifier;
+            Modifier = Modifier.BASE;
             Price = 4;
             Name = "Zany Joker";
             Image = new BitmapImage(new Uri("ms-appx:///Assets/JokerImages/Zany_Joker.png"));

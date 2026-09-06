@@ -45,7 +45,7 @@ namespace Balatro.Util
             var types = Assembly.GetExecutingAssembly()
                 .GetTypes()
                 .Where(t => t.Namespace == @namespace
-                            && typeof(T).IsAssignableTo(t)
+                            && typeof(T).IsAssignableFrom(t)
                             && !t.IsAbstract && t.GetConstructors().Any(c => c.GetParameters().All(p => p.HasDefaultValue)));
 
             var result = new List<T>();

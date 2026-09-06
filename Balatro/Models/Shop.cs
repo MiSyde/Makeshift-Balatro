@@ -121,16 +121,7 @@ namespace Balatro.Models
             } while (CurrentShop.Count + CardShop.Count != ShopSize);
         }
 
-        public IJoker GetJoker(List<IJoker> Jokers) {
-            IJoker Joker;
-
-            do
-            {
-                Joker = Jokers[Random.Next(0, Jokers.Count - 1)];
-            } while (Joker.MinAnte > Game.Ante);
-
-            return Joker;
-        }
+        public IJoker GetJoker(List<IJoker> Jokers) => Jokers[Random.Next(0, Jokers.Count - 1)];
 
         private Card GetCard()
         {

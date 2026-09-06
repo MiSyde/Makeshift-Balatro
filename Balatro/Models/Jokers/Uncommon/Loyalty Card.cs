@@ -16,14 +16,13 @@ namespace Balatro.Models.Jokers.Uncommon
         public Modifier Modifier { get; set; }
         public string Name { get; }
         public ImageSource Image { get; }
-        public int MinAnte { get; }
         private int remainingHands;
 
-        public Loyalty_Card(Modifier modifier = Modifier.BASE)
+        public Loyalty_Card()
         {
             Description = "X4 Mult every 6 hands played";
             Rarity = Rarity.UNCOMMON;
-            Modifier = modifier;
+            Modifier = Modifier.BASE;
             Price = 5;
             remainingHands = 6;
             Name = "Loyalty Card";

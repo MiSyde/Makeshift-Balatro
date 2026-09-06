@@ -15,14 +15,13 @@ namespace Balatro.Models.Jokers.Common
         public Rarity Rarity { get; }
         public Modifier Modifier { get; set; }
         public ImageSource Image { get; }
-        public int MinAnte { get; }
         public string Name { get; }
 
-        public Crazy_Joker(Modifier modifier = Modifier.BASE)
+        public Crazy_Joker()
         {
             Description = "Gives +12 mult if played hand contains a Straight";
             Rarity = Rarity.COMMON;
-            Modifier = modifier;
+            Modifier = Modifier.BASE;
             Price = 4;
             Image = new BitmapImage(new Uri("ms-appx:///Assets/JokerImages/Crazy_Joker.png"));
             Name = "Crazy Joker";

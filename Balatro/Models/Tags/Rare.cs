@@ -13,11 +13,11 @@ namespace Balatro.Models.Tags
 
         public string Description => "The next shop will have a free Rare Joker";
 
-        public ImageSource Image => new BitmapImage(new Uri("ms-appx:///Assets/TagImages/Rare_Tag.png"));
+        public BitmapImage Image => new BitmapImage(new Uri("ms-appx:///Assets/TagImages/Rare_Tag.png"));
 
         public int MinAnte => 1;
 
-        public void ApplyEffect(Player Player) => throw new NotImplementedException();
+        public void ApplyEffect(Player Player) { return; }
 
         public void ApplyEffect(Shop Shop)
         {
@@ -26,6 +26,6 @@ namespace Balatro.Models.Tags
             Shop.CurrentShop.Add(Joker);
         }
 
-        public void ApplyEffect(BalatroGame Game) => throw new NotImplementedException();
+        public void ApplyEffect(BalatroGame Game) { return; }
     }
 }

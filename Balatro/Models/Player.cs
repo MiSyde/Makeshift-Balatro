@@ -3,6 +3,7 @@ using Balatro.Models.Decks;
 using Balatro.Models.Jokers;
 using Balatro.Models.Tags;
 using Balatro.Models.Vouchers;
+using Microsoft.UI.Xaml.Media.Imaging;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -43,8 +44,8 @@ namespace Balatro.Models
             }
         }
         public ObservableCollection<IJoker> Jokers { get; }
-        private int _multiplier;
-        private int _chips;
+        private double _multiplier;
+        private double _chips;
         private Hand _highestHand;
         public Hand HighestHand 
         { 
@@ -63,7 +64,6 @@ namespace Balatro.Models
         public ObservableCollection<IEffect> Consumables { get; }
         public IDeck Deck { get; set; }
         public ObservableCollection<Card> SelectedCards { get; }
-        public List<ITag> Tags { get; }
         public int RemainingHands
         {
             get;
@@ -102,7 +102,7 @@ namespace Balatro.Models
                 } 
             } 
         }
-        public int TotalChips 
+        public double TotalChips 
         { 
             get; 
             set 
@@ -114,7 +114,7 @@ namespace Balatro.Models
                 } 
             }
         }
-        public int Multiplier 
+        public double Multiplier 
         { 
             get => _multiplier; 
             set 
@@ -126,7 +126,7 @@ namespace Balatro.Models
                 } 
             }
         }
-        public int Chips 
+        public double Chips 
         {
             get => _chips; 
             set 
@@ -142,8 +142,9 @@ namespace Balatro.Models
         public ObservableDictionary<Hand, int> HandLevels { get; }
         public ObservableDictionary<Hand, int> HandTimes { get; }
         public ObservableCollection<Card> Cards { get; }
-        public IList<Card> PlayedCards { get; }
+        public List<Card> PlayedCards { get; }
         public ObservableCollection<IVoucher> Vouchers { get; }
+        public ObservableCollection<BitmapImage> Tags { get; }
         public int CurrentCardHoldingSize
         {
             get;
@@ -181,9 +182,8 @@ namespace Balatro.Models
             HandLevels = new ObservableDictionary<Hand, int>(() => OnPropertyChanged(nameof(HandLevels)));
             HandTimes = new ObservableDictionary<Hand, int>(() => OnPropertyChanged(nameof(HandTimes)));
             PlayedCards = new List<Card>();
+            Tags = new ObservableCollection<BitmapImage>();
             Vouchers = new ObservableCollection<IVoucher>();
-            Tags = new List<ITag>();
-
 
             SetUpHandDictionaries();
             SelectedCards.CollectionChanged += CalculateHand;

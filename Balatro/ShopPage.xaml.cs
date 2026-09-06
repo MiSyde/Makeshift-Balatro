@@ -30,7 +30,7 @@ namespace Balatro;
 public sealed partial class ShopPage : Page
 {
     BalatroGame Game => App.CurrentGame;
-    Shop Shop { get; }
+    Shop Shop => App.Shop;
     RunInfoWindow? runInfoWindow;
     OptionsWindow? optionsWindow;
     IntPtr mainHwnd;
@@ -39,11 +39,16 @@ public sealed partial class ShopPage : Page
     {
         InitializeComponent();
 
-        Shop = new Shop();
-
         NavigationCacheMode = NavigationCacheMode.Required;
 
         SizeChanged += ShopPage_SizeChanged;
+    }
+
+    protected override void OnNavigatedFrom(NavigationEventArgs e)
+    {
+        base.OnNavigatedFrom(e);
+
+        if (Game.Round % 4 == 0) Game.Player.Tags.Clear();
     }
 
     protected override void OnNavigatedTo(NavigationEventArgs e)

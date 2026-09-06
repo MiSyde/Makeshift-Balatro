@@ -13,11 +13,11 @@ namespace Balatro.Models.Tags
 
         public string Description => "The next base edition Joker you find in a Shop becomes Negative (+1 joker slot) and free.";
 
-        public ImageSource Image => new BitmapImage(new Uri("ms-appx:///Assets/TagImages/Negative_Tag.png"));
+        public BitmapImage Image => new BitmapImage(new Uri("ms-appx:///Assets/TagImages/Negative_Tag.png"));
 
         public int MinAnte => 2;
 
-        public void ApplyEffect(Player Player) => throw new NotImplementedException();
+        public void ApplyEffect(Player Player) { return; }
 
         public void ApplyEffect(Shop Shop)
         {
@@ -40,6 +40,6 @@ namespace Balatro.Models.Tags
             Shop.CurrentShop.Add(Joker);
         }
 
-        public void ApplyEffect(BalatroGame Game) => throw new NotImplementedException();
+        public void ApplyEffect(BalatroGame Game) { return; }
     }
 }

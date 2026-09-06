@@ -15,14 +15,13 @@ namespace Balatro.Models.Jokers.Common
         public Rarity Rarity { get; }
         public Modifier Modifier { get; set; }
         public ImageSource Image { get; }
-        public int MinAnte { get; }
         public string Name { get; }
 
-        public Crafty_Joker(Modifier modifier = Modifier.BASE)
+        public Crafty_Joker()
         {
             Description = "+80 Chips if played hand contains a Flush";
             Rarity = Rarity.COMMON;
-            Modifier = modifier;
+            Modifier = Modifier.BASE;
             Price = 4;
             Image = new BitmapImage(new Uri("ms-appx:///Assets/JokerImages/Crafty_Joker.png"));
             Name = "Crafty Joker";

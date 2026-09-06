@@ -17,13 +17,12 @@ namespace Balatro.Models.Jokers.Uncommon
         public Modifier Modifier { get; set; }
         public string Name { get; }
         public ImageSource Image { get; }
-        public int MinAnte { get; }
 
-        public Joker_Stencil(Modifier modifier = Modifier.BASE)
+        public Joker_Stencil()
         {
             Description = "X1 Mult for each empty Joker slot";
             Rarity = Rarity.UNCOMMON;
-            Modifier = modifier;
+            Modifier = Modifier.BASE;
             Price = 8;
             Name = "Joker Stencil";
             Image = new BitmapImage(new Uri("ms-appx:///Assets/JokerImages/Joker_Stencil.png"));

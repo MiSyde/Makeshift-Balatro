@@ -15,14 +15,13 @@ namespace Balatro.Models.Jokers.Common
         public Rarity Rarity { get; }
         public Modifier Modifier { get; set; }
         public ImageSource Image { get; }
-        public int MinAnte { get; }
         public string Name { get; }
 
-        public Half_Joker(Modifier modifier = Modifier.BASE)
+        public Half_Joker()
         {
             Description = "+20 Mult if played hand contains 3 or fewer cards";
             Rarity = Rarity.COMMON;
-            Modifier = modifier;
+            Modifier = Modifier.BASE;
             Price = 5;
             Name = "Half Joker";
             Image = new BitmapImage(new Uri("ms-appx:///Assets/JokerImages/Half_Joker.png"));

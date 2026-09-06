@@ -16,13 +16,12 @@ namespace Balatro.Models.Jokers.Common
         public Modifier Modifier { get; set; }
         public string Name { get; }
         public ImageSource Image { get; }
-        public int MinAnte { get; }
 
-        public Joker(Modifier modifier = Modifier.BASE)
+        public Joker()
         {
             Description = "+4 Mult";
             Rarity = Rarity.COMMON;
-            Modifier = modifier;
+            Modifier = Modifier.BASE;
             Price = 2;
             Image = new BitmapImage(new Uri("ms-appx:///Assets/JokerImages/Joker.png"));
             Name = "Joker";

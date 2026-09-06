@@ -10,6 +10,5 @@ namespace Balatro.Models.Jokers
         public int Price { get; set; }
         public Rarity Rarity { get; }
         public Modifier Modifier { get; set; }
-        public int MinAnte { get; }
     }
 }

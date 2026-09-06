@@ -16,13 +16,12 @@ namespace Balatro.Models.Jokers.Uncommon
         public Modifier Modifier { get; set; }
         public string Name { get; }
         public ImageSource Image { get; }
-        public int MinAnte { get; }
 
-        public Four_Fingers(Modifier modifier = Modifier.BASE)
+        public Four_Fingers()
         {
             Description = "All Flushes and Straights can be made with 4 cards";
             Rarity = Rarity.UNCOMMON;
-            Modifier = modifier;
+            Modifier = Modifier.BASE;
             Price = 7;
             Name = "Four Fingers";
             Image = new BitmapImage(new Uri("ms-appx:///Assets/JokerImages/Four_Fingers.png"));

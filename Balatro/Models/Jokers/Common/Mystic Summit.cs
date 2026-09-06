@@ -16,13 +16,12 @@ namespace Balatro.Models.Jokers.Common
         public string Name { get; }
         public Modifier Modifier { get; set; }
         public ImageSource Image { get; }
-        public int MinAnte { get; }
 
-        public Mystic_Summit(Modifier modifier = Modifier.BASE)
+        public Mystic_Summit()
         {
             Description = "+15 Mult when 0 discards remaining";
             Rarity = Rarity.COMMON;
-            Modifier = modifier;
+            Modifier = Modifier.BASE;
             Price = 4;
             Image = new BitmapImage(new Uri("ms-appx:///Assets/JokerImages/Mystic_Summit.png"));
             Name = "Mystic Summit";

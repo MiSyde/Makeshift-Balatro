@@ -1,4 +1,5 @@
 ﻿using Balatro.Enums;
+using Balatro.Models;
 using Balatro.Models.Achievement;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -30,6 +31,7 @@ namespace Balatro
     {
         private Window? _window;
         public static BalatroGame CurrentGame { get; set; } = new();
+        public static Shop Shop { get; } = new();
         public static Frame MainFrame { get; } = new();
         public static AchievementManager AchievementManager { get; } = new(AchievementStorage.Load());
 

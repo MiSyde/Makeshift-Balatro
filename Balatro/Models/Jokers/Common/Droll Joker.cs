@@ -15,14 +15,13 @@ namespace Balatro.Models.Jokers.Common
         public Rarity Rarity { get; }
         public Modifier Modifier { get; set; }
         public ImageSource Image { get; }
-        public int MinAnte { get; }
         public string Name { get; }
 
-        public Droll_Joker(Modifier modifier = Modifier.BASE)
+        public Droll_Joker()
         {
             Description = "+10 Mult if played hand contains a Flush";
             Rarity = Rarity.COMMON;
-            Modifier = modifier;
+            Modifier = Modifier.BASE;
             Price = 4;
             Name = "Droll Joker";
             Image = new BitmapImage(new Uri("ms-appx:///Assets/JokerImages/Droll_Joker.png"));
