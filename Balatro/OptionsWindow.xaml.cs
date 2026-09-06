@@ -48,23 +48,28 @@ public sealed partial class OptionsWindow : Window
 
     private IntPtr WndProc(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam)
     {
-        if (msg == NativeMethods.WM_WINDOWPOSCHANGING)
+        if (msg == NativeMethods.WM_WINDOWPOSCHANGING && parentHwnd != IntPtr.Zero)
         {
             var pos = Marshal.PtrToStructure<NativeMethods.WINDOWPOS>(lParam);
 
-            NativeMethods.GetWindowRect(parentHwnd, out var parentRect);
+            bool gotRect = NativeMethods.GetWindowRect(parentHwnd, out var parentRect);
 
-            int width = pos.cx;
-            int height = pos.cy;
+            if (gotRect && parentRect.Right > parentRect.Left && parentRect.Bottom > parentRect.Top)
+            {
+                int width = pos.cx;
+                int height = pos.cy;
 
-            int clampedX = Math.Clamp(pos.x, parentRect.Left, parentRect.Right - width);
-            int clampedY = Math.Clamp(pos.y, parentRect.Top, parentRect.Bottom - height);
+                int minX = parentRect.Left;
+                int maxX = Math.Max(minX, parentRect.Right - width);
+                int minY = parentRect.Top;
+                int maxY = Math.Max(minY, parentRect.Bottom - height);
 
-            pos.x = clampedX;
-            pos.y = clampedY;
+                pos.x = Math.Clamp(pos.x, minX, maxX);
+                pos.y = Math.Clamp(pos.y, minY, maxY);
 
-            Marshal.StructureToPtr(pos, lParam, true);
-        }
+                Marshal.StructureToPtr(pos, lParam, true);
+            }
+        } 
 
         return NativeMethods.CallWindowProc(oldWndProc, hWnd, msg, wParam, lParam);
     }

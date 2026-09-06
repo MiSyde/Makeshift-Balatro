@@ -41,6 +41,7 @@ namespace Balatro.Models
 
         public Hand CalculateHand(IList<Card> selectedCards, IList<Hand> playedHands, IList<Card> playedCards)
         {
+            if (selectedCards.Count != 5) return Hand.HIGH_CARD;
             Hand highestHand = Hand.HIGH_CARD;
             playedHands.Add(Hand.HIGH_CARD);
 
@@ -171,7 +172,7 @@ namespace Balatro.Models
                 }
             }
 
-            if (straight == NeededCards4FlushAndStraight) 
+            if (straight >= NeededCards4FlushAndStraight) 
             { 
                 highestHand = Hand.STRAIGHT;
                 playedHands.Add(Hand.STRAIGHT);
@@ -182,7 +183,7 @@ namespace Balatro.Models
                 }
             }
 
-            else if (flush == NeededCards4FlushAndStraight) 
+            else if (flush >= NeededCards4FlushAndStraight) 
             { 
                 highestHand = Hand.FLUSH;
                 playedHands.Add(Hand.FLUSH);
@@ -210,7 +211,7 @@ namespace Balatro.Models
                 }
             }
 
-            if (straight == NeededCards4FlushAndStraight && flush == NeededCards4FlushAndStraight) 
+            if (straight >= NeededCards4FlushAndStraight && flush >= NeededCards4FlushAndStraight) 
             { 
                 highestHand = Hand.STRAIGHT_FLUSH; 
                 playedHands.Add(Hand.STRAIGHT_FLUSH);
@@ -240,14 +241,14 @@ namespace Balatro.Models
                 playedHands.Add(Hand.FIVE_OF_A_KIND);
                 playedCards = selectedCards;
             }
-            if(flush == NeededCards4FlushAndStraight && three == 1 && pair == 1 && pairValues.Count != 1)
+            if(flush >= NeededCards4FlushAndStraight && three == 1 && pair == 1 && pairValues.Count != 1)
             {
                 highestHand = Hand.FLUSH_HOUSE;
                 playedHands.Add(Hand.FLUSH_HOUSE);
                 playedCards = selectedCards;
             }
             
-            if(flush == NeededCards4FlushAndStraight && five == 1)
+            if(flush >= NeededCards4FlushAndStraight && five == 1)
             {
                 highestHand = Hand.FLUSH_FIVE;
                 playedHands.Add(Hand.FLUSH_FIVE);

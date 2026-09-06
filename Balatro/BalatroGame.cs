@@ -6,6 +6,7 @@ using Microsoft.UI;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
+using Microsoft.UI.Xaml.Media.Imaging;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -282,9 +283,15 @@ namespace Balatro
         private async void DealCards()
         {
             await Task.Delay(150);
+            /*
             while(Player.Cards.Count != Player.CurrentCardHoldingSize)
             {
                 Player.Cards.Add(Player.DrawFromDeck());
+            }
+            */
+            for(int i = 6; i <= 10; ++i)
+            {
+                Player.Cards.Add(new Card(new BitmapImage(new Uri("ms-appx:///Assets/CardImages/Spades/" + i + ".png")), i, false, SuitType.Spades));
             }
         }
 

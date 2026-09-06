@@ -118,9 +118,9 @@ public sealed partial class ShopPage : Page
         optionsWindow = new OptionsWindow(mainHwnd);
         optionsWindow.Closed += Options_Closed;
 
-        var runInfoHwnd = WindowNative.GetWindowHandle(runInfoWindow);
+        var optionsHwnd = WindowNative.GetWindowHandle(optionsWindow);
 
-        NativeMethods.SetWindowLongPtr(runInfoHwnd, GWLP_HWNDPARENT, mainHwnd);
+        NativeMethods.SetWindowLongPtr(optionsHwnd, GWLP_HWNDPARENT, mainHwnd);
 
         optionsWindow.Activate();
     }
@@ -132,6 +132,6 @@ public sealed partial class ShopPage : Page
 
     private void Options_Closed(object sender, WindowEventArgs args)
     {
-        runInfoWindow = null;
+        optionsWindow = null;
     }
 }

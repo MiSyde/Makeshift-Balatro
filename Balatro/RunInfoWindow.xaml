@@ -37,7 +37,7 @@
             
         </Grid>
 
-        <Grid Name="InfoGrid" Grid.Row="1" Visibility="{x:Bind pokerHandsVisibility, Mode=OneWay}" VerticalAlignment="Stretch" Margin="59, 0, 59, 95" HorizontalAlignment="Stretch">
+        <Grid Name="InfoGrid" Grid.Row="1" Visibility="{Binding PokerHandsVisibility, Mode=OneWay}" VerticalAlignment="Stretch" Margin="59, 0, 59, 95" HorizontalAlignment="Stretch">
         <Grid.RowDefinitions>
                 <RowDefinition/>
             </Grid.RowDefinitions>
@@ -48,7 +48,7 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
-            <ItemsControl ItemsSource="{x:Bind game.Player.HandLevels.getValues(), Mode=OneWay}" Grid.Row="0" Grid.Column="0">
+            <ItemsControl ItemsSource="{Binding Game.Player.HandLevels.Values, Mode=OneWay}" Grid.Row="0" Grid.Column="0">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel Orientation="Vertical"/>
@@ -63,7 +63,7 @@
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
 
-            <ItemsControl ItemsSource="{x:Bind game.Player.HandLevels.getKeys(), Mode=OneWay}" Grid.Row="0" Grid.Column="1">
+            <ItemsControl ItemsSource="{Binding Game.Player.HandLevels.Keys, Mode=OneWay}" Grid.Row="0" Grid.Column="1">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel Orientation="Vertical"/>
@@ -78,7 +78,7 @@
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
 
-            <ItemsControl ItemsSource="{x:Bind game.Player.HandData.getValues(), Mode=OneWay}" Grid.Row="0" Grid.Column="2">
+            <ItemsControl ItemsSource="{Binding Game.Player.HandData.Values, Mode=OneWay}" Grid.Row="0" Grid.Column="2">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel Orientation="Vertical"/>
@@ -101,7 +101,7 @@
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
 
-            <ItemsControl ItemsSource="{x:Bind game.Player.HandTimes.getValues(), Mode=OneWay}" Grid.Row="0" Grid.Column="3">
+            <ItemsControl ItemsSource="{Binding Game.Player.HandTimes.Values, Mode=OneWay}" Grid.Row="0" Grid.Column="3">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel Orientation="Vertical"/>

@@ -18,7 +18,8 @@ namespace Balatro.Models
         BalatroGame Game => App.CurrentGame;
         public readonly RelayCommand RerollCommand;
         public int RerollPrice { get; set; } = 5;
-        public ObservableCollection<object> CurrentShop;
+        public ObservableCollection<IEffect> CurrentShop;
+        public ObservableCollection<Card> CardShop;
         public List<IEffect> Tarots;
         public List<IEffect> Planets;
         public List<IJoker> CommonJokers;
@@ -36,7 +37,8 @@ namespace Balatro.Models
         public Shop()
         {
             RerollCommand = new RelayCommand(RerollShop, CanReroll);
-            CurrentShop = new ObservableCollection<object>();
+            CurrentShop = new ObservableCollection<IEffect>();
+            CardShop = new ObservableCollection<Card>();
             Random = new Random();
             Tarots = new List<IEffect>();
             Planets = new List<IEffect>();
@@ -113,10 +115,10 @@ namespace Balatro.Models
                 } 
                 else
                 {
-                    CurrentShop.Add(GetCard());
+                    CardShop.Add(GetCard());
                 }
                 
-            } while (CurrentShop.Count != ShopSize);
+            } while (CurrentShop.Count + CardShop.Count != ShopSize);
         }
 
         private IJoker GetJoker(List<IJoker> Jokers) {

@@ -202,12 +202,45 @@
                             <RowDefinition/>
                         </Grid.RowDefinitions>
 
-                        <TextBlock Grid.Row="0" Text="Small Blind"/>
+                        <Border Grid.Row="0" Style="{StaticResource GrayShadowlessContainer}" BorderBrush="LightGray" BorderThickness="2">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
 
-                        <Image Grid.Row="1" Source="/Assets/BlindImages/Small_Blind.png"/>
+                                <Border Grid.Row="0" Style="{StaticResource SelectButtonContainer}">
+                                    <Button Name="SelectBlindButton" Content="Select" FontFamily="{StaticResource PixelBig}" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="0" 
+                                        CornerRadius="0" Background="Transparent" FontSize="54" Command="{x:Bind SelectSmallBlindCommand}"/>
+                                </Border>
 
-                        <Border Grid.Row="2" Style="{StaticResource ChipsContainer}">
-                            <Button Content="Select" FontFamily="{StaticResource PixelBig}" FontSize="54" Command="{x:Bind SelectSmallBlindCommand}"/>
+                                <Border Grid.Row="1">
+                                    <TextBlock Text="Small Blind"/>
+                                </Border>
+
+                                <Image Grid.Row="2" Source="/Assets/BlindImages/Small_Blind.png"/>
+
+                                <Grid Grid.Row="3">
+                                    
+                                </Grid>
+                            </Grid>
+                        </Border>
+
+                        <TextBlock Text="or" FontFamily="{StaticResource PixelBig}" FontSize="54" Grid.Row="1"/>
+
+                        <Border Grid.Row="2" Style="{StaticResource DarkShadowlessContainer}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+
+                                <Border Style="{StaticResource NextRoundContainer}" Grid.Column="1">
+                                    <Button Content="Skip Blind" FontFamily="{StaticResource PixelBig}" FontSize="46" BorderThickness="0" CornerRadius="0" Background="Transparent"/>
+                                </Border>
+                            </Grid>
                         </Border>
 
                     </Grid>

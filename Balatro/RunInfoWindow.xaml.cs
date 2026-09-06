@@ -31,37 +31,37 @@ namespace Balatro
         private IntPtr parentHwnd;
         private NativeMethods.WndProcDelegate? newWndProc;
         private IntPtr oldWndProc;
-        private BalatroGame game => App.CurrentGame;
-        private Visibility pokerHandsVisibility
+        public BalatroGame Game => App.CurrentGame;
+        public Visibility PokerHandsVisibility
         {
             get;
             set
             {
-                if (value != pokerHandsVisibility)
+                if (value != PokerHandsVisibility)
                 {
                     field = value;
                     OnPropertyChanged();
                 }  
             }
         }
-        private Visibility blindsVisibility
+        public Visibility BlindsVisibility
         {
             get;
             set
             {
-                if (value != blindsVisibility)
+                if (value != BlindsVisibility)
                 {
                     field = value;
                     OnPropertyChanged();
                 }
             }
         }
-        private Visibility vouchersVisibility
+        public Visibility VouchersVisibility
         {
             get;
             set
             {
-                if (value != vouchersVisibility)
+                if (value != VouchersVisibility)
                 {
                     field = value;
                     OnPropertyChanged();
@@ -74,6 +74,8 @@ namespace Balatro
         public RunInfoWindow(IntPtr parentHwnd)
         {
             InitializeComponent();
+
+            BaseGrid.DataContext = this;
 
             this.parentHwnd = parentHwnd;
             hwnd = WindowNative.GetWindowHandle(this);
@@ -101,22 +103,27 @@ namespace Balatro
         }
         private IntPtr WndProc(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam)
         {
-            if (msg == NativeMethods.WM_WINDOWPOSCHANGING)
+            if (msg == NativeMethods.WM_WINDOWPOSCHANGING && parentHwnd != IntPtr.Zero)
             {
                 var pos = Marshal.PtrToStructure<NativeMethods.WINDOWPOS>(lParam);
 
-                NativeMethods.GetWindowRect(parentHwnd, out var parentRect);
+                bool gotRect = NativeMethods.GetWindowRect(parentHwnd, out var parentRect);
 
-                int width = pos.cx;
-                int height = pos.cy;
+                if (gotRect && parentRect.Right > parentRect.Left && parentRect.Bottom > parentRect.Top)
+                {
+                    int width = pos.cx;
+                    int height = pos.cy;
 
-                int clampedX = Math.Clamp(pos.x, parentRect.Left, parentRect.Right - width);
-                int clampedY = Math.Clamp(pos.y, parentRect.Top, parentRect.Bottom - height);
+                    int minX = parentRect.Left;
+                    int maxX = Math.Max(minX, parentRect.Right - width);
+                    int minY = parentRect.Top;
+                    int maxY = Math.Max(minY, parentRect.Bottom - height);
 
-                pos.x = clampedX;
-                pos.y = clampedY;
+                    pos.x = Math.Clamp(pos.x, minX, maxX);
+                    pos.y = Math.Clamp(pos.y, minY, maxY);
 
-                Marshal.StructureToPtr(pos, lParam, true);
+                    Marshal.StructureToPtr(pos, lParam, true);
+                }
             }
 
             return NativeMethods.CallWindowProc(oldWndProc, hWnd, msg, wParam, lParam);
@@ -136,23 +143,23 @@ namespace Balatro
 
         private void PokerHands_Click(object sender, RoutedEventArgs e)
         {
-            pokerHandsVisibility = Visibility.Visible;
-            blindsVisibility = Visibility.Collapsed;
-            vouchersVisibility = Visibility.Collapsed;
+            PokerHandsVisibility = Visibility.Visible;
+            BlindsVisibility = Visibility.Collapsed;
+            VouchersVisibility = Visibility.Collapsed;
         }
 
         private void Blinds_Click(object sender, RoutedEventArgs e)
         {
-            pokerHandsVisibility = Visibility.Collapsed;
-            blindsVisibility = Visibility.Visible;
-            vouchersVisibility = Visibility.Collapsed;
+            PokerHandsVisibility = Visibility.Collapsed;
+            BlindsVisibility = Visibility.Visible;
+            VouchersVisibility = Visibility.Collapsed;
         }
 
         private void Vouchers_Click(object sender, RoutedEventArgs e)
         {
-            pokerHandsVisibility = Visibility.Collapsed;
-            blindsVisibility = Visibility.Collapsed;
-            vouchersVisibility = Visibility.Visible;
+            PokerHandsVisibility = Visibility.Collapsed;
+            BlindsVisibility = Visibility.Collapsed;
+            VouchersVisibility = Visibility.Visible;
         }
 
         private void OnPropertyChanged([CallerMemberName] string? name = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));

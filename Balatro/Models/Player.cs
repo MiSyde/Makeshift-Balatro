@@ -177,6 +177,7 @@ namespace Balatro.Models
             PlayedCards = new List<Card>();
             Vouchers = new ObservableCollection<IVoucher>();
 
+
             SetUpHandDictionaries();
             SelectedCards.CollectionChanged += CalculateHand;
         }

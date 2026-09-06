@@ -37,12 +37,11 @@ namespace Balatro.Models
         public bool Remove(TKey key) => _dictionary.Remove(key);
         public int Count => _dictionary.Count;
 
+        public Dictionary<TKey, TValue>.ValueCollection Values => _dictionary.Values;
+        public Dictionary<TKey, TValue>.KeyCollection Keys => _dictionary.Keys;
+
         public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator() => _dictionary.GetEnumerator();
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-
-        public Dictionary<TKey, TValue>.ValueCollection getValues() { return _dictionary.Values; } 
-        public Dictionary<TKey, TValue>.KeyCollection getKeys() { return _dictionary.Keys; } 
-
     }
 }

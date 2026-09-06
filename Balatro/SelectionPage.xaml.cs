@@ -120,7 +120,6 @@ namespace Balatro
 
         private void SelectBlind()
         {
-            Game.NextRound();
             App.MainFrame.Navigate(typeof(Balatro_Page));
         }
 
@@ -153,9 +152,9 @@ namespace Balatro
             optionsWindow = new OptionsWindow(mainHwnd);
             optionsWindow.Closed += Options_Closed;
 
-            var runInfoHwnd = WindowNative.GetWindowHandle(runInfoWindow);
+            var optionsHwnd = WindowNative.GetWindowHandle(optionsWindow);
 
-            NativeMethods.SetWindowLongPtr(runInfoHwnd, GWLP_HWNDPARENT, mainHwnd);
+            NativeMethods.SetWindowLongPtr(optionsHwnd, GWLP_HWNDPARENT, mainHwnd);
 
             optionsWindow.Activate();
         }
@@ -167,7 +166,7 @@ namespace Balatro
 
         private void Options_Closed(object sender, WindowEventArgs args)
         {
-            runInfoWindow = null;
+            optionsWindow = null;
         }
     }
 }

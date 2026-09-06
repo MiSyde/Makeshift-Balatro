@@ -49,7 +49,7 @@ namespace Balatro
         {
             SetDimensions();
 
-            PlayCards.Background = new SolidColorBrush(Windows.UI.Color.FromArgb(50, 35, 35, 35));
+            PlayerCards.Background = new SolidColorBrush(Windows.UI.Color.FromArgb(50, 35, 35, 35));
 
             if (game.Round % 4 == 1)
             {
@@ -98,9 +98,9 @@ namespace Balatro
             optionsWindow = new OptionsWindow(mainHwnd);
             optionsWindow.Closed += Options_Closed;
 
-            var runInfoHwnd = WindowNative.GetWindowHandle(runInfoWindow);
+            var optionsHwnd = WindowNative.GetWindowHandle(optionsWindow);
 
-            NativeMethods.SetWindowLongPtr(runInfoHwnd, GWLP_HWNDPARENT, mainHwnd);
+            NativeMethods.SetWindowLongPtr(optionsHwnd, GWLP_HWNDPARENT, mainHwnd);
 
             optionsWindow.Activate();
         }
@@ -112,7 +112,7 @@ namespace Balatro
 
         private void Options_Closed(object sender, WindowEventArgs args)
         {
-            runInfoWindow = null;
+            optionsWindow = null;
         }
 
         private void Card_Selected(object sender, ItemClickEventArgs e)
