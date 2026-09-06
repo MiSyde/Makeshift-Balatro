@@ -1,4 +1,7 @@
 using Balatro.Enums;
+using Balatro.Models;
+using Balatro.Models.Jokers;
+using Balatro.Models.Tags;
 using Balatro.Util;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI;
@@ -29,10 +32,15 @@ namespace Balatro
         private RelayCommand SelectSmallBlindCommand;
         private RelayCommand SelectBigBlindCommand;
         private RelayCommand SelectBossBlindCommand;
+        private RelayCommand SkipSmallBlindCommand;
+        private RelayCommand SkipBigBlindCommand;
         RunInfoWindow? runInfoWindow;
         OptionsWindow? optionsWindow;
         IntPtr mainHwnd;
         private const int GWLP_HWNDPARENT = -8;
+
+        ITag[] CurrentTags { get; }
+        List<ITag> Tags { get; }
         public SelectionPage()
         {
             InitializeComponent();
@@ -44,7 +52,24 @@ namespace Balatro
             SelectBigBlindCommand = new RelayCommand(SelectBlind, CanSelectBigBlind);
             SelectBossBlindCommand = new RelayCommand(SelectBlind, CanSelectBossBlind);
 
+            SkipSmallBlindCommand = new RelayCommand(SkipBlind, CanSelectSmallBlind);
+            SkipBigBlindCommand = new RelayCommand(SkipBlind, CanSelectBigBlind);
+
+            CurrentTags = new ITag[2];
+            Tags = Helper.GenerateClassesInNamespace<ITag>("Balatro.Models.Tags");
+
             Game.AssignBlindCommands(SelectSmallBlindCommand, SelectBigBlindCommand, SelectBossBlindCommand);
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+
+            if (Game.Round % 4 == 1)
+            {
+                CurrentTags[0] = Tags[Random.Shared.Next(0, Tags.Count - 1)];
+                CurrentTags[1] = Tags[Random.Shared.Next(0, Tags.Count - 1)];
+            }
         }
 
         private void SelectionPage_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -168,5 +193,12 @@ namespace Balatro
         {
             optionsWindow = null;
         }
+
+        private void SkipBlind()
+        {
+            ++Game.Round;
+
+        }
+
     }
 }

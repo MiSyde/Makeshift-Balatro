@@ -121,7 +121,7 @@ namespace Balatro.Models
             } while (CurrentShop.Count + CardShop.Count != ShopSize);
         }
 
-        private IJoker GetJoker(List<IJoker> Jokers) {
+        public IJoker GetJoker(List<IJoker> Jokers) {
             IJoker Joker;
 
             do

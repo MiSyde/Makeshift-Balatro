@@ -1,6 +1,7 @@
 ﻿using Balatro.Enums;
 using Balatro.Models.Decks;
 using Balatro.Models.Jokers;
+using Balatro.Models.Tags;
 using Balatro.Models.Vouchers;
 using System;
 using System.Collections;
@@ -62,6 +63,7 @@ namespace Balatro.Models
         public ObservableCollection<IEffect> Consumables { get; }
         public IDeck Deck { get; set; }
         public ObservableCollection<Card> SelectedCards { get; }
+        public List<ITag> Tags { get; }
         public int RemainingHands
         {
             get;
@@ -74,6 +76,8 @@ namespace Balatro.Models
                 } 
             }
         }
+        public int TotalPlayedHandsCount { get; set; }
+        public int TotalSavedDiscardsCount { get; set; }
         public int Money 
         { 
             get; 
@@ -163,6 +167,8 @@ namespace Balatro.Models
             RemainingHands = 4;
             CurrentCardHoldingSize = 8;
             MaxConsumableCount = 2;
+            TotalPlayedHandsCount = 0;
+            TotalSavedDiscardsCount = 0;
 
             Cards = new ObservableCollection<Card>();
             Deck = new Red_Deck();
@@ -176,6 +182,7 @@ namespace Balatro.Models
             HandTimes = new ObservableDictionary<Hand, int>(() => OnPropertyChanged(nameof(HandTimes)));
             PlayedCards = new List<Card>();
             Vouchers = new ObservableCollection<IVoucher>();
+            Tags = new List<ITag>();
 
 
             SetUpHandDictionaries();

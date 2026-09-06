@@ -237,8 +237,10 @@
                                     <ColumnDefinition/>
                                 </Grid.ColumnDefinitions>
 
+                                <Image Source="{x:Bind CurrentTags[0].Image}" Grid.Column="0"/>
+
                                 <Border Style="{StaticResource NextRoundContainer}" Grid.Column="1">
-                                    <Button Content="Skip Blind" FontFamily="{StaticResource PixelBig}" FontSize="46" BorderThickness="0" CornerRadius="0" Background="Transparent"/>
+                                    <Button Content="Skip Blind" FontFamily="{StaticResource PixelBig}" FontSize="46" BorderThickness="0" CornerRadius="0" Background="Transparent" Command="{x:Bind SkipSmallBlindCommand}"/>
                                 </Border>
                             </Grid>
                         </Border>

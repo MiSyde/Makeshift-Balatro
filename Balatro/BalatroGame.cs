@@ -283,16 +283,15 @@ namespace Balatro
         private async void DealCards()
         {
             await Task.Delay(150);
-            /*
             while(Player.Cards.Count != Player.CurrentCardHoldingSize)
             {
                 Player.Cards.Add(Player.DrawFromDeck());
             }
-            */
-            for(int i = 6; i <= 10; ++i)
-            {
-                Player.Cards.Add(new Card(new BitmapImage(new Uri("ms-appx:///Assets/CardImages/Spades/" + i + ".png")), i, false, SuitType.Spades));
-            }
+        }
+
+        public void RollBossBlind()
+        {
+
         }
 
         private void OnPropertyChanged([CallerMemberName] string? name = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
