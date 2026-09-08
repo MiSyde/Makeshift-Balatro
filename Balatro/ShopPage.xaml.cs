@@ -56,8 +56,6 @@ public sealed partial class ShopPage : Page
         base.OnNavigatedTo(e);
         Shop.CurrentShop.Clear();
 
-        //Shop.VoucherEffects();
-
         Shop.RerollPrice = 5;
 
         foreach (IVoucher v in Game.Player.Vouchers)

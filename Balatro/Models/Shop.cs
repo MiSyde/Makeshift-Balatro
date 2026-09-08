@@ -44,14 +44,14 @@ namespace Balatro.Models
         public int JokerWeight { get; set; }
         public int CardWeight { get; set; }
         public int NormalStACWeight => 4; // Standard, Arcana, Celestial
-        public double NormalBuffoonWeight => 5.2;
-        public double NormalSpectralWeight => 5.8;
-        public double JumboStACWeight => 7.8;
-        public double JumboBuffoonWeight => 8.4;
-        public double JumboSpectralWeight => 8.7;
-        public double MegaStACWeight => 9.2;
-        public double MegaBuffoonWeight => 9.35;
-        public double MegaSpectralWeight => 9.42;
+        public double NormalBuffoonWeight => 13.2;
+        public double NormalSpectralWeight => 13.8;
+        public double JumboStACWeight => 15.8;
+        public double JumboBuffoonWeight => 16.4;
+        public double JumboSpectralWeight => 16.7;
+        public double MegaStACWeight => 17.2;
+        public double MegaBuffoonWeight => 17.35;
+        public double MegaSpectralWeight => 17.42;
         public int VoucherShopSize { get; internal set; }
 
         public Shop()
@@ -81,7 +81,7 @@ namespace Balatro.Models
             UncommonJokers = Helper.GenerateUnlocked<IJoker>("Balatro.Models.Jokers.Uncommon");
             RareJokers = Helper.GenerateUnlocked<IJoker>("Balatro.Models.Jokers.Rare");
             Vouchers = Helper.GenerateUnlocked<IVoucher>("Balatro.Models.Vouchers");
-            //Planets = Helper.GenerateUnlocked<IEffect>("Balatro.Models.Planets");
+            Planets = Helper.GenerateUnlocked<IEffect>("Balatro.Models.Planets");
             //Tarots = Helper.GenerateUnlocked<IEffect>("Balatro.Models.Tarots");
         }
 
@@ -182,22 +182,77 @@ namespace Balatro.Models
             do
             {
                 double pVal = Random.Shared.Next(0, 2242) / 100;
-
+                int varValue = Random.Shared.Next(1, 4);
+                Uri? Uri = null;
                 switch (pVal)
                 {
                     case var _ when pVal <= NormalStACWeight:
-                        break;
-                    case var _ when pVal > NormalStACWeight && pVal <= NormalBuffoonWeight:
-                        Uri Uri = null;
-                        switch(Random.Shared.Next(0, 1))
+                        switch(varValue)
                         {
-                            case 0:
-                                Uri = new Uri("ms-appx:///Assets/PackImages/Buffoon_Normal_1.png");
-                                break;
                             case 1:
-                                Uri = new Uri("ms-appx:///Assets/PackImages/Buffoon_Normal_2.png");
+                                Uri = new Uri("ms-appx:///Assets/PackImages/Standard_Normal_1.png");
+                                break;
+                            case 2:
+                                Uri = new Uri("ms-appx:///Assets/PackImages/Standard_Normal_2.png");
+                                break;
+                            case 3:
+                                Uri = new Uri("ms-appx:///Assets/PackImages/Standard_Normal_3.png");
+                                break;
+                            case 4:
+                                Uri = new Uri("ms-appx:///Assets/PackImages/Standard_Normal_4.png");
                                 break;
                         }
+                        CardPackShop.Add(new ConsumablePack<Card>(Uri!, 3, GetCard, 1, "Normal Standard Pack",
+                            "Choose 1 of up to 3 Playing cards to add to your deck", 4));
+                        break;
+                    case var _ when pVal > NormalStACWeight && pVal <= NormalStACWeight * 2:
+                        switch (varValue)
+                        {
+                            case 1:
+                                Uri = new Uri("ms-appx:///Assets/PackImages/Arcana_Normal_1.png");
+                                break;
+                            case 2:
+                                Uri = new Uri("ms-appx:///Assets/PackImages/Arcana_Normal_2.png");
+                                break;
+                            case 3:
+                                Uri = new Uri("ms-appx:///Assets/PackImages/Arcana_Normal_3.png");
+                                break;
+                            case 4:
+                                Uri = new Uri("ms-appx:///Assets/PackImages/Arcana_Normal_4.png");
+                                break;
+                        }
+                        ConsumablePackShop.Add(new ConsumablePack<IEffect>(Uri!, 3, GetTarot, 1, "Normal Arcana Pack",
+                            "Choose 1 of up to 3 Tarot cards to be used immediately", 4));
+                        break;
+                    case var _ when pVal > NormalStACWeight * 2 && pVal <= NormalStACWeight * 3:
+                        switch (varValue)
+                        {
+                            case 1:
+                                Uri = new Uri("ms-appx:///Assets/PackImages/Celestial_Normal_1.png");
+                                break;
+                            case 2:
+                                Uri = new Uri("ms-appx:///Assets/PackImages/Celestial_Normal_2.png");
+                                break;
+                            case 3:
+                                Uri = new Uri("ms-appx:///Assets/PackImages/Celestial_Normal_3.png");
+                                break;
+                            case 4:
+                                Uri = new Uri("ms-appx:///Assets/PackImages/Celestial_Normal_4.png");
+                                break;
+                        }
+                        ConsumablePackShop.Add(new ConsumablePack<IEffect>(Uri!, 3, GetPlanet, 1, "Normal Celestial Pack",
+                            "Choose 1 of up to 3 Planet cards to be used immediately", 4));
+                        break;
+                    case var _ when pVal > NormalStACWeight && pVal <= NormalBuffoonWeight:
+                        if(varValue == 1)
+                        {
+                            Uri = new Uri("ms-appx:///Assets/PackImages/Buffoon_Normal_1.png");
+                        }
+                        else
+                        {
+                            Uri = new Uri("ms-appx:///Assets/PackImages/Buffoon_Normal_2.png");
+                        }
+
                         List<IJoker> list;
                         int lVal = Random.Next(1, 100);
                         switch (lVal)
@@ -212,7 +267,7 @@ namespace Balatro.Models
                                 list = RareJokers;
                                 break;
                         }
-                        JokerPackShop.Add(new ConsumablePack<IJoker>(Uri!, 2, () => GetJoker(list), 1, "Normal Buffoon Pack",
+                        JokerPackShop.Add(new ConsumablePack<IJoker>(Uri, 2, () => GetJoker(list), 1, "Normal Buffoon Pack",
                             "Choose 1 of up to 2 Joker cards", 4));
                         break;
                     case var _ when pVal > NormalBuffoonWeight && pVal <= NormalSpectralWeight:

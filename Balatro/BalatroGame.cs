@@ -104,11 +104,11 @@ namespace Balatro
             BlindColor = new SolidColorBrush(Color.FromArgb(255, 0, 104, 173));
             Ante = 1;
 
-
             BossBlinds = Helper.GenerateClassesInNamespace<IBossBlind>("Balatro.Models.BossBlinds");
             Player = new Player();
             Player.SelectedCards.CollectionChanged += RefreshCommands;
             Blinds = new Dictionary<int, string>();
+            Player.Deck.AddEffect(Player);
             SetUpBlinds();
 
             DiscardCommand = new RelayCommand(DiscardedCards, CanDiscard);
