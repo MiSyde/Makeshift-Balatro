@@ -1,5 +1,6 @@
 ﻿using Balatro.Enums;
 using Balatro.Models;
+using Balatro.Models.BossBlinds;
 using Balatro.Util;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI;
@@ -25,7 +26,7 @@ namespace Balatro
         private RelayCommand? SmallBCmd;
         private RelayCommand? BigBCmd;
         private RelayCommand? BossBCmd;
-        public IEffect BossBlind {
+        public IBossBlind BossBlind {
             get;
             set
             {
@@ -101,6 +102,7 @@ namespace Balatro
             Round = 1;
             Threshold = 300;
             BlindColor = new SolidColorBrush(Color.FromArgb(255, 0, 104, 173));
+            Ante = 1;
 
             Player = new Player();
             Player.SelectedCards.CollectionChanged += RefreshCommands;
@@ -148,6 +150,8 @@ namespace Balatro
 
         private void ConfirmedCards()
         {
+            if (Round % 4 == 3) BossBlind.AddEffect(this);
+
             --Player.RemainingHands;
             ++Player.HandTimes[Player.HighestHand];
 
@@ -188,6 +192,7 @@ namespace Balatro
 
             GiveMoney();
 
+            Player.TotalSavedDiscardsCount = Player.Discards;
             Player.RemainingHands = 4;
             Player.Discards = 3;
 
@@ -205,14 +210,17 @@ namespace Balatro
         {
             switch(Round % 4)
             {
-                case 1: Threshold = baseScore;
+                default:
+                case 1: 
+                    Threshold = baseScore;
                     return;
-                case 2: Threshold = (int)(baseScore * 1.5);
+                case 2: 
+                    Threshold = (int)(baseScore * 1.5);
                     return;
                 case 3:
-                    Threshold = BossBlindThreshold();
+                    Threshold = (int)(baseScore*BossBlind.BaseThresholdMultiplier);
                     return;
-                default:
+                case 0:
                     ++Ante;
                     IncreaseBaseScore();
                     return;
@@ -260,11 +268,6 @@ namespace Balatro
 
         }
 
-        private int BossBlindThreshold()
-        {
-            return baseScore * 2;
-        }
-
         private void SetUpBlinds()
         {
             Blinds[1] = "Small Blind";
@@ -274,8 +277,19 @@ namespace Balatro
 
         private void GiveMoney()
         {
-            int basePrize = Round % 4;
-            Player.Money += (basePrize + 2);
+            switch(Round % 4)
+            {
+                default:
+                case 1:
+                    Player.Money += 3;
+                    break;
+                case 2:
+                    Player.Money += 4;
+                    break;
+                case 3:
+                    Player.Money += BossBlind.EarnedMoney;
+                    break;
+            }
 
             Player.Money += Player.RemainingHands;
         }

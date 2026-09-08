@@ -269,7 +269,7 @@
                                                 <ColumnDefinition/>
                                             </Grid.ColumnDefinitions>
 
-                                            <TextBlock Grid.Column="0" Text="{x:Bind GetAnteString(), Mode=OneWay}">
+                                            <TextBlock Grid.Column="0" Text="{x:Bind GetAnteString(Game.Ante), Mode=OneWay}">
                                                 <TextBlock.RenderTransform>
                                                     <TransformGroup>
                                                         <ScaleTransform/>

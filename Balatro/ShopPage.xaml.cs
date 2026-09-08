@@ -98,7 +98,7 @@ public sealed partial class ShopPage : Page
     }
     private string XDashY(int x, int y) => Helper.XDashY(x, y);
 
-    private string GetAnteString() => "ANTE " + Game.Ante.ToString() + " VOUCHER";
+    private string GetAnteString(int Ante) => "ANTE " + Ante.ToString() + " VOUCHER";
 
     private void Show_RunInfo(object sender, RoutedEventArgs e)
     {

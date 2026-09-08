@@ -1,4 +1,5 @@
 ﻿using Balatro.Enums;
+using Balatro.Models.BossBlinds;
 using Balatro.Models.Decks;
 using Balatro.Models.Jokers;
 using Balatro.Models.Tags;

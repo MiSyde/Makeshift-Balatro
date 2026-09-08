@@ -1,5 +1,6 @@
 using Balatro.Enums;
 using Balatro.Models;
+using Balatro.Models.BossBlinds;
 using Balatro.Models.Jokers;
 using Balatro.Models.Tags;
 using Balatro.Util;
@@ -41,12 +42,15 @@ namespace Balatro
         private const int GWLP_HWNDPARENT = -8;
         ITag[] CurrentTags { get; }
         List<ITag> Tags { get; }
+        List<IBossBlind> BossBlinds { get; }
         public SelectionPage()
         {
             InitializeComponent();
             SizeChanged += SelectionPage_SizeChanged;
 
             NavigationCacheMode = NavigationCacheMode.Required;
+
+            BossBlinds = Helper.GenerateClassesInNamespace<IBossBlind>("Balatro.Models.BossBlinds");
 
             SelectSmallBlindCommand = new RelayCommand(SelectBlind, CanSelectSmallBlind);
             SelectBigBlindCommand = new RelayCommand(SelectBlind, CanSelectBigBlind);
@@ -69,7 +73,23 @@ namespace Balatro
             {
                 CurrentTags[0] = Tags[Random.Shared.Next(0, Tags.Count - 1)];
                 CurrentTags[1] = Tags[Random.Shared.Next(0, Tags.Count - 1)];
+
+                Game.BossBlind = GetBossBlind();
             }
+        }
+
+        private IBossBlind GetBossBlind()
+        {
+            IBossBlind BossBlind;
+
+            do
+            {
+                BossBlind = BossBlinds[Random.Shared.Next(0, BossBlinds.Count - 1)];
+            } while (BossBlind.MinAnte <= Game.Ante);
+
+            BossBlinds.Remove(BossBlind);
+
+            return BossBlind;
         }
 
         private void SelectionPage_SizeChanged(object sender, SizeChangedEventArgs e)
