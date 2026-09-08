@@ -42,7 +42,6 @@ namespace Balatro
         private const int GWLP_HWNDPARENT = -8;
         ITag[] CurrentTags { get; }
         List<ITag> Tags { get; }
-        List<IBossBlind> BossBlinds { get; }
         public SelectionPage()
         {
             InitializeComponent();
@@ -50,14 +49,12 @@ namespace Balatro
 
             NavigationCacheMode = NavigationCacheMode.Required;
 
-            BossBlinds = Helper.GenerateClassesInNamespace<IBossBlind>("Balatro.Models.BossBlinds");
+            SelectSmallBlindCommand = new RelayCommand(SelectBlind, () => CanSelectBlind(1));
+            SelectBigBlindCommand = new RelayCommand(SelectBlind, ()=>CanSelectBlind(2));
+            SelectBossBlindCommand = new RelayCommand(SelectBlind, () => CanSelectBlind(3));
 
-            SelectSmallBlindCommand = new RelayCommand(SelectBlind, CanSelectSmallBlind);
-            SelectBigBlindCommand = new RelayCommand(SelectBlind, CanSelectBigBlind);
-            SelectBossBlindCommand = new RelayCommand(SelectBlind, CanSelectBossBlind);
-
-            SkipSmallBlindCommand = new RelayCommand<ITag>(Tag => SkipBlind(Tag!), Tag => CanSelectSmallBlind());
-            SkipBigBlindCommand = new RelayCommand<ITag>(Tag => SkipBlind(Tag!), Tag => CanSelectBigBlind());
+            SkipSmallBlindCommand = new RelayCommand<ITag>(Tag => SkipBlind(Tag!), Tag => CanSelectBlind(1));
+            SkipBigBlindCommand = new RelayCommand<ITag>(Tag => SkipBlind(Tag!), Tag => CanSelectBlind(2));
 
             CurrentTags = new ITag[2];
             Tags = Helper.GenerateClassesInNamespace<ITag>("Balatro.Models.Tags");
@@ -74,22 +71,8 @@ namespace Balatro
                 CurrentTags[0] = Tags[Random.Shared.Next(0, Tags.Count - 1)];
                 CurrentTags[1] = Tags[Random.Shared.Next(0, Tags.Count - 1)];
 
-                Game.BossBlind = GetBossBlind();
+                Game.BossBlind = Game.RollBossBlind();
             }
-        }
-
-        private IBossBlind GetBossBlind()
-        {
-            IBossBlind BossBlind;
-
-            do
-            {
-                BossBlind = BossBlinds[Random.Shared.Next(0, BossBlinds.Count - 1)];
-            } while (BossBlind.MinAnte <= Game.Ante);
-
-            BossBlinds.Remove(BossBlind);
-
-            return BossBlind;
         }
 
         private void SelectionPage_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -168,11 +151,7 @@ namespace Balatro
             App.MainFrame.Navigate(typeof(Balatro_Page));
         }
 
-        private bool CanSelectSmallBlind() => Game.Round % 4 == 1;
-
-        private bool CanSelectBigBlind() => Game.Round % 4 == 2;
-
-        private bool CanSelectBossBlind() => Game.Round % 4 == 3;
+        private bool CanSelectBlind(int n) => Game.Round % 4 == n;
 
         private void Show_RunInfo(object sender, RoutedEventArgs e)
         {

@@ -52,7 +52,7 @@ namespace Balatro
         public Player Player { get; }
         public RelayCommand DiscardCommand { get; }
         public RelayCommand ConfirmCommand { get; }
-
+        public List<IBossBlind> BossBlinds { get; }
         public event PropertyChangedEventHandler? PropertyChanged;
 
         public int Threshold 
@@ -104,6 +104,8 @@ namespace Balatro
             BlindColor = new SolidColorBrush(Color.FromArgb(255, 0, 104, 173));
             Ante = 1;
 
+
+            BossBlinds = Helper.GenerateClassesInNamespace<IBossBlind>("Balatro.Models.BossBlinds");
             Player = new Player();
             Player.SelectedCards.CollectionChanged += RefreshCommands;
             Blinds = new Dictionary<int, string>();
@@ -303,9 +305,18 @@ namespace Balatro
             }
         }
 
-        public void RollBossBlind()
+        public IBossBlind RollBossBlind()
         {
+            IBossBlind BossBlind;
 
+            do
+            {
+                BossBlind = BossBlinds[Random.Shared.Next(0, BossBlinds.Count - 1)];
+            } while (BossBlind.MinAnte <= Ante);
+
+            BossBlinds.Remove(BossBlind);
+
+            return BossBlind;
         }
 
         private void OnPropertyChanged([CallerMemberName] string? name = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));

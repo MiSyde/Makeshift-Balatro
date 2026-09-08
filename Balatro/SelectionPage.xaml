@@ -256,29 +256,65 @@
                             <RowDefinition/>
                             <RowDefinition/>
                             <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
                         </Grid.RowDefinitions>
 
                         <TextBlock Grid.Row="0" Text="Small Blind"/>
 
                         <Image Grid.Row="1" Source="/Assets/BlindImages/Big_Blind.png"/>
+                        
+                        <Border Style="{StaticResource SelectButtonContainer}" Grid.Row="2">
+                            <Button Content="Select" Command="{x:Bind SelectBigBlindCommand}" CornerRadius="0" BorderThickness="0"
+                                     Background="Transparent" FontFamily="{StaticResource PixelBig}" FontSize="54"/>
+                        </Border>
 
-                        <Button Grid.Row="2" Content="Select" Command="{x:Bind SelectBigBlindCommand}"/>
+                        <TextBlock Text="or" FontFamily="{StaticResource PixelBig}" FontSize="54" Grid.Row="3"/>
+
+                        <Border Grid.Row="4" Style="{StaticResource DarkShadowlessContainer}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+
+                                <Image Source="{x:Bind CurrentTags[1]}" Grid.Column="0"/>
+
+                                <Border Grid.Column="1" Style="{StaticResource NextRoundContainer}">
+                                    <Button Content="Skip Blind" FontFamily="{StaticResource PixelBig}" FontSize="54" CornerRadius="0"
+                                           BorderThickness="0" Background="Transparent" Command="{x:Bind SkipBigBlindCommand}"/>
+                                </Border>
+                            </Grid>    
+                        </Border>
+                        
                     </Grid>
                 </Border>
 
                 <Border Name="BossBlindBorder" Grid.Column="2">
-                    <Grid Name="BossBlind">
-                        <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
-                        <TextBlock Grid.Row="0" Text="{x:Bind Game.BossBlind.Name, Mode=OneWay}"/>
-                        <Image Grid.Row="1" Source="{x:Bind Game.BossBlind.Image, Mode=OneWay}"/>
-                        <TextBlock Grid.Row="2" Text="{x:Bind Game.BossBlind.Description, Mode=OneWay}"/>
-                        <Button Grid.Row="3" Content="Select" Command="{x:Bind SelectBossBlindCommand}"/>
-                    </Grid>
+                    <Border Name="BossBlind" Style="{StaticResource GrayShadowlessContainer}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+
+                            <Border Grid.Row="0" Style="{StaticResource DarkShadowlessContainer}">
+                                <TextBlock Text="{x:Bind Game.BossBlind.Name, Mode=OneWay}" FontFamily="{StaticResource PixelBig}" FontSize="46"/>
+                            </Border>
+                        
+                        
+                            <Image Grid.Row="1" Source="{x:Bind Game.BossBlind.Image, Mode=OneWay}" Width="100" Height="100"/>
+                        
+                            <TextBlock Grid.Row="2" Text="{x:Bind Game.BossBlind.Description, Mode=OneWay}"/>
+
+                            <Border Grid.Row="3" Style="{StaticResource SelectButtonContainer}">
+                                <Button Content="Select" Command="{x:Bind SelectBossBlindCommand}" CornerRadius="0" BorderThickness="0"
+                                        Background="Transparent" FontFamily="{StaticResource PixelBig}" FontSize="54"/>
+                            </Border>
+                        </Grid>
+                    </Border>
                 </Border>
 
                 <Grid Name="DeckAndTagGrid" Grid.Column="3">
@@ -291,7 +327,7 @@
                         <ItemsControl.ItemTemplate>
                             <DataTemplate x:DataType="BitmapImage">
                                 <StackPanel Orientation="Vertical" >
-                                    <Image Source="{x:Bind}"/>
+                                    <Image Source="{x:Bind}" Height="80" Width="80"/>
                                 </StackPanel>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>

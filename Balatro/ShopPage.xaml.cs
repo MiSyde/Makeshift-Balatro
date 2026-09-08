@@ -56,7 +56,7 @@ public sealed partial class ShopPage : Page
         base.OnNavigatedTo(e);
         Shop.CurrentShop.Clear();
 
-        Shop.VoucherEffects();
+        //Shop.VoucherEffects();
 
         Shop.RerollPrice = 5;
 
@@ -66,6 +66,10 @@ public sealed partial class ShopPage : Page
         }
 
         Shop.FillUpShop();
+
+        Shop.FillPackShop();
+
+        Shop.FillVoucherShop();
     }
 
     private void ShopPage_SizeChanged(object sender, SizeChangedEventArgs e)

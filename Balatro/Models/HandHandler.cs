@@ -41,7 +41,6 @@ namespace Balatro.Models
 
         public Hand CalculateHand(IList<Card> selectedCards, IList<Hand> playedHands, IList<Card> playedCards)
         {
-            if (selectedCards.Count != 5) return Hand.HIGH_CARD;
             Hand highestHand = Hand.HIGH_CARD;
             playedHands.Add(Hand.HIGH_CARD);
 
