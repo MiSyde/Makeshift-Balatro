@@ -15,7 +15,7 @@ namespace Balatro.Models.Jokers.Uncommon
         public Rarity Rarity { get; }
         public Modifier Modifier { get; set; }
         public string Name { get; }
-        public ImageSource Image { get; }
+        public BitmapImage Image { get; }
 
         public Four_Fingers()
         {

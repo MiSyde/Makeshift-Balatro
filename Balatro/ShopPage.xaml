@@ -289,7 +289,7 @@
                                 </Border>
 
                                 <Border Grid.Column="1" Style="{StaticResource GraySmallShadowContainer}">
-                                    <GridView Name="PacksGridView">
+                                    <GridView Name="PackShopGridView" ItemsSource="{x:Bind Shop.PackShop}">
 
                                     </GridView>
                                 </Border>

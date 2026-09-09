@@ -102,7 +102,7 @@ namespace Balatro.Models
                         ++five;
                     }
                 }
-                else if(currentCard.Value == previousCard.Value && currentCard.IsFaceCard && previousCard.IsFaceCard)
+                else if(currentCard.Value == previousCard.Value && currentCard.IsFaceCard && previousCard.IsFaceCard && currentCard.FaceCardType == previousCard.FaceCardType)
                 {
                     ++kind;
                     if (kind == 2)
@@ -148,7 +148,8 @@ namespace Balatro.Models
                         playedCards.Add(c);
                 }
             }
-            else if(pair == 2)
+            
+            if(pair == 2)
             {
                 highestHand = Hand.TWO_PAIR;
                 playedHands.Add(Hand.PAIR);
@@ -182,7 +183,7 @@ namespace Balatro.Models
                 }
             }
 
-            else if (flush >= NeededCards4FlushAndStraight) 
+            if (flush >= NeededCards4FlushAndStraight) 
             { 
                 highestHand = Hand.FLUSH;
                 playedHands.Add(Hand.FLUSH);
@@ -199,7 +200,8 @@ namespace Balatro.Models
                 playedHands.Add(Hand.FULL_HOUSE);
                 playedCards = selectedCards;
             }
-            else if (four == 4)
+            
+            if (four == 4)
             {
                 highestHand = Hand.FOUR_OF_A_KIND;
                 playedHands.Add(Hand.FOUR_OF_A_KIND);

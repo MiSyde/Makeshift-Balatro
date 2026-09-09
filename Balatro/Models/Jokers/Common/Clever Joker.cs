@@ -14,7 +14,7 @@ namespace Balatro.Models.Jokers.Common
         public int Price { get; set; }
         public Rarity Rarity { get; }
         public Modifier Modifier { get; set; }
-        public ImageSource Image { get; }
+        public BitmapImage Image { get; }
         public string Name { get; }
 
         public Clever_Joker()

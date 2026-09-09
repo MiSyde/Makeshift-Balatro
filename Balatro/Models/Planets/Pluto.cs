@@ -12,7 +12,7 @@ namespace Balatro.Models.Planets
 
         public string Description => "Increases High Card hand value by +1 Mult and +10 Chips";
 
-        public ImageSource Image => new BitmapImage(new Uri("ms-appx:///Assets/PlanetImages/Pluto.png"));
+        public BitmapImage Image => new(new Uri("ms-appx:///Assets/PlanetImages/Pluto.png"));
 
         public void AddEffect(Player Player)
         {

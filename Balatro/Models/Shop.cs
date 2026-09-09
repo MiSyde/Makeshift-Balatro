@@ -6,6 +6,7 @@ using Balatro.Util;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml.Navigation;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -23,10 +24,7 @@ namespace Balatro.Models
         public int RerollPrice { get; set; } = 5;
         public ObservableCollection<IEffect> CurrentShop { get; }
         public ObservableCollection<IVoucher> VoucherShop { get; }
-        public ObservableCollection<Card> CardShop { get; }
-        public ObservableCollection<ConsumablePack<IEffect>> ConsumablePackShop { get; }
-        public ObservableCollection<ConsumablePack<IJoker>> JokerPackShop { get; }
-        public ObservableCollection<ConsumablePack<Card>> CardPackShop { get; }
+        public ObservableCollection<ConsumablePack<IEffect>> PackShop { get; }
         public List<IEffect> Tarots;
         public List<IEffect> Planets;
         public List<IEffect> Spectrals;
@@ -47,11 +45,11 @@ namespace Balatro.Models
         public double NormalBuffoonWeight => 13.2;
         public double NormalSpectralWeight => 13.8;
         public double JumboStACWeight => 15.8;
-        public double JumboBuffoonWeight => 16.4;
-        public double JumboSpectralWeight => 16.7;
-        public double MegaStACWeight => 17.2;
-        public double MegaBuffoonWeight => 17.35;
-        public double MegaSpectralWeight => 17.42;
+        public double JumboBuffoonWeight => 19.8; 
+        public double JumboSpectralWeight => 20.1;
+        public double MegaStACWeight => 20.6;
+        public double MegaBuffoonWeight => 21.75;
+        public double MegaSpectralWeight => 21.82;
         public int VoucherShopSize { get; internal set; }
 
         public Shop()
@@ -59,11 +57,8 @@ namespace Balatro.Models
             RerollCommand = new RelayCommand(RerollShop, CanReroll);
 
             CurrentShop = new ObservableCollection<IEffect>();
-            CardShop = new ObservableCollection<Card>();
             VoucherShop = new ObservableCollection<IVoucher>();
-            ConsumablePackShop = new ObservableCollection<ConsumablePack<IEffect>>();
-            JokerPackShop = new ObservableCollection<ConsumablePack<IJoker>>();
-            CardPackShop = new ObservableCollection<ConsumablePack<Card>>();
+            PackShop = new ObservableCollection<ConsumablePack<IEffect>>();
 
             Random = new Random();
             Tarots = new List<IEffect>();
@@ -80,9 +75,9 @@ namespace Balatro.Models
             CommonJokers = Helper.GenerateUnlocked<IJoker>("Balatro.Models.Jokers.Common");
             UncommonJokers = Helper.GenerateUnlocked<IJoker>("Balatro.Models.Jokers.Uncommon");
             RareJokers = Helper.GenerateUnlocked<IJoker>("Balatro.Models.Jokers.Rare");
-            Vouchers = Helper.GenerateUnlocked<IVoucher>("Balatro.Models.Vouchers");
-            Planets = Helper.GenerateUnlocked<IEffect>("Balatro.Models.Planets");
-            //Tarots = Helper.GenerateUnlocked<IEffect>("Balatro.Models.Tarots");
+            Vouchers = Helper.GenerateClassesInNamespace<IVoucher>("Balatro.Models.Vouchers");
+            Planets = Helper.GenerateClassesInNamespace<IEffect>("Balatro.Models.Planets");
+            Tarots = Helper.GenerateClassesInNamespace<IEffect>("Balatro.Models.Tarots");
         }
 
         private IJoker ModifyModifier(IJoker joker)
@@ -147,10 +142,10 @@ namespace Balatro.Models
                 } 
                 else
                 {
-                    CardShop.Add(GetCard());
+                    CurrentShop.Add(GetCard());
                 }
                 
-            } while (CurrentShop.Count + CardShop.Count != ShopSize);
+            } while (CurrentShop.Count != ShopSize);
         }
 
         public IJoker GetJoker(List<IJoker> Jokers) => Jokers[Random.Next(0, Jokers.Count - 1)];
@@ -160,24 +155,10 @@ namespace Balatro.Models
         public IEffect GetPlanet() => Planets[Random.Next(0, Planets.Count - 1)];
         public IEffect GetTarot() => Tarots[Random.Next(0, Tarots.Count - 1)];
         public IEffect GetSpectral() => Spectrals[Random.Next(0, Spectrals.Count - 1)];
-        
-        public void VoucherEffects()
-        {
-            foreach(IVoucher v in Game.Player.Vouchers)
-            {
-                switch(v)
-                {
-                    case Hone:
-                        break;
-                }
-            }
-        }
 
         internal void FillPackShop()
         {
-            ConsumablePackShop.Clear();
-            JokerPackShop.Clear();
-            CardPackShop.Clear();
+            PackShop.Clear();
 
             do
             {
@@ -202,10 +183,10 @@ namespace Balatro.Models
                                 Uri = new Uri("ms-appx:///Assets/PackImages/Standard_Normal_4.png");
                                 break;
                         }
-                        CardPackShop.Add(new ConsumablePack<Card>(Uri!, 3, GetCard, 1, "Normal Standard Pack",
+                        PackShop.Add(new ConsumablePack<IEffect>(Uri!, 3, GetCard, 1, "Normal Standard Pack",
                             "Choose 1 of up to 3 Playing cards to add to your deck", 4));
                         break;
-                    case var _ when pVal > NormalStACWeight && pVal <= NormalStACWeight * 2:
+                    case var _ when pVal <= NormalStACWeight * 2:
                         switch (varValue)
                         {
                             case 1:
@@ -221,10 +202,10 @@ namespace Balatro.Models
                                 Uri = new Uri("ms-appx:///Assets/PackImages/Arcana_Normal_4.png");
                                 break;
                         }
-                        ConsumablePackShop.Add(new ConsumablePack<IEffect>(Uri!, 3, GetTarot, 1, "Normal Arcana Pack",
+                        PackShop.Add(new ConsumablePack<IEffect>(Uri!, 3, GetTarot, 1, "Normal Arcana Pack",
                             "Choose 1 of up to 3 Tarot cards to be used immediately", 4));
                         break;
-                    case var _ when pVal > NormalStACWeight * 2 && pVal <= NormalStACWeight * 3:
+                    case var _ when pVal <= NormalStACWeight * 3:
                         switch (varValue)
                         {
                             case 1:
@@ -240,57 +221,108 @@ namespace Balatro.Models
                                 Uri = new Uri("ms-appx:///Assets/PackImages/Celestial_Normal_4.png");
                                 break;
                         }
-                        ConsumablePackShop.Add(new ConsumablePack<IEffect>(Uri!, 3, GetPlanet, 1, "Normal Celestial Pack",
+                        PackShop.Add(new ConsumablePack<IEffect>(Uri!, 3, GetPlanet, 1, "Normal Celestial Pack",
                             "Choose 1 of up to 3 Planet cards to be used immediately", 4));
                         break;
-                    case var _ when pVal > NormalStACWeight && pVal <= NormalBuffoonWeight:
-                        if(varValue == 1)
-                        {
-                            Uri = new Uri("ms-appx:///Assets/PackImages/Buffoon_Normal_1.png");
-                        }
-                        else
-                        {
-                            Uri = new Uri("ms-appx:///Assets/PackImages/Buffoon_Normal_2.png");
-                        }
+                    case var _ when pVal <= NormalBuffoonWeight:
+                        if(varValue == 1) Uri = new Uri("ms-appx:///Assets/PackImages/Buffoon_Normal_1.png");
+                        else Uri = new Uri("ms-appx:///Assets/PackImages/Buffoon_Normal_2.png");
 
-                        List<IJoker> list;
-                        int lVal = Random.Next(1, 100);
-                        switch (lVal)
-                        {
-                            case <= 70:
-                                list = CommonJokers;
-                                break;
-                            case > 70 and <= 95:
-                                list = UncommonJokers;
-                                break;
-                            default:
-                                list = RareJokers;
-                                break;
-                        }
-                        JokerPackShop.Add(new ConsumablePack<IJoker>(Uri, 2, () => GetJoker(list), 1, "Normal Buffoon Pack",
+                        PackShop.Add(new ConsumablePack<IEffect>(Uri, 2, () => GetJoker(GetJokerList()), 1, "Normal Buffoon Pack",
                             "Choose 1 of up to 2 Joker cards", 4));
                         break;
-                    case var _ when pVal > NormalBuffoonWeight && pVal <= NormalSpectralWeight:
+                    case var _ when pVal <= NormalSpectralWeight:
+                        if(varValue == 0) Uri = new Uri("ms-appx:///Assets/PackImages/Spectral_Normal_1.png");
+                        else Uri = new Uri("ms-appx:///Assets/PackImages/Spectral_Normal_2.png");
 
+                        PackShop.Add(new ConsumablePack<IEffect>(Uri, 2, GetSpectral, 1, "Normal Spectral Pack",
+                            "Choose 1 of up to 2 Spectral cards", 4));
                         break;
-                    case var _ when pVal > NormalSpectralWeight && pVal <= JumboStACWeight:
+                    case var _ when pVal <= JumboStACWeight:
+                        if (pVal == 1) Uri = new Uri("ms-appx:///Assets/PackImages/Arcana_Jumbo_1.png");
+                        else Uri = new Uri("ms-appx:///Assets/PackImages/Arcana_Jumbo_2.png");
+
+                        PackShop.Add(new ConsumablePack<IEffect>(Uri!, 5, GetTarot, 1, "Jumbo Arcana Pack",
+                            "Choose 1 of up to 5 Tarot cards to be used immediately", 6));
                         break;
-                    case var _ when pVal > JumboStACWeight && pVal <= JumboBuffoonWeight:
+                    case var _ when pVal <= JumboStACWeight + 2:
+                        if (pVal == 1) Uri = new Uri("ms-appx:///Assets/PackImages/Standard_Jumbo_1.png");
+                        else Uri = new Uri("ms-appx:///Assets/PackImages/Standard_Jumbo_2.png");
+
+                        PackShop.Add(new ConsumablePack<IEffect>(Uri!, 5, GetCard, 1, "Jumbo Standard Pack",
+                            "Choose 1 of up to 5 Playing cards to add to your deck", 6));
                         break;
-                    case var _ when pVal > JumboBuffoonWeight && pVal <= JumboSpectralWeight:
+                    case var _ when pVal <= JumboStACWeight + 4:
+                        if (pVal == 1) Uri = new Uri("ms-appx:///Assets/PackImages/Celestial_Jumbo_1.png");
+                        else Uri = new Uri("ms-appx:///Assets/PackImages/Celestial_Jumbo_2.png");
+
+                        PackShop.Add(new ConsumablePack<IEffect>(Uri!, 5, GetPlanet, 1, "Jumbo Celestial Pack",
+                            "Choose 1 of up to 5 Planet cards to be used immediately", 6));
                         break;
-                    case var _ when pVal > JumboSpectralWeight && pVal <= MegaStACWeight:
+                    case var _ when pVal <= JumboBuffoonWeight:
+                        Uri = new Uri("ms-appx:///Assets/PackImages/Buffoon_Jumbo.png");
+                        PackShop.Add(new ConsumablePack<IEffect>(Uri!, 4, () => GetJoker(GetJokerList()), 1, "Jumbo Buffoon Pack",
+                            "Choose 1 of up to 4 Joker cards", 6));
                         break;
-                    case var _ when pVal > MegaStACWeight && pVal <= MegaBuffoonWeight:
+                    case var _ when pVal <= JumboSpectralWeight:
+                        Uri = new Uri("ms-appx:///Assets/PackImages/Spectral_Jumbo.png");
+                        PackShop.Add(new ConsumablePack<IEffect>(Uri!, 4, GetSpectral, 1, "Jumbo Spectral Pack",
+                            "Choose 1 of up to 4 Spectral cards to be used immediately", 6));
                         break;
-                    case var _ when pVal > MegaBuffoonWeight && pVal <= MegaSpectralWeight:
+                    case var _ when pVal <= MegaStACWeight:
+                        if (pVal == 1) Uri = new Uri("ms-appx:///Assets/PackImages/Celestial_Mega_1.png");
+                        else Uri = new Uri("ms-appx:///Assets/PackImages/Celestial_Mega_2.png");
+
+                        PackShop.Add(new ConsumablePack<IEffect>(Uri!, 5, GetPlanet, 2, "Mega Celestial Pack",
+                            "Choose 2 of up to 5 Planet cards to be used immediately", 8));
+                        break;
+                    case var _ when pVal <= MegaStACWeight + 0.5:
+                        if (pVal == 1) Uri = new Uri("ms-appx:///Assets/PackImages/Arcana_Mega_1.png");
+                        else Uri = new Uri("ms-appx:///Assets/PackImages/Arcana_Mega_2.png");
+
+                        PackShop.Add(new ConsumablePack<IEffect>(Uri!, 5, GetTarot, 2, "Mega Arcana Pack",
+                            "Choose 2 of up to 5 Tarot cards to be used immediately", 8));
+                        break;
+                    case var _ when pVal <= MegaStACWeight + 1:
+                        if (pVal == 1) Uri = new Uri("ms-appx:///Assets/PackImages/Standard_Mega_1.png");
+                        else Uri = new Uri("ms-appx:///Assets/PackImages/Standard_Mega_2.png");
+
+                        PackShop.Add(new ConsumablePack<IEffect>(Uri!, 5, GetCard, 2, "Mega Standard Pack",
+                            "Choose 2 of up to 5 Playing cards to add to your deck", 8));
+                        break;
+                    case var _ when pVal <= MegaBuffoonWeight:
+                        Uri = new Uri("ms-appx:///Assets/PackImages/Buffoon_Mega.png");
+                        PackShop.Add(new ConsumablePack<IEffect>(Uri!, 4, () => GetJoker(GetJokerList()), 2, "Mega Spectral Pack",
+                            "Choose 2 of up to 4 Joker cards", 8));
+                        break;
+                    case var _ when pVal <= MegaSpectralWeight:
+                        Uri = new Uri("ms-appx:///Assets/PackImages/Spectral_Mega.png");
+                        PackShop.Add(new ConsumablePack<IEffect>(Uri!, 4, GetSpectral, 2, "Mega Spectral Pack",
+                            "Choose 2 of up to 4 Spectral cards to be used immediately", 8));
                         break;
                 }
-            } while (ConsumablePackShop.Count + JokerPackShop.Count + CardPackShop.Count != 2);
+            } while (PackShop.Count != 2);
         }
         internal void FillVoucherShop()
         {
-            throw new NotImplementedException();
+            do
+            {
+                VoucherShop.Add(Vouchers[Random.Next(0, Vouchers.Count - 1)]);
+            } while (VoucherShop.Count != VoucherShopSize);
+        }
+
+        private List<IJoker> GetJokerList()
+        {
+            int lVal = Random.Next(1, 100);
+            switch (lVal)
+            {
+                case <= 70:
+                    return CommonJokers;
+                case <= 95:
+                    return UncommonJokers;
+                default:
+                    return RareJokers;
+            }
         }
     }
 }

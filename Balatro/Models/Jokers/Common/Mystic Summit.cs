@@ -15,7 +15,7 @@ namespace Balatro.Models.Jokers.Common
         public Rarity Rarity { get; }
         public string Name { get; }
         public Modifier Modifier { get; set; }
-        public ImageSource Image { get; }
+        public BitmapImage Image { get; }
 
         public Mystic_Summit()
         {

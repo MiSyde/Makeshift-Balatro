@@ -1,5 +1,6 @@
 using Balatro.Models;
 using Balatro.Models.Jokers;
+using Balatro.Models.Packs;
 using Balatro.Models.Vouchers;
 using Balatro.Util;
 using CommunityToolkit.Mvvm.Input;
@@ -51,6 +52,12 @@ public sealed partial class ShopPage : Page
         if (Game.Round % 4 == 0) Game.Player.Tags.Clear();
     }
 
+    private void BuyPack(ConsumablePack<IEffect>? ConsumablePack, ConsumablePack<Card>? CardPack)
+    {
+        if (ConsumablePack is null) App.MainFrame.Navigate(typeof(PackAction_Page), CardPack!);
+        else App.MainFrame.Navigate(typeof(PackAction_Page), ConsumablePack!);
+    }
+
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
         base.OnNavigatedTo(e);
@@ -78,7 +85,7 @@ public sealed partial class ShopPage : Page
         JokersGridView.Background = opaque;
         ConsumablesGridView.Background = opaque;
 
-        PacksGridView.Background = gray;
+        PackShopGridView.Background = gray;
         BuyableItemsGridView.Background = gray;
     }
 

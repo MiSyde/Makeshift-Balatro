@@ -20,7 +20,7 @@ namespace Balatro.Models.Decks
         public string Name => "Red Deck";
         public string Description => "Gives +1 discard";
 
-        public ImageSource Image { get; }
+        public BitmapImage Image { get; }
 
         public Red_Deck()
         {

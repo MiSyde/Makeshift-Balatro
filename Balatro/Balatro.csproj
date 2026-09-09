@@ -18,6 +18,7 @@
     <None Remove="End_Window.xaml" />
     <None Remove="MenuPage.xaml" />
     <None Remove="OptionsWindow.xaml" />
+    <None Remove="PackAction_Page.xaml" />
     <None Remove="RunInfoWindow.xaml" />
     <None Remove="SelectionPage.xaml" />
   </ItemGroup>
@@ -57,7 +58,11 @@
   <ItemGroup>
     <Folder Include="Models\Jokers\Legendary\" />
     <Folder Include="Models\Stickers\" />
-    <Folder Include="Models\Tarots\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="PackAction_Page.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="SelectionPage.xaml">

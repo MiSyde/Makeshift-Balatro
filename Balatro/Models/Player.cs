@@ -230,8 +230,14 @@ namespace Balatro.Models
             }
         }
 
-        public void CalculateChips()
+        public async void CalculateChips()
         {
+            foreach(Card c in PlayedCards)
+            {
+                await Task.Delay(100);
+                Chips += c.Value;
+                c.AddEffect(this);  
+            }
             ApplyJokers();
             TotalChips += _chips * _multiplier;
         }

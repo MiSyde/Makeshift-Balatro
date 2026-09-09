@@ -10,7 +10,7 @@ namespace Balatro.Models.Jokers.Common
     public class Banner : IJoker
     {
         public string Name { get; }
-        public ImageSource Image { get; }
+        public BitmapImage Image { get; }
         public string Description { get; }
         public int Price { get; set; }
         public Rarity Rarity { get; }

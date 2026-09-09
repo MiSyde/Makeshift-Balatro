@@ -19,7 +19,7 @@ namespace Balatro.Models.Jokers.Rare
 
         public string Description { get; }
 
-        public ImageSource Image { get; }
+        public BitmapImage Image { get; }
 
         public Baron()
         {

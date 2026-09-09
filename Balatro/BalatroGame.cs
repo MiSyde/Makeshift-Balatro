@@ -205,7 +205,7 @@ namespace Balatro
 
             ChangeThreshold();
 
-            if (Round % 4 == 0) { App.MainFrame.Navigate(typeof(ShopPage)); }
+            App.MainFrame.Navigate(typeof(ShopPage));
         }
 
         private void ChangeThreshold()
@@ -312,7 +312,7 @@ namespace Balatro
             do
             {
                 BossBlind = BossBlinds[Random.Shared.Next(0, BossBlinds.Count - 1)];
-            } while (BossBlind.MinAnte <= Ante);
+            } while (BossBlind.MinAnte > Ante);
 
             BossBlinds.Remove(BossBlind);
 
