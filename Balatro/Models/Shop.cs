@@ -184,7 +184,7 @@ namespace Balatro.Models
                                 break;
                         }
                         PackShop.Add(new ConsumablePack<IEffect>(Uri!, 3, GetCard, 1, "Normal Standard Pack",
-                            "Choose 1 of up to 3 Playing cards to add to your deck", 4));
+                            "Choose 1 of up to 3 Playing cards to add to your deck", 4, Enums.PackType.STANDARD));
                         break;
                     case var _ when pVal <= NormalStACWeight * 2:
                         switch (varValue)
@@ -203,7 +203,7 @@ namespace Balatro.Models
                                 break;
                         }
                         PackShop.Add(new ConsumablePack<IEffect>(Uri!, 3, GetTarot, 1, "Normal Arcana Pack",
-                            "Choose 1 of up to 3 Tarot cards to be used immediately", 4));
+                            "Choose 1 of up to 3 Tarot cards to be used immediately", 4, Enums.PackType.ARCANA));
                         break;
                     case var _ when pVal <= NormalStACWeight * 3:
                         switch (varValue)
@@ -222,83 +222,83 @@ namespace Balatro.Models
                                 break;
                         }
                         PackShop.Add(new ConsumablePack<IEffect>(Uri!, 3, GetPlanet, 1, "Normal Celestial Pack",
-                            "Choose 1 of up to 3 Planet cards to be used immediately", 4));
+                            "Choose 1 of up to 3 Planet cards to be used immediately", 4, Enums.PackType.CELESTIAL));
                         break;
                     case var _ when pVal <= NormalBuffoonWeight:
                         if(varValue == 1) Uri = new Uri("ms-appx:///Assets/PackImages/Buffoon_Normal_1.png");
                         else Uri = new Uri("ms-appx:///Assets/PackImages/Buffoon_Normal_2.png");
 
                         PackShop.Add(new ConsumablePack<IEffect>(Uri, 2, () => GetJoker(GetJokerList()), 1, "Normal Buffoon Pack",
-                            "Choose 1 of up to 2 Joker cards", 4));
+                            "Choose 1 of up to 2 Joker cards", 4, Enums.PackType.BUFFOON));
                         break;
                     case var _ when pVal <= NormalSpectralWeight:
                         if(varValue == 0) Uri = new Uri("ms-appx:///Assets/PackImages/Spectral_Normal_1.png");
                         else Uri = new Uri("ms-appx:///Assets/PackImages/Spectral_Normal_2.png");
 
                         PackShop.Add(new ConsumablePack<IEffect>(Uri, 2, GetSpectral, 1, "Normal Spectral Pack",
-                            "Choose 1 of up to 2 Spectral cards", 4));
+                            "Choose 1 of up to 2 Spectral cards", 4, Enums.PackType.SPECTRAL));
                         break;
                     case var _ when pVal <= JumboStACWeight:
                         if (pVal == 1) Uri = new Uri("ms-appx:///Assets/PackImages/Arcana_Jumbo_1.png");
                         else Uri = new Uri("ms-appx:///Assets/PackImages/Arcana_Jumbo_2.png");
 
                         PackShop.Add(new ConsumablePack<IEffect>(Uri!, 5, GetTarot, 1, "Jumbo Arcana Pack",
-                            "Choose 1 of up to 5 Tarot cards to be used immediately", 6));
+                            "Choose 1 of up to 5 Tarot cards to be used immediately", 6, Enums.PackType.ARCANA));
                         break;
                     case var _ when pVal <= JumboStACWeight + 2:
                         if (pVal == 1) Uri = new Uri("ms-appx:///Assets/PackImages/Standard_Jumbo_1.png");
                         else Uri = new Uri("ms-appx:///Assets/PackImages/Standard_Jumbo_2.png");
 
                         PackShop.Add(new ConsumablePack<IEffect>(Uri!, 5, GetCard, 1, "Jumbo Standard Pack",
-                            "Choose 1 of up to 5 Playing cards to add to your deck", 6));
+                            "Choose 1 of up to 5 Playing cards to add to your deck", 6, Enums.PackType.STANDARD));
                         break;
                     case var _ when pVal <= JumboStACWeight + 4:
                         if (pVal == 1) Uri = new Uri("ms-appx:///Assets/PackImages/Celestial_Jumbo_1.png");
                         else Uri = new Uri("ms-appx:///Assets/PackImages/Celestial_Jumbo_2.png");
 
                         PackShop.Add(new ConsumablePack<IEffect>(Uri!, 5, GetPlanet, 1, "Jumbo Celestial Pack",
-                            "Choose 1 of up to 5 Planet cards to be used immediately", 6));
+                            "Choose 1 of up to 5 Planet cards to be used immediately", 6, Enums.PackType.CELESTIAL));
                         break;
                     case var _ when pVal <= JumboBuffoonWeight:
                         Uri = new Uri("ms-appx:///Assets/PackImages/Buffoon_Jumbo.png");
                         PackShop.Add(new ConsumablePack<IEffect>(Uri!, 4, () => GetJoker(GetJokerList()), 1, "Jumbo Buffoon Pack",
-                            "Choose 1 of up to 4 Joker cards", 6));
+                            "Choose 1 of up to 4 Joker cards", 6, Enums.PackType.BUFFOON));
                         break;
                     case var _ when pVal <= JumboSpectralWeight:
                         Uri = new Uri("ms-appx:///Assets/PackImages/Spectral_Jumbo.png");
                         PackShop.Add(new ConsumablePack<IEffect>(Uri!, 4, GetSpectral, 1, "Jumbo Spectral Pack",
-                            "Choose 1 of up to 4 Spectral cards to be used immediately", 6));
+                            "Choose 1 of up to 4 Spectral cards to be used immediately", 6, Enums.PackType.SPECTRAL));
                         break;
                     case var _ when pVal <= MegaStACWeight:
                         if (pVal == 1) Uri = new Uri("ms-appx:///Assets/PackImages/Celestial_Mega_1.png");
                         else Uri = new Uri("ms-appx:///Assets/PackImages/Celestial_Mega_2.png");
 
                         PackShop.Add(new ConsumablePack<IEffect>(Uri!, 5, GetPlanet, 2, "Mega Celestial Pack",
-                            "Choose 2 of up to 5 Planet cards to be used immediately", 8));
+                            "Choose 2 of up to 5 Planet cards to be used immediately", 8, Enums.PackType.CELESTIAL));
                         break;
                     case var _ when pVal <= MegaStACWeight + 0.5:
                         if (pVal == 1) Uri = new Uri("ms-appx:///Assets/PackImages/Arcana_Mega_1.png");
                         else Uri = new Uri("ms-appx:///Assets/PackImages/Arcana_Mega_2.png");
 
                         PackShop.Add(new ConsumablePack<IEffect>(Uri!, 5, GetTarot, 2, "Mega Arcana Pack",
-                            "Choose 2 of up to 5 Tarot cards to be used immediately", 8));
+                            "Choose 2 of up to 5 Tarot cards to be used immediately", 8, Enums.PackType.ARCANA));
                         break;
                     case var _ when pVal <= MegaStACWeight + 1:
                         if (pVal == 1) Uri = new Uri("ms-appx:///Assets/PackImages/Standard_Mega_1.png");
                         else Uri = new Uri("ms-appx:///Assets/PackImages/Standard_Mega_2.png");
 
                         PackShop.Add(new ConsumablePack<IEffect>(Uri!, 5, GetCard, 2, "Mega Standard Pack",
-                            "Choose 2 of up to 5 Playing cards to add to your deck", 8));
+                            "Choose 2 of up to 5 Playing cards to add to your deck", 8, Enums.PackType.STANDARD));
                         break;
                     case var _ when pVal <= MegaBuffoonWeight:
                         Uri = new Uri("ms-appx:///Assets/PackImages/Buffoon_Mega.png");
                         PackShop.Add(new ConsumablePack<IEffect>(Uri!, 4, () => GetJoker(GetJokerList()), 2, "Mega Spectral Pack",
-                            "Choose 2 of up to 4 Joker cards", 8));
+                            "Choose 2 of up to 4 Joker cards", 8, Enums.PackType.BUFFOON));
                         break;
                     case var _ when pVal <= MegaSpectralWeight:
                         Uri = new Uri("ms-appx:///Assets/PackImages/Spectral_Mega.png");
                         PackShop.Add(new ConsumablePack<IEffect>(Uri!, 4, GetSpectral, 2, "Mega Spectral Pack",
-                            "Choose 2 of up to 4 Spectral cards to be used immediately", 8));
+                            "Choose 2 of up to 4 Spectral cards to be used immediately", 8, Enums.PackType.SPECTRAL));
                         break;
                 }
             } while (PackShop.Count != 2);

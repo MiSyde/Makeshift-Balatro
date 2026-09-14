@@ -200,8 +200,8 @@
 
         <Grid Name="PlayGrid" Grid.Column="2">
             <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition/>
+                <RowDefinition Height="0.2778*"/>
+                <RowDefinition Height="0.7222*"/>
             </Grid.RowDefinitions>
 
             <Grid Name="ConsumableAndJokerGrid" Grid.Row="0">
@@ -218,8 +218,8 @@
 
             <Grid Name="TableGrid" Grid.Row="1" Background="Beige">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="83.35*"/>
+                    <ColumnDefinition Width="16.65*"/>
                 </Grid.ColumnDefinitions>
 
                 <Grid Name="CardGrid" Grid.Column="0">

@@ -21,14 +21,16 @@ namespace Balatro.Models
         public Modifier Modifier { get; set; }
         public List<Enhancement> AdditionalEnhancements { get; }
         public Enhancement BaseEnhancement { get; set; }
+        public int RankOrder { get; }
 
         public string Name { get; } = string.Empty;
 
         public string Description { get; }
 
 
-        public Card(BitmapImage Image, int Value, bool IsFaceCard, SuitType SType, FaceCard? FCType = null)
+        public Card(BitmapImage Image, int Value, bool IsFaceCard, SuitType SType, int RankOrder, FaceCard? FCType = null)
         {
+            this.RankOrder = RankOrder;
             this.Value = Value;
             this.IsFaceCard = IsFaceCard;
             FaceCardType = FCType;

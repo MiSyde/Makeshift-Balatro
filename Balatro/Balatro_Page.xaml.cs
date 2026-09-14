@@ -117,7 +117,8 @@ namespace Balatro
 
         private void Card_Selected(object sender, ItemClickEventArgs e)
         {
-            if (e.ClickedItem is Card clickedCard)
+            if (game.Player.SelectedCards.Count == 5) return;
+            else if (e.ClickedItem is Card clickedCard)
             {
                 game.CardPressed(clickedCard);
             }

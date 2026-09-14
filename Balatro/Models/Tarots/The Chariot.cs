@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Balatro.Models.Tarots
 {
-    public class The_Chariot : IEffect
+    public class The_Chariot : IConsumable
     {
         public string Name => "The Chariot";
 
@@ -18,5 +18,7 @@ namespace Balatro.Models.Tarots
         {
             Player.SelectedCards[0].BaseEnhancement = Enhancement.STEEL_CARD;
         }
+
+        public bool CanUse(Player Player) => Player.SelectedCards.Count == 1;
     }
 }

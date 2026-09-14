@@ -57,8 +57,7 @@ namespace Balatro.Models
             int flush = 1;
             int kind = 1;
             int pair = 0;
-            List<int> pairValues = new();
-            List<bool> pairFaceValues = new();
+            List<int> pairOrderValues = new();
             List<Card> straightCards = new();
             List<Card> flushCards = new();
             List<Card> multKindCards = new();
@@ -70,7 +69,7 @@ namespace Balatro.Models
             {
                 Card currentCard = sorted[i];
 
-                if (currentCard.Value == previousCard.Value + 1) 
+                if (currentCard.RankOrder == previousCard.RankOrder + 1) 
                 { 
                     ++straight;
                     if (!straightCards.Contains(previousCard)) 
@@ -79,36 +78,12 @@ namespace Balatro.Models
                     straightCards.Add(currentCard);
 
                 }
-                if (currentCard.Value == previousCard.Value && !currentCard.IsFaceCard && !previousCard.IsFaceCard) 
+                if(currentCard.RankOrder == previousCard.RankOrder)
                 {
                     ++kind;
                     if (kind == 2)
                     {
-                        pairValues.Add(currentCard.Value);
-                        pairFaceValues.Add(false);
-                        ++pair;
-                    }
-                    else if(kind == 3)
-                    {
-                        ++three;
-
-                    } 
-                    else if(kind == 4)
-                    {
-                        ++four;
-                    } 
-                    else if(kind == 5)
-                    {
-                        ++five;
-                    }
-                }
-                else if(currentCard.Value == previousCard.Value && currentCard.IsFaceCard && previousCard.IsFaceCard && currentCard.FaceCardType == previousCard.FaceCardType)
-                {
-                    ++kind;
-                    if (kind == 2)
-                    {
-                        pairFaceValues.Add(true);
-                        pairValues.Add(currentCard.Value);
+                        pairOrderValues.Add(currentCard.RankOrder);
                         ++pair;
                     }
                     else if (kind == 3)
@@ -144,7 +119,7 @@ namespace Balatro.Models
                 playedHands.Add(Hand.PAIR);
                 foreach(Card c in selectedCards)
                 {
-                    if (pairValues.Contains(c.Value) && pairFaceValues.Contains(c.IsFaceCard))
+                    if (pairOrderValues.Contains(c.RankOrder))
                         playedCards.Add(c);
                 }
             }
@@ -156,7 +131,7 @@ namespace Balatro.Models
                 playedHands.Add(Hand.TWO_PAIR);
                 foreach (Card c in selectedCards)
                 {
-                    if (pairValues.Contains(c.Value) && pairFaceValues.Contains(c.IsFaceCard))
+                    if (pairOrderValues.Contains(c.RankOrder))
                         playedCards.Add(c);
                 }
             }
@@ -167,7 +142,7 @@ namespace Balatro.Models
                 playedHands.Add(Hand.THREE_OF_A_KIND);
                 foreach (Card c in selectedCards)
                 {
-                    if (pairValues.Contains(c.Value) && pairFaceValues.Contains(c.IsFaceCard))
+                    if (pairOrderValues.Contains(c.RankOrder))
                         playedCards.Add(c);
                 }
             }
@@ -194,7 +169,7 @@ namespace Balatro.Models
                 }
             }
 
-            if (three == 1 && pair == 1 && pairValues.Count != 1) 
+            if (three == 1 && pair == 1 && pairOrderValues.Count != 1) 
             { 
                 highestHand = Hand.FULL_HOUSE;
                 playedHands.Add(Hand.FULL_HOUSE);
@@ -207,7 +182,7 @@ namespace Balatro.Models
                 playedHands.Add(Hand.FOUR_OF_A_KIND);
                 foreach (Card c in selectedCards)
                 {
-                    if (pairValues.Contains(c.Value) && pairFaceValues.Contains(c.IsFaceCard))
+                    if (pairOrderValues.Contains(c.RankOrder))
                         playedCards.Add(c);
                 }
             }
@@ -223,10 +198,10 @@ namespace Balatro.Models
                 foreach(Card c in selectedCards)
                 {
                     if (c.IsFaceCard && c.FaceCardType == FaceCard.King) king = true;
-                    if (c.IsFaceCard && c.FaceCardType == FaceCard.Queen) queen = true;
-                    if (c.IsFaceCard && c.FaceCardType == FaceCard.Jack) jack = true;
-                    if (c.IsFaceCard && c.FaceCardType == FaceCard.Ace) ace = true;
-                    if (!c.IsFaceCard && c.Value == 10) ten = true;
+                    else if (c.IsFaceCard && c.FaceCardType == FaceCard.Queen) queen = true;
+                    else if (c.IsFaceCard && c.FaceCardType == FaceCard.Jack) jack = true;
+                    else if (c.IsFaceCard && c.FaceCardType == FaceCard.Ace) ace = true;
+                    else if (!c.IsFaceCard && c.Value == 10) ten = true;
                 }
 
                 if(ace && king && queen && jack && ten)
@@ -242,7 +217,7 @@ namespace Balatro.Models
                 playedHands.Add(Hand.FIVE_OF_A_KIND);
                 playedCards = selectedCards;
             }
-            if(flush >= NeededCards4FlushAndStraight && three == 1 && pair == 1 && pairValues.Count != 1)
+            if(flush >= NeededCards4FlushAndStraight && three == 1 && pair == 1 && pairOrderValues.Count != 1)
             {
                 highestHand = Hand.FLUSH_HOUSE;
                 playedHands.Add(Hand.FLUSH_HOUSE);

@@ -9,6 +9,23 @@
     mc:Ignorable="d">
 
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60*"/>
+            <RowDefinition Height="40*"/>
+        </Grid.RowDefinitions>
+
+        <GridView Grid.Row="0" ItemsSource="{x:Bind ModifyableCards, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Center"
+                  ItemClick="CardClick"  Visibility="{x:Bind ShowCardsGrid}">
+            
+        </GridView>
+
+        <GridView Grid.Row="1" ItemsSource="{x:Bind ConsumablePack, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Center"
+                  ItemClick="PackItemClick">
+        </GridView>
+        
+        <Border Style="{StaticResource InactiveButtonContainer}">
+            <Button Content="Use Card" Command="{x:Bind UseCardCommand}"/>
+        </Border>
 
     </Grid>
 </Page>
