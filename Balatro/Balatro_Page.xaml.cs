@@ -115,15 +115,6 @@ namespace Balatro
             optionsWindow = null;
         }
 
-        private void Card_Selected(object sender, ItemClickEventArgs e)
-        {
-            if (game.Player.SelectedCards.Count == 5) return;
-            else if (e.ClickedItem is Card clickedCard)
-            {
-                game.CardPressed(clickedCard);
-            }
-        }
-
         private void SetDimensions()
         {
             CurrentSelectionInfoBorder.Height = this.ActualHeight * 0.1944;
@@ -172,6 +163,25 @@ namespace Balatro
             {
                 var style = (Style)Application.Current.Resources["ChipsContainer"];
                 PlayCardsButtonBorder.Style = style;
+            }
+        }
+
+        private void PlayerCards_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (sender is not GridView gridView) return;
+
+            if (gridView.SelectedItems.Count > 5)
+            {
+                gridView.SelectedItems.Remove(e.AddedItems[0]);
+                return;
+            }
+            if(e.AddedItems.Count == 0)
+            {
+                game.Player.SelectedCards.Remove((Card)e.RemovedItems[0]);
+            } 
+            else
+            {
+                game.Player.SelectedCards.Add((Card)e.AddedItems[0]);
             }
         }
     }

@@ -4,18 +4,18 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Balatro.Models.Packs
+namespace Balatro.Models
 {
-    public class ConsumablePack<T>
+    public class ConsumablePack
     {
         public BitmapImage Image { get; }
         public PackType PackType { get; }
         public string Name { get; }
         public string Description { get; }
         public int ChooseUpTo { get; }
-        public List<T> PackContent { get; }
+        public List<IEffect> PackContent { get; }
         public int Price { get; }
-        public ConsumablePack(Uri Uri, int PackSize, Func<T> GetFunction, int ChooseUpTo, string Name, 
+        public ConsumablePack(Uri Uri, int PackSize, Func<IEffect> GetFunction, int ChooseUpTo, string Name, 
             string Description, int Price, PackType PackType)
         {
             this.Price = Price;
@@ -27,9 +27,9 @@ namespace Balatro.Models.Packs
             FillPack(PackSize, GetFunction);
         }
 
-        public List<T> FillPack(int PackSize, Func<T> GetFunction)
+        public List<IEffect> FillPack(int PackSize, Func<IEffect> GetFunction)
         {
-            List<T> PackContent = new();
+            List<IEffect> PackContent = new();
 
             do
             {

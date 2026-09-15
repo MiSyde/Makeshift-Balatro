@@ -13,7 +13,7 @@ namespace Balatro.Models.Vouchers
         public string Id { get; }
         public string Description { get; }
 
-        public ImageSource Image { get; }
+        public BitmapImage Image { get; }
 
         public Glow_Up()
         {
@@ -26,5 +26,8 @@ namespace Balatro.Models.Vouchers
         {
             
         }
+
+        public void ApplyEffect(Player Player) { return; }
+        public void ApplyEffect(BalatroGame Game) { return; }
     }
 }

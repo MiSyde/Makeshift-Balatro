@@ -29,7 +29,7 @@ namespace Balatro.Models
                 var current = sorted[i];
                 int j = i-1;
 
-                while (j >= 0 && sorted[j].Value > current.Value)
+                while (j >= 0 && sorted[j].RankOrder > current.RankOrder)
                 {
                     sorted[j + 1] = sorted[j];
                     --j;

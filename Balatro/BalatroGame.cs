@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -100,7 +101,7 @@ namespace Balatro
         {
             baseScore = 300;
             Round = 1;
-            Threshold = 300;
+            Threshold = 1;
             BlindColor = new SolidColorBrush(Color.FromArgb(255, 0, 104, 173));
             Ante = 1;
 
@@ -115,11 +116,6 @@ namespace Balatro
             ConfirmCommand = new RelayCommand(ConfirmedCards, CanConfirm);
             DealCards();
         }   
-
-        public void CardPressed(Card c)
-        {
-            if (!Player.SelectedCards.Remove(c)) Player.SelectedCards.Add(c);
-        }
 
         private void UpdateSelectionCommands()
         {
@@ -159,11 +155,11 @@ namespace Balatro
 
             Player.CalculateChips();
 
-            foreach (Card c in Player.SelectedCards)
+            foreach (Card c in Player.SelectedCards.ToList())
             {
                 Player.Cards.Remove(c);
             }
-
+            
             Player.SelectedCards.Clear();
 
             if (Player.TotalChips >= Threshold) NextRound();
@@ -173,7 +169,7 @@ namespace Balatro
 
         private void DiscardedCards()
         {
-            foreach(Card c in Player.SelectedCards)
+            foreach(Card c in Player.SelectedCards.ToList())
             {
                 Player.Cards.Remove(c);
             }
@@ -200,6 +196,7 @@ namespace Balatro
 
             Player.SelectedCards.Clear();
             Player.Cards.Clear();
+            Player.TotalChips = 0;
 
             DealCards();
 

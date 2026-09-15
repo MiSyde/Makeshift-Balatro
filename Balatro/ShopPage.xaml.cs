@@ -1,6 +1,5 @@
 using Balatro.Models;
 using Balatro.Models.Jokers;
-using Balatro.Models.Packs;
 using Balatro.Models.Vouchers;
 using Balatro.Util;
 using CommunityToolkit.Mvvm.Input;
@@ -52,10 +51,9 @@ public sealed partial class ShopPage : Page
         if (Game.Round % 4 == 0) Game.Player.Tags.Clear();
     }
 
-    private void BuyPack(ConsumablePack<IEffect>? ConsumablePack, ConsumablePack<Card>? CardPack)
+    private void BuyPack(ConsumablePack? ConsumablePack)
     {
-        if (ConsumablePack is null) App.MainFrame.Navigate(typeof(PackAction_Page), CardPack!);
-        else App.MainFrame.Navigate(typeof(PackAction_Page), ConsumablePack!);
+        App.MainFrame.Navigate(typeof(PackAction_Page), ConsumablePack);
     }
 
     protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -69,7 +67,7 @@ public sealed partial class ShopPage : Page
         {
             v.ApplyEffect(Shop);
         }
-
+        
         Shop.FillUpShop();
 
         Shop.FillPackShop();
@@ -147,5 +145,28 @@ public sealed partial class ShopPage : Page
     private void Options_Closed(object sender, WindowEventArgs args)
     {
         optionsWindow = null;
+    }
+
+    private void UnselectOnLosingFocus(UIElement sender, LosingFocusEventArgs args)
+    {
+        if(sender is GridView gv)
+        {
+            var newFocus = args.NewFocusedElement;
+
+            if (newFocus == null || !InsideGridView(newFocus, gv)) gv.SelectedIndex = -1;
+        }
+    }
+
+    private bool InsideGridView(DependencyObject Child, DependencyObject Parent)
+    {
+        while(Child != null)
+        {
+            if(Child == Parent)
+            {
+                return true;
+            }
+            Child = VisualTreeHelper.GetParent(Child);
+        }
+        return false;
     }
 }

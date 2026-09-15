@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Balatro.Models
+namespace Balatro.Models.Achievement
 {
     public class EventReporter
     {

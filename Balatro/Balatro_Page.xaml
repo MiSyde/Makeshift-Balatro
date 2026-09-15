@@ -234,8 +234,8 @@
 
                     </GridView>
 
-                    <GridView ItemsSource="{x:Bind game.Player.Cards, Mode=OneWay}" HorizontalAlignment="Center" VerticalAlignment="Center" ItemClick="Card_Selected" IsItemClickEnabled="True" 
-            SelectionMode="Multiple" IsMultiSelectCheckBoxEnabled="False" Name="PlayerCards" Grid.Row="1">
+                    <GridView ItemsSource="{x:Bind game.Player.Cards, Mode=OneWay}" HorizontalAlignment="Center" VerticalAlignment="Center" IsItemClickEnabled="True" 
+            SelectionMode="Multiple" IsMultiSelectCheckBoxEnabled="False" Name="PlayerCards" Grid.Row="1" SelectionChanged="PlayerCards_SelectionChanged">
                         <GridView.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <ItemsWrapGrid Orientation="Vertical"/>

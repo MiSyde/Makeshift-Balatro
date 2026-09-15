@@ -1,6 +1,5 @@
 using Balatro.Models;
 using Balatro.Models.Decks;
-using Balatro.Models.Packs;
 using Balatro.Models.Tarots;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml;
@@ -32,7 +31,7 @@ namespace Balatro
         ObservableCollection<Card> ModifyableCards;
         int ChosenCards;
         Random Random;
-        ConsumablePack<IEffect> ConsumablePack;
+        ConsumablePack ConsumablePack;
         IConsumable? SelectedCard;
         RelayCommand UseCardCommand;
         public PackAction_Page()
@@ -58,7 +57,7 @@ namespace Balatro
         {
             base.OnNavigatedTo(e);
 
-            if(e.Parameter is ConsumablePack<IEffect> Pack)
+            if(e.Parameter is ConsumablePack Pack)
             {
                 if(Pack.PackType is Enums.PackType.ARCANA || Pack.PackType is Enums.PackType.CELESTIAL)
                 {
