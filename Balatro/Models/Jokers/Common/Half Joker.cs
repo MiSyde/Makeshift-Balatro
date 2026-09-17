@@ -1,9 +1,11 @@
 ﻿using Balatro.Enums;
 using Balatro.Models;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 
 namespace Balatro.Models.Jokers.Common
@@ -14,6 +16,15 @@ namespace Balatro.Models.Jokers.Common
         public int Price { get; set; }
         public Rarity Rarity { get; }
         public Modifier Modifier { get; set; }
+        public Visibility ButtonVisibility { get; set
+            {
+                if (field != value)
+                {
+                    field = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ButtonVisibility)));
+                }
+            }
+        } = Visibility.Collapsed;
         public BitmapImage Image { get; }
         public string Name { get; }
 
@@ -26,6 +37,8 @@ namespace Balatro.Models.Jokers.Common
             Name = "Half Joker";
             Image = new BitmapImage(new Uri("ms-appx:///Assets/JokerImages/Half_Joker.png"));
         }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         public void AddEffect(Player player)
         {

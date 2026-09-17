@@ -35,6 +35,8 @@ public sealed partial class ShopPage : Page
     OptionsWindow? optionsWindow;
     IntPtr mainHwnd;
     private const int GWLP_HWNDPARENT = -8;
+    IEffect? currentShopItem;
+    RelayCommand BuyCommand;
     public ShopPage()
     {
         InitializeComponent();
@@ -149,11 +151,22 @@ public sealed partial class ShopPage : Page
 
     private void UnselectOnLosingFocus(UIElement sender, LosingFocusEventArgs args)
     {
-        if(sender is GridView gv)
+        if (sender is GridView gv)
         {
             var newFocus = args.NewFocusedElement;
 
-            if (newFocus == null || !InsideGridView(newFocus, gv)) gv.SelectedIndex = -1;
+            if (newFocus == null || !InsideGridView(newFocus, gv))
+            {
+                if (currentShopItem != null)
+                {
+                    currentShopItem.ButtonVisibility = Visibility.Collapsed;
+                    currentShopItem = null;
+                }
+                else if (gv.SelectedItem is ConsumablePack Pack)
+                    Pack.ButtonVisibility = Visibility.Collapsed;
+
+                gv.SelectedIndex = -1;
+            }
         }
     }
 
@@ -168,5 +181,24 @@ public sealed partial class ShopPage : Page
             Child = VisualTreeHelper.GetParent(Child);
         }
         return false;
+    }
+
+    private void ShowBuyButtonItemsGridView(object sender, ItemClickEventArgs e)
+    {
+        if (e.ClickedItem is IEffect effect)
+        {
+            if (currentShopItem == effect)
+            {
+                effect.ButtonVisibility = Visibility.Collapsed;
+                currentShopItem = null;
+            }
+            else
+            {
+                currentShopItem?.ButtonVisibility = Visibility.Collapsed;
+
+                effect.ButtonVisibility = Visibility.Visible;
+                currentShopItem = effect;
+            }
+        }
     }
 }

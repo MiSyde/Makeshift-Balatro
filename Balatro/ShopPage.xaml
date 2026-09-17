@@ -263,7 +263,7 @@
 
                                 <Border Grid.Column="1" Style="{StaticResource GraySmallShadowContainer}">
                                     <GridView Name="BuyableItemsGridView" ItemsSource="{x:Bind Shop.CurrentShop}" LosingFocus="UnselectOnLosingFocus"
-                                              HorizontalAlignment="Center" VerticalAlignment="Center">
+                                              Padding="50,0,0,0" HorizontalAlignment="Center" SelectionMode="None" VerticalAlignment="Center" ItemClick="ShowBuyButtonItemsGridView" IsItemClickEnabled="True">
                                         <GridView.ItemsPanel>
                                             <ItemsPanelTemplate>
                                                 <ItemsWrapGrid Orientation="Vertical"/>
@@ -271,7 +271,17 @@
                                         </GridView.ItemsPanel>
                                         <GridView.ItemTemplate>
                                             <DataTemplate x:DataType="model:IEffect">
-                                                <Image Source="{x:Bind Image}" Height="201" Width="150"/>
+                                                <Grid Width="160">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="110"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <Image Source="{x:Bind Image}" Grid.Column="0" Height="190" Width="110" HorizontalAlignment="Left"/>
+                                                    <Border HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1" Style="{StaticResource SelectButtonContainer}" Height="50" Width="50" Visibility="{x:Bind ButtonVisibility, Mode=OneWay}">
+                                                        <Button Content="Buy" Visibility="{x:Bind ButtonVisibility, Mode=OneWay}"/>
+                                                    </Border>
+                                                    
+                                                </Grid>
                                             </DataTemplate>
                                         </GridView.ItemTemplate>
                                     </GridView>

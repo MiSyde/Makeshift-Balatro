@@ -1,17 +1,28 @@
 ﻿using Balatro.Enums;
 using Balatro.Models.Seals;
 using Balatro.Util;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace Balatro.Models
 {
     public class Card : IEffect
     {
         public int Value { get; }
+        public Visibility ButtonVisibility { get; set
+            {
+                if (field != value)
+                {
+                    field = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ButtonVisibility)));
+                }
+            }
+        } = Visibility.Collapsed;
         public bool IsFaceCard { get; }
         public FaceCard? FaceCardType { get; }
         public SuitType SuitType { get; }
@@ -42,6 +53,8 @@ namespace Balatro.Models
             if (IsFaceCard) Description = Helper.GetDescription(FCType!) + " of " + Helper.GetDescription(SType);
             else Description = Value.ToString() + " of " + Helper.GetDescription(SType);
         }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         private void Trigger_Seal(Player Player) 
         {

@@ -1,15 +1,26 @@
 ﻿using Balatro.Enums;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Media.Imaging;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 
 namespace Balatro.Models
 {
-    public class ConsumablePack
+    public class ConsumablePack : INotifyPropertyChanged
     {
         public BitmapImage Image { get; }
         public PackType PackType { get; }
+        public Visibility ButtonVisibility { get; set
+            {
+                if (field != value)
+                {
+                    field = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ButtonVisibility)));
+                }
+            }
+        } = Visibility.Collapsed;
         public string Name { get; }
         public string Description { get; }
         public int ChooseUpTo { get; }
@@ -26,6 +37,8 @@ namespace Balatro.Models
             this.PackType = PackType;
             FillPack(PackSize, GetFunction);
         }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         public List<IEffect> FillPack(int PackSize, Func<IEffect> GetFunction)
         {

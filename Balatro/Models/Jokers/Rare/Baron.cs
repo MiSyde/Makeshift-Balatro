@@ -1,8 +1,10 @@
 ﻿using Balatro.Enums;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 
 namespace Balatro.Models.Jokers.Rare
@@ -14,6 +16,15 @@ namespace Balatro.Models.Jokers.Rare
         public Rarity Rarity { get; }
 
         public Modifier Modifier { get; set; }
+        public Visibility ButtonVisibility { get; set
+            {
+                if (field != value)
+                {
+                    field = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ButtonVisibility)));
+                }
+            }
+        } = Visibility.Collapsed;
 
         public string Name { get; }
 
@@ -30,6 +41,8 @@ namespace Balatro.Models.Jokers.Rare
             Modifier = Modifier.BASE;
             Rarity = Rarity.RARE;
         }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         public void AddEffect(Player Player)
         {

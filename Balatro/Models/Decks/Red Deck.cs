@@ -1,4 +1,5 @@
 ﻿using Balatro.Enums;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
@@ -12,9 +13,18 @@ using System.Threading.Tasks;
 
 namespace Balatro.Models.Decks
 {
-    public class Red_Deck : IDeck, INotifyPropertyChanged
+    public class Red_Deck : IDeck
     {
         public List<Card> Cards { get; }
+        public Visibility ButtonVisibility { get; set 
+            {
+                if(field != value)
+                {
+                    field = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ButtonVisibility)));
+                }
+            } 
+        }
         public int CurrentSize { get; set; }
         public int MaxSize { get; set; }
         public string Name => "Red Deck";

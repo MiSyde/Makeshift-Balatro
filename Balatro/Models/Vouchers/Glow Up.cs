@@ -1,9 +1,11 @@
-﻿using Microsoft.UI.Xaml.Media;
+﻿using Balatro.Models.Achievement;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
-using Balatro.Models.Achievement;
 
 namespace Balatro.Models.Vouchers
 {
@@ -12,6 +14,15 @@ namespace Balatro.Models.Vouchers
     {
         public string Id { get; }
         public string Description { get; }
+        public Visibility ButtonVisibility { get; set
+            {
+                if (field != value)
+                {
+                    field = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ButtonVisibility)));
+                }
+            }
+        } = Visibility.Collapsed;
 
         public BitmapImage Image { get; }
 
@@ -21,6 +32,8 @@ namespace Balatro.Models.Vouchers
             Description = "Foil, Holographic, and Polychrome cards appear 4x more often ";
             Image = new BitmapImage(new Uri("ms-appx:///Assets/VoucherImages/Glow_Up.png"));
         }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         public void ApplyEffect(Shop shop)
         {

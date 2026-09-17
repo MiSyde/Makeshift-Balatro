@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
 
-namespace Balatro.Models
+namespace Balatro.Enums
 {
     public enum Enhancement
     {

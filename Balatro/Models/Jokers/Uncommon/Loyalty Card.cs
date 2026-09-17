@@ -1,8 +1,10 @@
 ﻿using Balatro.Enums;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 using System.Xml.Linq;
 
@@ -10,6 +12,15 @@ namespace Balatro.Models.Jokers.Uncommon
 {
     public class Loyalty_Card : IJoker
     {
+        public Visibility ButtonVisibility { get; set
+            {
+                if (field != value)
+                {
+                    field = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ButtonVisibility)));
+                }
+            }
+        } = Visibility.Collapsed;
         public string Description { get; }
         public int Price { get; set; }
         public Rarity Rarity { get; }
@@ -17,6 +28,8 @@ namespace Balatro.Models.Jokers.Uncommon
         public string Name { get; }
         public BitmapImage Image { get; }
         private int remainingHands;
+
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         public Loyalty_Card()
         {
