@@ -16,6 +16,7 @@
         <converter:IntValueEnumKeyDictConverter x:Key="IntValue"/>
         <converter:VisibleOver0 x:Key="Over0"/>
         <converter:RerollShopConverter x:Key="Reroll"/>
+        <converter:PriceConverter x:Key="Price"/>
     </Page.Resources>
 
     <Grid Name="BaseGrid">
@@ -278,7 +279,7 @@
                                                     </Grid.ColumnDefinitions>
                                                     <Image Source="{x:Bind Image}" Grid.Column="0" Height="190" Width="110" HorizontalAlignment="Left"/>
                                                     <Border HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1" Style="{StaticResource SelectButtonContainer}" Height="50" Width="50" Visibility="{x:Bind ButtonVisibility, Mode=OneWay}">
-                                                        <Button Content="Buy" Visibility="{x:Bind ButtonVisibility, Mode=OneWay}"/>
+                                                        <Button Name="BuyItemButton" Content="{x:Bind Price, Converter={StaticResource Price}}" Visibility="{x:Bind ButtonVisibility, Mode=OneWay}"/>
                                                     </Border>
                                                     
                                                 </Grid>

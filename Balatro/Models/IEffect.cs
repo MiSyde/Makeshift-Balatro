@@ -14,6 +14,7 @@ namespace Balatro.Models
         public string Description { get; }
         BitmapImage Image { get; }
         Visibility ButtonVisibility { get; set; }
+        int Price { get; set; }
         public abstract void AddEffect(Player Player);
     }
 }

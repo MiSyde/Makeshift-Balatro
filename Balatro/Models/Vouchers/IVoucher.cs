@@ -11,6 +11,7 @@ namespace Balatro.Models.Vouchers
     public interface IVoucher : INotifyPropertyChanged
     {
         public string Id { get; }
+        public int Price { get; set; }
         public string Description { get; }
         public BitmapImage Image { get; }
         public Visibility ButtonVisibility { get; set; }

@@ -12,6 +12,7 @@ namespace Balatro.Models.Vouchers
     {
         public string Id { get; }
         public string Description { get; }
+        public int Price { get; set; } = 10;
         public Visibility ButtonVisibility { get; set
             {
                 if (field != value)

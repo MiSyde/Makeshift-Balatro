@@ -7,7 +7,6 @@ namespace Balatro.Models.Jokers
 {
     public interface IJoker : IEffect
     {
-        public int Price { get; set; }
         public Rarity Rarity { get; }
         public Modifier Modifier { get; set; }
     }

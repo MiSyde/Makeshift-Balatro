@@ -20,6 +20,7 @@ namespace Balatro.Models.Planets
             }
         } = Visibility.Collapsed;
         public string Name => "Pluto";
+        public int Price { get; set; } = 3;
 
         public string Description => "Increases High Card hand value by +1 Mult and +10 Chips";
 

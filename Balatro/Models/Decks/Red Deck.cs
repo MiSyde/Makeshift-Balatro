@@ -16,15 +16,8 @@ namespace Balatro.Models.Decks
     public class Red_Deck : IDeck
     {
         public List<Card> Cards { get; }
-        public Visibility ButtonVisibility { get; set 
-            {
-                if(field != value)
-                {
-                    field = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ButtonVisibility)));
-                }
-            } 
-        }
+        public Visibility ButtonVisibility { get; set; }
+        public int Price { get; set; }
         public int CurrentSize { get; set; }
         public int MaxSize { get; set; }
         public string Name => "Red Deck";

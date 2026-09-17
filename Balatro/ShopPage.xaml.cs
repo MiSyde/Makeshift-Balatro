@@ -1,5 +1,6 @@
 using Balatro.Models;
 using Balatro.Models.Jokers;
+using Balatro.Models.Tarots;
 using Balatro.Models.Vouchers;
 using Balatro.Util;
 using CommunityToolkit.Mvvm.Input;
@@ -36,26 +37,64 @@ public sealed partial class ShopPage : Page
     IntPtr mainHwnd;
     private const int GWLP_HWNDPARENT = -8;
     IEffect? currentShopItem;
-    RelayCommand BuyCommand;
+    RelayCommand<IEffect> BuyFromItemShopCommand;
+    RelayCommand<IVoucher> BuyVoucherCommand;
+    RelayCommand<ConsumablePack> BuyPackCommand;
+
     public ShopPage()
     {
         InitializeComponent();
 
         NavigationCacheMode = NavigationCacheMode.Required;
 
+        BuyFromItemShopCommand = new RelayCommand<IEffect>((Item) => Buy(Item!), (Item) => CanBuy(Item!));
+        BuyVoucherCommand = new RelayCommand<IVoucher>((Voucher) => Buy(Voucher!), (Voucher) => CanBuy(Voucher!));
+        BuyPackCommand = new RelayCommand<ConsumablePack>((Pack) => Buy(Pack!), (Pack) => CanBuy(Pack!));
+
         SizeChanged += ShopPage_SizeChanged;
     }
 
+    private void Buy(IEffect Item)
+    {
+        switch(Item)
+        {
+            case IPassiveJoker:
+                Game.Player.Jokers.Add((IPassiveJoker) Item);
+                break;
+            case IJoker:
+                Game.Player.Jokers.Add((IJoker)Item);
+                break;
+            case Card:
+                Game.Player.Deck.Cards.Add((Card)Item);
+                break;
+            default:
+                Game.Player.Consumables.Add(Item);
+                break;
+        }
+        Game.Player.Money -= Item.Price;
+    }
+
+    private void Buy(IVoucher Voucher)
+    {
+        Game.Player.Vouchers.Add(Voucher);
+        Game.Player.Money -= Voucher.Price;
+    }
+
+    private void Buy(ConsumablePack Pack)
+    {
+        Game.Player.Money -= Pack.Price;
+        App.MainFrame.Navigate(typeof(PackAction_Page), Pack);
+    }
+
+    private bool CanBuy(IEffect Item) => Item.Price <= Game.Player.Money;
+    private bool CanBuy(ConsumablePack Pack) => Pack.Price <= Game.Player.Money;
+    private bool CanBuy(IVoucher Voucher) => Voucher.Price <= Game.Player.Money;
+    
     protected override void OnNavigatedFrom(NavigationEventArgs e)
     {
         base.OnNavigatedFrom(e);
 
         if (Game.Round % 4 == 0) Game.Player.Tags.Clear();
-    }
-
-    private void BuyPack(ConsumablePack? ConsumablePack)
-    {
-        App.MainFrame.Navigate(typeof(PackAction_Page), ConsumablePack);
     }
 
     protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -195,7 +234,9 @@ public sealed partial class ShopPage : Page
             else
             {
                 currentShopItem?.ButtonVisibility = Visibility.Collapsed;
-
+                
+                BuyFromItemShopCommand.NotifyCanExecuteChanged();
+                Button? b = (Button) BuyableItemsGridView.FindName("BuyItemButton");
                 effect.ButtonVisibility = Visibility.Visible;
                 currentShopItem = effect;
             }

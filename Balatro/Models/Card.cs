@@ -14,6 +14,7 @@ namespace Balatro.Models
     public class Card : IEffect
     {
         public int Value { get; }
+        public int Price { get; set; } = 1;
         public Visibility ButtonVisibility { get; set
             {
                 if (field != value)

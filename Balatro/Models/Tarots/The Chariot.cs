@@ -12,6 +12,7 @@ namespace Balatro.Models.Tarots
     public class The_Chariot : IConsumable
     {
         public string Name => "The Chariot";
+        public int Price { get; set; } = 3;
 
         public string Description => "Enhances 1 selected card into a Steel Card";
 
