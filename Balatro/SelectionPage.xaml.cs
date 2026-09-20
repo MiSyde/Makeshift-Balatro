@@ -50,7 +50,7 @@ namespace Balatro
             NavigationCacheMode = NavigationCacheMode.Required;
 
             SelectSmallBlindCommand = new RelayCommand(SelectBlind, () => CanSelectBlind(1));
-            SelectBigBlindCommand = new RelayCommand(SelectBlind, ()=>CanSelectBlind(2));
+            SelectBigBlindCommand = new RelayCommand(SelectBlind, () => CanSelectBlind(2));
             SelectBossBlindCommand = new RelayCommand(SelectBlind, () => CanSelectBlind(3));
 
             SkipSmallBlindCommand = new RelayCommand<ITag>(Tag => SkipBlind(Tag!), Tag => CanSelectBlind(1));
@@ -97,18 +97,18 @@ namespace Balatro
             SmallBlindBorder.Width = this.ActualWidth * SmallBlindWidthMult;
             SmallBlindBorder.Margin = new Thickness(this.ActualWidth * 0.02, 0, 0, 0);
 
-            BigBlindBorder.Height = this.ActualWidth * BigBlindHeightMult;
-            BigBlindBorder.Width = this.ActualHeight * BigBlindWidthMult;
+            BigBlindBorder.Height = this.ActualHeight * BigBlindHeightMult;
+            BigBlindBorder.Width = this.ActualWidth * BigBlindWidthMult;
             BigBlindBorder.Margin = new Thickness(this.ActualWidth * 0.02, 0, this.ActualWidth * 0.02, 0);
 
             BossBlindBorder.Height = this.ActualHeight * BossBlindHeightMult;
-            BossBlindBorder.Width = this.ActualWidth * BossBlindWidthMult; 
+            BossBlindBorder.Width = this.ActualWidth * BossBlindWidthMult;
             BossBlindBorder.Margin = new Thickness(0, 0, this.ActualWidth * 0.02, 0);
 
             DeckAndTagGrid.Width = this.ActualWidth * 0.1665;
         }
 
-        private void GetBlindDimMults(ref double SmallBlindWidthMult, ref double BigBlindWidthMult, ref double BossBlindWidthMult, 
+        private void GetBlindDimMults(ref double SmallBlindWidthMult, ref double BigBlindWidthMult, ref double BossBlindWidthMult,
             ref double SmallBlindHeightMult, ref double BigBlindHeightMult, ref double BossBlindHeightMult)
         {
             switch (Game.Round % 4)
@@ -204,7 +204,7 @@ namespace Balatro
             SelectBossBlindCommand.NotifyCanExecuteChanged();
             SelectSmallBlindCommand.NotifyCanExecuteChanged();
 
-            switch(tag)
+            switch (tag)
             {
                 case Negative:
                 case Rare:

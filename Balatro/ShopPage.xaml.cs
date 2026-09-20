@@ -37,7 +37,7 @@ public sealed partial class ShopPage : Page
     IntPtr mainHwnd;
     private const int GWLP_HWNDPARENT = -8;
     IEffect? currentShopItem;
-    RelayCommand<IEffect> BuyFromItemShopCommand;
+    public RelayCommand<IEffect> BuyFromItemShopCommand { get; }
     RelayCommand<IVoucher> BuyVoucherCommand;
     RelayCommand<ConsumablePack> BuyPackCommand;
 
@@ -65,7 +65,7 @@ public sealed partial class ShopPage : Page
                 Game.Player.Jokers.Add((IJoker)Item);
                 break;
             case Card:
-                Game.Player.Deck.Cards.Add((Card)Item);
+                Game.Player.Deck!.Cards.Add((Card)Item);
                 break;
             default:
                 Game.Player.Consumables.Add(Item);

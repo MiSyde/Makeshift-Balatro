@@ -242,7 +242,7 @@ namespace Balatro.Models
 
         private void ApplyModifier(IJoker joker)
         {
-
+            
         }
 
         private void SetUpHandDictionaries()

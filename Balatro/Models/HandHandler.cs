@@ -39,7 +39,7 @@ namespace Balatro.Models
             return sorted;
         }
 
-        public Hand CalculateHand(IList<Card> selectedCards, IList<Hand> playedHands, IList<Card> playedCards)
+        public Hand CalculateHand(IList<Card> selectedCards, List<Hand> playedHands, List<Card> playedCards)
         {
             Hand highestHand = Hand.HIGH_CARD;
             playedHands.Add(Hand.HIGH_CARD);
@@ -53,22 +53,34 @@ namespace Balatro.Models
             var sorted = InsertionSort(selectedCards);
 
             Card previousCard = sorted[0];
-            int straight = 1;
-            int flush = 1;
-            int kind = 1;
+
+            var rankToFrequency = new Dictionary<int, List<Card>>();
+            rankToFrequency[previousCard.RankOrder] = new List<Card>();
+            rankToFrequency[previousCard.RankOrder].Add(previousCard);
+
+            Card? highestSoloCard = sorted[0];
+            List<Card>? pairCardsA = null;
+            List<Card>? pairCardsB = null;
+            List<Card>? tripleCards = null;
+            List<Card>? fourCards = null;
             int pair = 0;
-            List<int> pairOrderValues = new();
-            List<Card> straightCards = new();
-            List<Card> flushCards = new();
-            List<Card> multKindCards = new();
-            int four = 0;
             int three = 0;
+            int four = 0;
             int five = 0;
 
+            int straight = 1;
+            int flush = 1;
+            List<Card> straightCards = new();
+            List<Card> flushCards = new();
+            
             for (int i = 1; i < selectedCards.Count; ++i)
             {
+                //
                 Card currentCard = sorted[i];
-
+                if (!rankToFrequency.TryGetValue(currentCard.RankOrder, out var val))
+                    rankToFrequency[currentCard.RankOrder] = val = new List<Card>();
+                val.Add(currentCard);
+                //
                 if (currentCard.RankOrder == previousCard.RankOrder + 1) 
                 { 
                     ++straight;
@@ -76,52 +88,50 @@ namespace Balatro.Models
                         straightCards.Add(previousCard);
 
                     straightCards.Add(currentCard);
-
                 }
-                if(currentCard.RankOrder == previousCard.RankOrder)
+                if(currentCard.SuitType == previousCard.SuitType)
                 {
-                    ++kind;
-                    if (kind == 2)
-                    {
-                        pairOrderValues.Add(currentCard.RankOrder);
-                        ++pair;
-                    }
-                    else if (kind == 3)
-                    {
-                        ++three;
-                    }
-                    else if (kind == 4)
-                    {
-                        ++four;
-                    }
-                    else if (kind == 5)
-                    {
-                        ++five;
-                    }
-                }
-                else { kind = 1; }
-
-                if (currentCard.SuitType == previousCard.SuitType) 
-                { 
                     ++flush;
-                    if (!flushCards.Contains(previousCard)) 
+                    if (!flushCards.Contains(previousCard))
                         flushCards.Add(previousCard);
 
                     flushCards.Add(currentCard);
                 }
-
+                //
                 previousCard = currentCard;
+            }
+
+            foreach(var kvp in rankToFrequency)
+            {
+                switch(kvp.Value.Count)
+                {
+                    case 1:
+                        if (kvp.Value.First().Value > highestSoloCard!.Value) highestSoloCard = kvp.Value.First();
+                        break;
+                    case 2:
+                        if (pairCardsA == null) pairCardsA = kvp.Value;
+                        else pairCardsB = kvp.Value;
+                        ++pair;
+                        break;
+                    case 3:
+                        ++three;
+                        tripleCards = kvp.Value;
+                        break;
+                    case 4:
+                        ++four;
+                        fourCards = kvp.Value;
+                        break;
+                    case 5:
+                        ++five;
+                        break;
+                }
             }
 
             if (pair == 1)
             {
                 highestHand = Hand.PAIR;
                 playedHands.Add(Hand.PAIR);
-                foreach(Card c in selectedCards)
-                {
-                    if (pairOrderValues.Contains(c.RankOrder))
-                        playedCards.Add(c);
-                }
+                playedCards.AddRange(pairCardsA!);
             }
             
             if(pair == 2)
@@ -129,117 +139,95 @@ namespace Balatro.Models
                 highestHand = Hand.TWO_PAIR;
                 playedHands.Add(Hand.PAIR);
                 playedHands.Add(Hand.TWO_PAIR);
-                foreach (Card c in selectedCards)
-                {
-                    if (pairOrderValues.Contains(c.RankOrder))
-                        playedCards.Add(c);
-                }
+                playedCards.AddRange(pairCardsB!);
             }
 
             if (three == 1)
             { 
                 highestHand = Hand.THREE_OF_A_KIND;
                 playedHands.Add(Hand.THREE_OF_A_KIND);
-                foreach (Card c in selectedCards)
-                {
-                    if (pairOrderValues.Contains(c.RankOrder))
-                        playedCards.Add(c);
-                }
+                playedCards.AddRange(tripleCards!);
             }
 
             if (straight >= NeededCards4FlushAndStraight) 
             { 
                 highestHand = Hand.STRAIGHT;
                 playedHands.Add(Hand.STRAIGHT);
-                foreach (Card c in selectedCards)
-                {
-                    if (straightCards.Contains(c))
-                        playedCards.Add(c);
-                }
+                playedCards.AddRange(straightCards);
             }
 
             if (flush >= NeededCards4FlushAndStraight) 
             { 
                 highestHand = Hand.FLUSH;
                 playedHands.Add(Hand.FLUSH);
-                foreach (Card c in selectedCards)
-                {
-                    if (flushCards.Contains(c))
-                        playedCards.Add(c);
-                }
+                playedCards.AddRange(flushCards);
             }
 
-            if (three == 1 && pair == 1 && pairOrderValues.Count != 1) 
+            if (three == 1 && pair >= 1) 
             { 
                 highestHand = Hand.FULL_HOUSE;
                 playedHands.Add(Hand.FULL_HOUSE);
-                playedCards = selectedCards;
+                playedCards = selectedCards.ToList();
             }
             
             if (four == 4)
             {
                 highestHand = Hand.FOUR_OF_A_KIND;
                 playedHands.Add(Hand.FOUR_OF_A_KIND);
-                foreach (Card c in selectedCards)
-                {
-                    if (pairOrderValues.Contains(c.RankOrder))
-                        playedCards.Add(c);
-                }
+                playedCards.AddRange(fourCards!);
             }
 
             if (straight >= NeededCards4FlushAndStraight && flush >= NeededCards4FlushAndStraight) 
             { 
                 highestHand = Hand.STRAIGHT_FLUSH; 
                 playedHands.Add(Hand.STRAIGHT_FLUSH);
-                playedCards = selectedCards;
+                playedCards = straightCards.Count > flushCards.Count ? straightCards : flushCards;
 
-                bool ace = false, king = false, queen = false, jack = false, ten = false;
-
-                foreach(Card c in selectedCards)
+                var royalGroup = sorted.Where(c => c.RankOrder >= 10 && c.RankOrder <= 14).ToList();
+                if(royalGroup.Count >= NeededCards4FlushAndStraight)
                 {
-                    if (c.IsFaceCard && c.FaceCardType == FaceCard.King) king = true;
-                    else if (c.IsFaceCard && c.FaceCardType == FaceCard.Queen) queen = true;
-                    else if (c.IsFaceCard && c.FaceCardType == FaceCard.Jack) jack = true;
-                    else if (c.IsFaceCard && c.FaceCardType == FaceCard.Ace) ace = true;
-                    else if (!c.IsFaceCard && c.Value == 10) ten = true;
-                }
+                    var royal = true;
+                    Card previous = royalGroup[0];
+                    for(int i = 1; i < royalGroup.Count; ++i)
+                    {
+                        Card current = royalGroup[i];
+                        if (previous.RankOrder + 1 == current.RankOrder) continue;
+                        royal = false;
+                    }
 
-                if(ace && king && queen && jack && ten)
-                {
-                    highestHand = Hand.STRAIGHT_FLUSH;
-                    playedHands.Add(Hand.ROYAL_FLUSH);
+                    if (royal)
+                    {
+                        highestHand = Hand.ROYAL_FLUSH;
+                        playedHands.Add(Hand.ROYAL_FLUSH);
+                    }
                 }
+                
+
             }
 
             if(five == 1)
             {
                 highestHand = Hand.FIVE_OF_A_KIND;
                 playedHands.Add(Hand.FIVE_OF_A_KIND);
-                playedCards = selectedCards;
+                playedCards = selectedCards.ToList();
             }
-            if(flush >= NeededCards4FlushAndStraight && three == 1 && pair == 1 && pairOrderValues.Count != 1)
+            if(flush >= NeededCards4FlushAndStraight && three == 1 && pair == 1)
             {
                 highestHand = Hand.FLUSH_HOUSE;
                 playedHands.Add(Hand.FLUSH_HOUSE);
-                playedCards = selectedCards;
+                playedCards = selectedCards.ToList();
             }
             
             if(flush >= NeededCards4FlushAndStraight && five == 1)
             {
                 highestHand = Hand.FLUSH_FIVE;
                 playedHands.Add(Hand.FLUSH_FIVE);
-                playedCards = selectedCards;
+                playedCards = selectedCards.ToList(); ;
             }
 
             if(highestHand == Hand.HIGH_CARD)
             {
-                Card HighestCard = selectedCards[0];
-                foreach(Card c in selectedCards)
-                {
-                    if (c.Value > HighestCard.Value)
-                        HighestCard = c;
-                }
-                playedCards.Add(HighestCard);
+                playedCards.Add(highestSoloCard);
             }
 
             return highestHand;

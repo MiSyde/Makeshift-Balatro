@@ -203,7 +203,7 @@
                             <RowDefinition/>
                         </Grid.RowDefinitions>
 
-                        <Border Grid.Row="0" Style="{StaticResource GrayShadowlessContainer}" BorderBrush="LightGray" BorderThickness="2">
+                        <Border Grid.Row="0" Style="{StaticResource GrayShadowlessContainer}">
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition/>
@@ -213,7 +213,7 @@
                                 </Grid.RowDefinitions>
 
                                 <Border Grid.Row="0" Style="{StaticResource SelectButtonContainer}">
-                                    <Button Name="SelectBlindButton" Content="Select" FontFamily="{StaticResource PixelBig}" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="0" 
+                                    <Button Name="SelectSmallBlindButton" Content="Select" FontFamily="{StaticResource PixelBig}" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="0" 
                                         CornerRadius="0" Background="Transparent" FontSize="54" Command="{x:Bind SelectSmallBlindCommand}"/>
                                 </Border>
 
@@ -223,9 +223,20 @@
 
                                 <Image Grid.Row="2" Source="/Assets/BlindImages/Small_Blind.png"/>
 
-                                <Grid Grid.Row="3">
-                                    
-                                </Grid>
+                                <Border Grid.Row="3" Style="{StaticResource DarkSmallShadowContainer}">
+                                    <Grid >
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+
+                                        <TextBlock Text="Score at least" Grid.Row="0"/>
+                                        <TextBlock Text="{x:Bind Game.Threshold}" Grid.Row="1"/>
+                                        <TextBlock Text="Reward" Grid.Row="2"/>
+                                    </Grid>
+                                </Border>
+                                
                             </Grid>
                         </Border>
 
@@ -250,28 +261,53 @@
                     </Grid>
                 </Border>
 
-                <Border Name="BigBlindBorder" Grid.Column="1">
+                <Border Grid.Column="1" Name="BigBlindBorder" Style="{StaticResource DarkContainer}">
                     <Grid Name="BigBlind">
                         <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
 
-                        <TextBlock Grid.Row="0" Text="Small Blind"/>
+                        <Border Grid.Row="0" Style="{StaticResource GrayShadowlessContainer}">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
 
-                        <Image Grid.Row="1" Source="/Assets/BlindImages/Big_Blind.png"/>
-                        
-                        <Border Style="{StaticResource SelectButtonContainer}" Grid.Row="2">
-                            <Button Content="Select" Command="{x:Bind SelectBigBlindCommand}" CornerRadius="0" BorderThickness="0"
-                                     Background="Transparent" FontFamily="{StaticResource PixelBig}" FontSize="54"/>
+                                <Border Grid.Row="0" Style="{StaticResource SelectButtonContainer}">
+                                    <Button Name="SelectBigBlindButton" Content="Select" FontFamily="{StaticResource PixelBig}" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="0" 
+                        CornerRadius="0" Background="Transparent" FontSize="54" Command="{x:Bind SelectBigBlindCommand}"/>
+                                </Border>
+
+                                <Border Grid.Row="1">
+                                    <TextBlock Text="Big Blind"/>
+                                </Border>
+
+                                <Image Grid.Row="2" Source="/Assets/BlindImages/Big_Blind.png"/>
+
+                                <Border Grid.Row="3" Style="{StaticResource DarkSmallShadowContainer}">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+
+                                        <TextBlock Text="Score at least" Grid.Row="0"/>
+                                        <TextBlock Text="{x:Bind Game.Threshold}" Grid.Row="1"/>
+                                        <TextBlock Text="Reward" Grid.Row="1"/>
+                                    </Grid>
+                                </Border>
+                            </Grid>
                         </Border>
 
-                        <TextBlock Text="or" FontFamily="{StaticResource PixelBig}" FontSize="54" Grid.Row="3"/>
+                        <TextBlock Text="or" FontFamily="{StaticResource PixelBig}" FontSize="54" Grid.Row="1"/>
 
-                        <Border Grid.Row="4" Style="{StaticResource DarkShadowlessContainer}">
+                        <Border Grid.Row="2" Style="{StaticResource DarkShadowlessContainer}">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition/>
@@ -280,13 +316,13 @@
 
                                 <Image Source="{x:Bind CurrentTags[1].Image}" Grid.Column="0"/>
 
-                                <Border Grid.Column="1" Style="{StaticResource NextRoundContainer}">
-                                    <Button Content="Skip Blind" FontFamily="{StaticResource PixelBig}" FontSize="54" CornerRadius="0"
-                                           BorderThickness="0" Background="Transparent" Command="{x:Bind SkipBigBlindCommand}"/>
+                                <Border Style="{StaticResource NextRoundContainer}" Grid.Column="1">
+                                    <Button Content="Skip Blind" FontFamily="{StaticResource PixelBig}" FontSize="46" BorderThickness="0" CornerRadius="0" Background="Transparent" Command="{x:Bind SkipBigBlindCommand}" 
+                            CommandParameter="{x:Bind CurrentTags[1]}"/>
                                 </Border>
-                            </Grid>    
+                            </Grid>
                         </Border>
-                        
+
                     </Grid>
                 </Border>
 
