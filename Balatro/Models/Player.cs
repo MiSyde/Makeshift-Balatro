@@ -63,7 +63,7 @@ namespace Balatro.Models
         public List<Hand> PlayedHands { get; }
         public HandHandler HandHandler { get; }
         public ObservableCollection<IEffect> Consumables { get; }
-        public IDeck Deck { get; set; }
+        public IDeck? Deck { get; set; } = null;
         public ObservableCollection<Card> SelectedCards { get; }
         public int RemainingHands
         {
@@ -173,7 +173,6 @@ namespace Balatro.Models
             TotalSavedDiscardsCount = 0;
 
             Cards = new ObservableCollection<Card>();
-            Deck = new Red_Deck();
             Consumables = new ObservableCollection<IEffect>();
             SelectedCards = new ObservableCollection<Card>();
             HandHandler = new HandHandler(5);

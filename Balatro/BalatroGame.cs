@@ -109,12 +109,10 @@ namespace Balatro
             Player = new Player();
             Player.SelectedCards.CollectionChanged += RefreshCommands;
             Blinds = new Dictionary<int, string>();
-            Player.Deck.AddEffect(Player);
             SetUpBlinds();
 
             DiscardCommand = new RelayCommand(DiscardedCards, CanDiscard);
             ConfirmCommand = new RelayCommand(ConfirmedCards, CanConfirm);
-            DealCards();
         }   
 
         private void UpdateSelectionCommands()
@@ -293,7 +291,7 @@ namespace Balatro
             Player.Money += Player.RemainingHands;
         }
 
-        private async void DealCards()
+        public async void DealCards()
         {
             await Task.Delay(150);
             while(Player.Cards.Count != Player.CurrentCardHoldingSize)
