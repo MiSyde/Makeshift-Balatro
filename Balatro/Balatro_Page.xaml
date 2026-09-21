@@ -213,7 +213,36 @@
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
-                
+
+                <GridView Name="JokersGridView" Grid.Row="0" Grid.Column="0" ItemsSource="{x:Bind game.Player.Jokers}">
+                    <GridView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <ItemsWrapGrid Orientation="Vertical"/>
+                        </ItemsPanelTemplate>
+                    </GridView.ItemsPanel>
+                    <GridView.ItemTemplate>
+                        <DataTemplate x:DataType="local:IEffect">
+                            <Image Source="{x:Bind Image}" Height="201" Width="150"/>
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
+                </GridView>
+
+                <TextBlock Text="{x:Bind XDashY(game.Player.Jokers.Count, game.Player.MaxJokerCount)}" Grid.Row="1" Grid.Column="0" FontFamily="{StaticResource PixelBig}" FontSize="18"/>
+
+                <GridView Name="ConsumablesGridView" Grid.Row="0" Grid.Column="1" ItemsSource="{x:Bind game.Player.Consumables}">
+                    <GridView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <ItemsWrapGrid Orientation="Vertical"/>
+                        </ItemsPanelTemplate>
+                    </GridView.ItemsPanel>
+                    <GridView.ItemTemplate>
+                        <DataTemplate x:DataType="local:IEffect">
+                            <Image Source="{x:Bind Image}" Height="201" Width="150"/>
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
+                </GridView>
+
+                <TextBlock Grid.Column="1" Grid.Row="1" Text="{x:Bind XDashY(game.Player.Consumables.Count, game.Player.MaxConsumableCount)}" FontFamily="{StaticResource PixelBig}" FontSize="18"/>
             </Grid>
 
             <Grid Name="TableGrid" Grid.Row="1" Background="Beige">
@@ -230,8 +259,17 @@
                         <RowDefinition/>
                     </Grid.RowDefinitions>
 
-                    <GridView Name="SelectedCardsGridView" Grid.Row="0">
-
+                    <GridView Name="SelectedCardsGridView" Grid.Row="0" ItemsSource="{x:Bind game.Player.PlayedCardsDisplay, Mode=OneWay}" IsItemClickEnabled="False" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <GridView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <ItemsWrapGrid Orientation="Vertical"/>
+                            </ItemsPanelTemplate>
+                        </GridView.ItemsPanel>
+                        <GridView.ItemTemplate>
+                            <DataTemplate x:DataType="local:Card">
+                                <Image Source="{x:Bind Image}" Height="201" Width="150"/>
+                            </DataTemplate>
+                        </GridView.ItemTemplate>
                     </GridView>
 
                     <GridView ItemsSource="{x:Bind game.Player.Cards, Mode=OneWay}" HorizontalAlignment="Center" VerticalAlignment="Center" IsItemClickEnabled="True" 

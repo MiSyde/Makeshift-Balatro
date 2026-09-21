@@ -21,7 +21,7 @@ namespace Balatro.Models
         {
             NeededCards4FlushAndStraight = cardcount;
         }
-        private List<Card> InsertionSort(IList<Card> selectedCards)
+        private List<Card> InsertionSort(ObservableCollection<Card> selectedCards)
         {
             var sorted = new List<Card>(selectedCards);
             for (int i = 1; i < selectedCards.Count; ++i)
@@ -39,7 +39,7 @@ namespace Balatro.Models
             return sorted;
         }
 
-        public Hand CalculateHand(IList<Card> selectedCards, List<Hand> playedHands, List<Card> playedCards)
+        public Hand CalculateHand(ObservableCollection<Card> selectedCards, List<Hand> playedHands, List<Card> playedCards)
         {
             Hand highestHand = Hand.HIGH_CARD;
             playedHands.Add(Hand.HIGH_CARD);

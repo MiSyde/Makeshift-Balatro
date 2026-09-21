@@ -184,5 +184,6 @@ namespace Balatro
                 game.Player.SelectedCards.Add((Card)e.AddedItems[0]);
             }
         }
+        private string XDashY(int x, int y) => Helper.XDashY(x, y);
     }
 }

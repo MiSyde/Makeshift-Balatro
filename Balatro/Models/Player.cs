@@ -45,6 +45,7 @@ namespace Balatro.Models
             }
         }
         public ObservableCollection<IJoker> Jokers { get; }
+        public ObservableCollection<Card> PlayedCardsDisplay { get; }
         private double _multiplier;
         private double _chips;
         private Hand _highestHand;
@@ -184,6 +185,7 @@ namespace Balatro.Models
             PlayedCards = new List<Card>();
             Tags = new ObservableCollection<BitmapImage>();
             Vouchers = new ObservableCollection<IVoucher>();
+            PlayedCardsDisplay = new ObservableCollection<Card>();
 
             SetUpHandDictionaries();
             SelectedCards.CollectionChanged += CalculateHand;
@@ -217,26 +219,26 @@ namespace Balatro.Models
             Multiplier = handInfo.Multiplier;
         }
 
-        public async void ApplyJokers()
+        public async Task ApplyJokers()
         {
             foreach(IJoker joker in Jokers)
             {
-                await Task.Delay(150);
                 ApplyModifier(joker);
-                await Task.Delay(150);
+                await Task.Delay(300);
                 if (joker is IPassiveJoker) continue;
                 joker.AddEffect(this);
             }
         }
 
-        public void CalculateChips()
+        public async Task CalculateChips()
         {
-            foreach(Card c in PlayedCards)
+            foreach (Card c in PlayedCards.ToList())
             {
+                await Task.Delay(300);
                 Chips += c.Value;
                 c.AddEffect(this);  
             }
-            ApplyJokers();
+            await ApplyJokers();
             TotalChips += _chips * _multiplier;
         }
 

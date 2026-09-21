@@ -144,14 +144,16 @@ namespace Balatro
             DiscardCommand.NotifyCanExecuteChanged();
         }
 
-        private void ConfirmedCards()
+        private async void ConfirmedCards()
         {
             if (Round % 4 == 3) BossBlind.AddEffect(this);
 
             --Player.RemainingHands;
             ++Player.HandTimes[Player.HighestHand];
 
-            Player.CalculateChips();
+            await DisplayCards();
+
+            await Player.CalculateChips();
 
             foreach (Card c in Player.SelectedCards.ToList())
             {
@@ -163,6 +165,16 @@ namespace Balatro
             if (Player.TotalChips >= Threshold) NextRound();
             else if (Player.TotalChips < Threshold && Player.RemainingHands == 0) EndGame();
             else DealCards();
+        }
+
+        private async Task DisplayCards() 
+        {
+            var list = Player.PlayedCards.ToList();
+            foreach (Card c in list)
+            {
+                Player.PlayedCardsDisplay.Add(c);
+                await Task.Delay(300);
+            }
         }
 
         private void DiscardedCards()
@@ -183,7 +195,7 @@ namespace Balatro
 
         public async void NextRound()
         {
-            await Task.Delay(250);
+            await Task.Delay(200);
             ++Round;
 
             GiveMoney();
@@ -261,7 +273,7 @@ namespace Balatro
 
         private async void EndGame()
         {
-            await Task.Delay(250);
+            await Task.Delay(300);
 
         }
 
@@ -293,9 +305,9 @@ namespace Balatro
 
         public async void DealCards()
         {
-            await Task.Delay(150);
             while(Player.Cards.Count != Player.CurrentCardHoldingSize)
             {
+                await Task.Delay(300);
                 Player.Cards.Add(Player.DrawFromDeck());
             }
         }

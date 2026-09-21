@@ -5,6 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Balatro"
     xmlns:tag="using:Balatro.Models.Tags"
+    xmlns:model="using:Balatro.Models"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
@@ -174,13 +175,31 @@
                 </Grid.ColumnDefinitions>
 
                 <GridView Name="JokersGridView" Grid.Row="0" Grid.Column="0" ItemsSource="{x:Bind Game.Player.Jokers}">
-
+                    <GridView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <ItemsWrapGrid Orientation="Vertical"/>
+                        </ItemsPanelTemplate>
+                    </GridView.ItemsPanel>
+                    <GridView.ItemTemplate>
+                        <DataTemplate x:DataType="model:IEffect">
+                            <Image Source="{x:Bind Image}" Height="201" Width="150"/>
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
                 </GridView>
 
                 <TextBlock Text="{x:Bind XDashY(Game.Player.Jokers.Count, Game.Player.MaxJokerCount)}" Grid.Row="1" Grid.Column="0" FontFamily="{StaticResource PixelBig}" FontSize="18"/>
 
                 <GridView Name="ConsumablesGridView" Grid.Row="0" Grid.Column="1" ItemsSource="{x:Bind Game.Player.Consumables}">
-
+                    <GridView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <ItemsWrapGrid Orientation="Vertical"/>
+                        </ItemsPanelTemplate>
+                    </GridView.ItemsPanel>
+                    <GridView.ItemTemplate>
+                        <DataTemplate x:DataType="model:IEffect">
+                            <Image Source="{x:Bind Image}" Height="201" Width="150"/>
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
                 </GridView>
 
                 <TextBlock Grid.Column="1" Grid.Row="1" Text="{x:Bind XDashY(Game.Player.Consumables.Count, Game.Player.MaxConsumableCount)}" FontFamily="{StaticResource PixelBig}" FontSize="18"/>

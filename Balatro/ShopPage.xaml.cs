@@ -72,23 +72,27 @@ public sealed partial class ShopPage : Page
                 break;
         }
         Game.Player.Money -= Item.Price;
+        Shop.CurrentShop.Remove(Item);
+        currentShopItem = null;
     }
 
     private void Buy(IVoucher Voucher)
     {
         Game.Player.Vouchers.Add(Voucher);
         Game.Player.Money -= Voucher.Price;
+        Shop.VoucherShop.Remove(Voucher);
     }
 
     private void Buy(ConsumablePack Pack)
     {
         Game.Player.Money -= Pack.Price;
+        Shop.PackShop.Remove(Pack);
         App.MainFrame.Navigate(typeof(PackAction_Page), Pack);
     }
 
-    private bool CanBuy(IEffect Item) => Item.Price <= Game.Player.Money;
-    private bool CanBuy(ConsumablePack Pack) => Pack.Price <= Game.Player.Money;
-    private bool CanBuy(IVoucher Voucher) => Voucher.Price <= Game.Player.Money;
+    private bool CanBuy(IEffect Item) => Item?.Price <= Game.Player.Money;
+    private bool CanBuy(ConsumablePack Pack) => Pack?.Price <= Game.Player.Money;
+    private bool CanBuy(IVoucher Voucher) => Voucher?.Price <= Game.Player.Money;
     
     protected override void OnNavigatedFrom(NavigationEventArgs e)
     {
