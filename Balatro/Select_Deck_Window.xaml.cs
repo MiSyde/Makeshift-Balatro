@@ -1,3 +1,4 @@
+using Balatro.Models;
 using Balatro.Models.Decks;
 using Balatro.Util;
 using CommunityToolkit.Mvvm.Input;
@@ -31,46 +32,29 @@ namespace Balatro
         private IntPtr parentHwnd;
         private NativeMethods.WndProcDelegate? newWndProc;
         private IntPtr oldWndProc;
-        public RelayCommand SelectDeckCommand { get; }
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-
-        public Dictionary<IDeck, string> Decks { get; set
+        public RoundaboutList<IDeck> Decks { get; } = new RoundaboutList<IDeck>();
+        public IDeck CurrentDeck
+        {
+            get;
+            set
             {
                 if (field != value)
                 {
                     field = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Decks)));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CurrentDeck)));
                 }
             }
         }
-        public IDeck SelectedDeck { get; private set; }
-        public IDeck PreviewDeck { get; 
-            set 
-            { 
-                if (field != value) 
-                { 
-                    field = value; 
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(PreviewDeck))); 
-                } 
-            } 
-        }
-        public Visibility ShowDetails { get; set 
-            {
-                if (field != value)
-                {
-                    field = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ShowDetails)));
-                }
-            } 
-        } = Visibility.Collapsed;
-        public Select_Deck_Window(IntPtr parentHwnd, Dictionary<IDeck, string> Decks)
+        private int CurrentDeckIndex { get; set; }
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        public Select_Deck_Window(IntPtr parentHwnd, List<IDeck> Decks)
         {
             InitializeComponent();
             RootGrid.DataContext = this;
-            SelectDeckCommand = new RelayCommand(SelectDeck, CanSelectDeck);
 
-            this.Decks = Decks;
+            this.Decks.SetContents(Decks);
+            CurrentDeck = Decks[0];
 
             this.parentHwnd = parentHwnd;
             hwnd = WindowNative.GetWindowHandle(this);
@@ -131,24 +115,36 @@ namespace Balatro
             }
         }
 
-        private void Back_Click(object sender, RoutedEventArgs e)
+        private void Close_Click(object sender, RoutedEventArgs e)
         {
             Close();
         }
 
-        private void Display_Deck(object sender, ItemClickEventArgs e)
+        private void UpdateDeck()
         {
-            PreviewDeck = (IDeck)e.ClickedItem;
-            SelectDeckCommand.NotifyCanExecuteChanged();
-            ShowDetails = Visibility.Visible;
+            CurrentDeck = Decks[CurrentDeckIndex];
         }
 
-        private void SelectDeck()
+        private void Left_Click_Deck(object sender, RoutedEventArgs e)
         {
-            SelectedDeck = PreviewDeck;
-            Close();
+            --CurrentDeckIndex;
+            UpdateDeck();
         }
 
-        private bool CanSelectDeck() => PreviewDeck != null;
+        private void Right_Click_Deck(object sender, RoutedEventArgs e)
+        {
+            ++CurrentDeckIndex;
+            UpdateDeck();
+        }
+
+        private void Left_Click_Stake(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Right_Click_Stake(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

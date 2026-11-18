@@ -15,7 +15,7 @@
         <MicaBackdrop />
     </Window.SystemBackdrop>
 
-    <Grid Name="RootGrid">
+    <Grid Name="RootGrid" HorizontalAlignment="Center" VerticalAlignment="Center">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/> <!--Deck-->
             <RowDefinition Height="Auto"/> <!--Stake-->
@@ -31,7 +31,7 @@
             </Grid.ColumnDefinitions>
 
             <Border Grid.Column="0">
-                
+                <Button Content="&lt;" Click="Left_Click_Deck"/>
             </Border>
 
             <Grid Grid.Column="1">
@@ -43,19 +43,21 @@
                             <ColumnDefinition/> <!--Beaten difficulties w/ deck-->
                         </Grid.ColumnDefinitions>
 
-                        <Image Grid.Column="0"/>
+                        <Image Grid.Column="0" Source="{Binding Path=CurrentDeck.Image, Mode=OneWay}"/>
 
                         <Border Grid.Column="1">
                             <Grid>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
                                 </Grid.RowDefinitions>
                                 
-                                <TextBlock Grid.Row="0"/>
+                                <TextBlock Grid.Row="0" Text="{Binding Path=CurrentDeck.Name, Mode=OneWay}"
+                                           HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center"/>
 
                                 <Border Grid.Row="1">
-                                    <RichTextBlock/>
+                                    <TextBlock Text="{Binding Path=CurrentDeck.Description, Mode=OneWay}"
+                                               HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center"/>
                                 </Border>
                             </Grid>
                         </Border>
@@ -64,7 +66,7 @@
             </Grid>
 
             <Border Grid.Column="2">
-                
+                <Button Content=">" Click="Right_Click_Deck"/>
             </Border>
         </Grid>
 
@@ -75,8 +77,8 @@
                 <ColumnDefinition/> <!--Arrow button-->
             </Grid.ColumnDefinitions>
 
-            <Border Grid.Column="0">
-                
+            <Border Grid.Column="0" Style="{StaticResource NextRoundContainer}">
+                <Button Click="Left_Click_Stake" Content="&lt;"/>
             </Border>
 
             <Border Grid.Column="1">
@@ -104,17 +106,17 @@
             </Border>
             
 
-            <Border Grid.Column="2">
-
+            <Border Grid.Column="2" Style="{StaticResource NextRoundContainer}">
+                <Button Click="Right_Click_Stake" Content=">"/>
             </Border>
         </Grid>
 
-        <Border Grid.Row="2">
-            <Button Content="Confirm"/>
+        <Border Grid.Row="2" Style="{StaticResource ChipsContainer}">
+            <Button Content="Confirm" Click="Close_Click"/>
         </Border>
         
         <Border Grid.Row="3" Style="{StaticResource NextRoundContainer}">
-            <Button Content="Back" Click="Back_Click"/>
+            <Button Content="Back" Click="Close_Click"/>
         </Border>
         
     </Grid>

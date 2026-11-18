@@ -28,7 +28,7 @@ namespace Balatro;
 public sealed partial class MenuPage : Page
 {
     private Frame MainFrame => App.MainFrame;
-    private Dictionary<IDeck, string> Decks { get; } = [];
+    private List<IDeck> Decks { get; } = [];
     private IDeck? SelectedDeck { get; set; } = null;
     RelayCommand PlayCommand { get; }
     Select_Deck_Window? deckWindow;
@@ -38,11 +38,7 @@ public sealed partial class MenuPage : Page
     {
         InitializeComponent();
         NavigationCacheMode = NavigationCacheMode.Required;
-        List<IDeck> Instances = Helper.GenerateUnlocked<IDeck>("Balatro.Models.Decks");
-        foreach(IDeck Deck in Instances)
-        {
-            Decks.Add(Deck, Deck.Name);
-        }
+        Decks = Helper.GenerateUnlocked<IDeck>("Balatro.Models.Decks");
         PlayCommand = new RelayCommand(Play, CanPlay);
     }
 
@@ -74,7 +70,7 @@ public sealed partial class MenuPage : Page
 
     private void DeckWindow_Closed(object sender, WindowEventArgs args)
     {
-        SelectedDeck = deckWindow!.SelectedDeck;
+        SelectedDeck = deckWindow!.CurrentDeck;
         PlayCommand.NotifyCanExecuteChanged();
         deckWindow = null;
     }
