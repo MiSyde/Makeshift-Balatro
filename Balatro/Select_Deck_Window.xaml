@@ -16,39 +16,104 @@
     </Window.SystemBackdrop>
 
     <Grid Name="RootGrid">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/> <!--Deck-->
+            <RowDefinition Height="Auto"/> <!--Stake-->
+            <RowDefinition Height="Auto"/> <!--Confirm-->
+            <RowDefinition Height="Auto"/> <!--Back-->
         </Grid.RowDefinitions>
 
-        <ListView ItemsSource="{Binding Decks.Keys, Mode=OneWay}" Grid.Column="0" ItemClick="Display_Deck" IsItemClickEnabled="True" Grid.Row="0">
-            <ListView.ItemTemplate>
-                <DataTemplate x:DataType="model:IEffect">
-                    <TextBlock Text="{Binding Name}"/>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/> <!--Arrow button-->
+                <ColumnDefinition/> <!--Deck-->
+                <ColumnDefinition/> <!--Arrow button-->
+            </Grid.ColumnDefinitions>
 
-        <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Vertical" Visibility="{Binding ShowDetails, Mode=OneWay}">
-            <TextBlock Text="{Binding PreviewDeck.Name}"/>
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-                <Image Grid.Column="0" Source="{Binding PreviewDeck.Image}"/>
-                <TextBlock Grid.Column="1" Text="{Binding PreviewDeck.Description}"/>
-            </Grid>
-            <Border Style="{StaticResource ChipsContainer}" Width="60" Height="Auto">
-                <Button Command="{Binding Path=SelectDeckCommand, ElementName=Window}" Content="Select Deck"/>
+            <Border Grid.Column="0">
+                
             </Border>
-        </StackPanel>
 
-        <Border Grid.Row="1" Grid.Column="0" Style="{StaticResource NextRoundContainer}">
+            <Grid Grid.Column="1">
+                <Border>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/> <!--Deck image-->
+                            <ColumnDefinition/> <!--Deck info-->
+                            <ColumnDefinition/> <!--Beaten difficulties w/ deck-->
+                        </Grid.ColumnDefinitions>
+
+                        <Image Grid.Column="0"/>
+
+                        <Border Grid.Column="1">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                
+                                <TextBlock Grid.Row="0"/>
+
+                                <Border Grid.Row="1">
+                                    <RichTextBlock/>
+                                </Border>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                </Border>
+            </Grid>
+
+            <Border Grid.Column="2">
+                
+            </Border>
+        </Grid>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/> <!--Arrow button-->
+                <ColumnDefinition/> <!--Stake-->
+                <ColumnDefinition/> <!--Arrow button-->
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0">
+                
+            </Border>
+
+            <Border Grid.Column="1">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <!--Image-->
+                        <ColumnDefinition/>
+                        <!--Stake info-->
+                    </Grid.ColumnDefinitions>
+
+                    <Image Grid.Column="0"/>
+
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/> <!--Stake name-->
+                            <RowDefinition/> <!--Stake info-->
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0"/>
+
+                        <RichTextBlock Grid.Row="1"/>
+                    </Grid>
+                </Grid>
+            </Border>
+            
+
+            <Border Grid.Column="2">
+
+            </Border>
+        </Grid>
+
+        <Border Grid.Row="2">
+            <Button Content="Confirm"/>
+        </Border>
+        
+        <Border Grid.Row="3" Style="{StaticResource NextRoundContainer}">
             <Button Content="Back" Click="Back_Click"/>
         </Border>
         
