@@ -18,7 +18,7 @@
             <ColumnDefinition Width="74*"/>
         </Grid.ColumnDefinitions>
 
-        <Grid Grid.Column="0" Name="SpaceGrid" Background="Green"/>
+        <Grid Grid.Column="0" Name="SpaceGrid"/>
 
         <Grid Name="InfoGrid" Grid.Column="1" Background="#2f3a39" BorderThickness="2,0,2,0" BorderBrush="{x:Bind Game.BlindColor}">
 
@@ -29,22 +29,24 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
-            <TextBlock Grid.Row="0" Text="Choose your next Blind" FontFamily="{StaticResource PixelBig}" FontSize="54"/>
+            <TextBlock Grid.Row="0" Text="Choose your&#x0d;&#x0a;next Blind" FontFamily="{StaticResource PixelBig}" FontSize="54"
+                       HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center"/>
 
             <Border Grid.Row="1" Style="{StaticResource DarkContainer}" Name="ScoreBorder">
                 <Grid Name="ScoreGrid" Grid.Row="1">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
+                        <ColumnDefinition Width="20*"/>
+                        <ColumnDefinition Width="80*"/>
                     </Grid.ColumnDefinitions>
 
-                    <TextBlock Text="Round score" Grid.Column="0"/>
+                    <TextBlock Text="Round&#x0d;&#x0a;score" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center"
+                               FontFamily="{StaticResource PixelBig}" FontSize="24"/>
 
                     <Border Grid.Column="1">
                         <Grid Name="RoundScoreGrid">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition/>
-                                <ColumnDefinition/>
+                                <ColumnDefinition Width="50*"/>
+                                <ColumnDefinition Width="50*"/>
                             </Grid.ColumnDefinitions>
 
                             <TextBlock Name="CurrentScore" Grid.Column="1" Text="0"  VerticalAlignment="Center" HorizontalAlignment="Left"/>
@@ -98,8 +100,16 @@
                         <RowDefinition/>
                     </Grid.RowDefinitions>
 
-                    <Button Name="RunInfo"  Content="Run Info" Grid.Row="0" Click="Show_RunInfo" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
-                    <Button Name="Options" Content="Options" Grid.Row="1" Click="Show_Options" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+                    <Border Grid.Row="0" Style="{StaticResource RerollContainer}">
+                        <Button Name="RunInfo"  Content="Run Info" Click="Show_RunInfo" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+                                FontFamily="{StaticResource PixelBig}" FontSize="24"/>
+                    </Border>
+
+                    <Border Grid.Row="1" Style="{StaticResource NextRoundContainer}">
+                        <Button Name="Options" Content="Options" Click="Show_Options" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+                                FontFamily="{StaticResource PixelBig}" FontSize="24"/>
+                    </Border>
+                    
                 </Grid>
 
                 <Grid Name="OtherInfo" Grid.Column="1">
@@ -114,25 +124,41 @@
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
 
-                    <Grid Name="RemainingHandsGrid"  Grid.Row="0" Grid.Column="0">
-                        <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
+                    <Border Style="{StaticResource DarkContainer}" Grid.Row="0" Grid.Column="0">
+                        <Grid Name="RemainingHandsGrid">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30*"/>
+                                <RowDefinition Height="70*"/>
+                            </Grid.RowDefinitions>
 
-                        <TextBlock Text="Hands" Grid.Row="0"/>
-                        <TextBlock Grid.Row="1" Text="{x:Bind Game.Player.RemainingHands, Mode=OneWay}"/>
-                    </Grid>
-                    <Grid Name="RemainingDiscardsGrid" Grid.Row="0" Grid.Column="1">
-                        <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
+                            <TextBlock Text="Hands" Grid.Row="0" FontSize="24" FontFamily="{StaticResource PixelBig}"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
-                        <TextBlock Text="Discards" Grid.Row="0"/>
-                        <TextBlock Grid.Row="1" Text="{x:Bind Game.Player.Discards, Mode=OneWay}"/>
-                    </Grid>
+                            <Border Grid.Row="1" Style="{StaticResource GrayShadowlessContainer}">
+                                <TextBlock Text="{x:Bind Game.Player.RemainingHands, Mode=OneWay}" VerticalAlignment="Center"
+                                           HorizontalAlignment="Center" FontFamily="{StaticResource PixelBig}" FontSize="54"/>
+                            </Border>
+                        </Grid>
+                    </Border>
 
+                    <Border Grid.Row="0" Grid.Column="1" Style="{StaticResource DarkContainer}">
+                        <Grid Name="RemainingDiscardsGrid">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30*"/>
+                                <RowDefinition Height="70*"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Text="Discards" Grid.Row="0" FontFamily="{StaticResource PixelBig}" FontSize="24"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+                            <Border Style="{StaticResource GrayShadowlessContainer}" Grid.Row="1">
+                                <TextBlock Text="{x:Bind Game.Player.Discards, Mode=OneWay}" FontFamily="{StaticResource PixelBig}"
+                                           FontSize="54" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            
+                        </Grid>
+                    </Border>
+                    
                     <TextBlock Name="Money" Grid.ColumnSpan="2" Grid.Row="1" Grid.Column="0" Text="{x:Bind Game.Player.Money, Mode=OneWay}"/>
 
                     <Grid Name="AnteGrid" Grid.Row="2" Grid.Column="0">
@@ -206,7 +232,7 @@
 
             </Grid>
 
-            <Grid Name="TableGrid" Grid.Row="1" Background="Beige">
+            <Grid Name="TableGrid" Grid.Row="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
@@ -388,7 +414,7 @@
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
 
-                    <Grid Name="DeckGrid" Grid.Row="1" Background="AliceBlue">
+                    <Grid Name="DeckGrid" Grid.Row="1">
                         <Grid.RowDefinitions>
                             <RowDefinition/>
                             <RowDefinition/>
