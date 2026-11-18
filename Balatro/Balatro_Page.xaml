@@ -259,7 +259,8 @@
                         <RowDefinition/>
                     </Grid.RowDefinitions>
 
-                    <GridView Name="SelectedCardsGridView" Grid.Row="0" ItemsSource="{x:Bind game.Player.PlayedCardsDisplay, Mode=OneWay}" IsItemClickEnabled="False" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <GridView Name="SelectedCardsGridView" Grid.Row="0" ItemsSource="{x:Bind game.Player.PlayedCardsDisplay, Mode=OneWay}" IsItemClickEnabled="False" HorizontalAlignment="Center" VerticalAlignment="Center"
+                              SelectionMode="None">
                         <GridView.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <ItemsWrapGrid Orientation="Vertical"/>

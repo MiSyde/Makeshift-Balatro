@@ -14,12 +14,12 @@
             <RowDefinition Height="40*"/>
         </Grid.RowDefinitions>
 
-        <GridView Grid.Row="0" ItemsSource="{x:Bind ModifyableCards, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Center"
-                  ItemClick="CardClick"  Visibility="{x:Bind ShowCardsGrid}">
+        <GridView Grid.Row="0" ItemsSource="{x:Bind ModifyableCards, Mode=OneWay}" VerticalAlignment="Center" HorizontalAlignment="Center"
+                  ItemClick="CardClick"  Visibility="{x:Bind ShowCardsGrid, Mode=OneWay}">
             
         </GridView>
 
-        <GridView Grid.Row="1" ItemsSource="{x:Bind ConsumablePack, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Center"
+        <GridView Grid.Row="1" ItemsSource="{x:Bind ConsumablePack.PackContent, Mode=OneWay}" VerticalAlignment="Center" HorizontalAlignment="Center"
                   ItemClick="PackItemClick">
         </GridView>
         

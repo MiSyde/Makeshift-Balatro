@@ -15,6 +15,7 @@ using Microsoft.UI.Xaml.Navigation;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -37,9 +38,11 @@ public sealed partial class ShopPage : Page
     IntPtr mainHwnd;
     private const int GWLP_HWNDPARENT = -8;
     IEffect? currentShopItem;
+    ConsumablePack? currentShopPack;
+    IVoucher? currentShopVoucher;
     public RelayCommand<IEffect> BuyFromItemShopCommand { get; }
-    RelayCommand<IVoucher> BuyVoucherCommand;
-    RelayCommand<ConsumablePack> BuyPackCommand;
+    public RelayCommand<IVoucher> BuyVoucherCommand { get; }
+    public RelayCommand<ConsumablePack> BuyPackCommand { get; }
 
     public ShopPage()
     {
@@ -56,7 +59,7 @@ public sealed partial class ShopPage : Page
 
     private void Buy(IEffect Item)
     {
-        switch(Item)
+        switch (Item)
         {
             case IPassiveJoker:
                 Game.Player.Jokers.Add((IPassiveJoker) Item);
@@ -205,8 +208,16 @@ public sealed partial class ShopPage : Page
                     currentShopItem.ButtonVisibility = Visibility.Collapsed;
                     currentShopItem = null;
                 }
-                else if (gv.SelectedItem is ConsumablePack Pack)
-                    Pack.ButtonVisibility = Visibility.Collapsed;
+                else if (currentShopPack != null)
+                {
+                    currentShopPack.ButtonVisibility = Visibility.Collapsed;
+                    currentShopPack = null;
+                }
+                else if(currentShopVoucher != null)
+                {
+                    currentShopVoucher.ButtonVisibility = Visibility.Collapsed;
+                    currentShopVoucher = null;
+                }
 
                 gv.SelectedIndex = -1;
             }
@@ -243,6 +254,48 @@ public sealed partial class ShopPage : Page
                 Button? b = (Button) BuyableItemsGridView.FindName("BuyItemButton");
                 effect.ButtonVisibility = Visibility.Visible;
                 currentShopItem = effect;
+            }
+        }
+    }
+
+    private void ShowBuyButtonPacksGridView(object sender, ItemClickEventArgs e)
+    {
+        if (e.ClickedItem is ConsumablePack pack)
+        {
+            if (currentShopPack == pack)
+            {
+                pack.ButtonVisibility = Visibility.Collapsed;
+                currentShopPack = null;
+            }
+            else
+            {
+                currentShopPack?.ButtonVisibility = Visibility.Collapsed;
+
+                BuyFromItemShopCommand.NotifyCanExecuteChanged();
+                Button? b = (Button)PackShopGridView.FindName("BuyPackButton");
+                pack.ButtonVisibility = Visibility.Visible;
+                currentShopPack = pack;
+            }
+        }
+    }
+
+    private void ShowBuyButtonVoucherGridView(object sender, ItemClickEventArgs e)
+    {
+        if (e.ClickedItem is IVoucher voucher)
+        {
+            if (currentShopVoucher == voucher)
+            {
+                voucher.ButtonVisibility = Visibility.Collapsed;
+                currentShopVoucher = null;
+            }
+            else
+            {
+                currentShopVoucher?.ButtonVisibility = Visibility.Collapsed;
+
+                BuyVoucherCommand.NotifyCanExecuteChanged();
+                Button? b = (Button)VouchersGridView.FindName("BuyVoucherButton");
+                voucher.ButtonVisibility = Visibility.Visible;
+                currentShopVoucher = voucher;
             }
         }
     }

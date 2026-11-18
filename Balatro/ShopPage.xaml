@@ -189,7 +189,8 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
-                <GridView Name="JokersGridView" Grid.Row="0" Grid.Column="0" ItemsSource="{x:Bind Game.Player.Jokers}">
+                <GridView Name="JokersGridView" Grid.Row="0" Grid.Column="0" ItemsSource="{x:Bind Game.Player.Jokers}"
+                          IsItemClickEnabled="False" SelectionMode="None">
                     <GridView.ItemsPanel>
                         <ItemsPanelTemplate>
                             <ItemsWrapGrid Orientation="Vertical"/>
@@ -318,7 +319,8 @@
                                                 </TextBlock.RenderTransform>
                                             </TextBlock>
 
-                                            <GridView Grid.Column="1" Name="VouchersGridView" ItemsSource="{x:Bind Shop.VoucherShop, Mode=OneWay}">
+                                            <GridView Grid.Column="1" Name="VouchersGridView" ItemsSource="{x:Bind Shop.VoucherShop, Mode=OneWay}"
+                                                      ItemClick="ShowBuyButtonVoucherGridView" SelectionMode="None" LosingFocus="UnselectOnLosingFocus">
                                                 <GridView.ItemsPanel>
                                                     <ItemsPanelTemplate>
                                                         <ItemsWrapGrid Orientation="Vertical"/>
@@ -326,7 +328,19 @@
                                                 </GridView.ItemsPanel>
                                                 <GridView.ItemTemplate>
                                                     <DataTemplate x:DataType="v:IVoucher">
-                                                        <Image Source="{x:Bind Image}" Height="201" Width="150"/>
+                                                        <Grid Width="160">
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="110"/>
+                                                                <ColumnDefinition Width="Auto"/>
+                                                            </Grid.ColumnDefinitions>
+                                                            <Image Source="{x:Bind Image}" Grid.Column="0" Height="190" Width="110" HorizontalAlignment="Left"/>
+                                                            <Border HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1" Style="{StaticResource SelectButtonContainer}" Height="50" Width="50" Visibility="{x:Bind ButtonVisibility, Mode=OneWay}">
+                                                                <Button Name="BuyVoucherButton" Content="{x:Bind Price, Converter={StaticResource Price}}" Visibility="{x:Bind ButtonVisibility, Mode=OneWay}"
+                Command="{Binding Path=BuyVoucherCommand, ElementName=Shop_Page}"
+                CommandParameter="{Binding}"/>
+                                                            </Border>
+
+                                                        </Grid>
                                                     </DataTemplate>
                                                 </GridView.ItemTemplate>
                                             </GridView>
@@ -336,7 +350,8 @@
                                 </Border>
 
                                 <Border Grid.Column="1" Style="{StaticResource GraySmallShadowContainer}">
-                                    <GridView Name="PackShopGridView" ItemsSource="{x:Bind Shop.PackShop}">
+                                    <GridView Name="PackShopGridView" ItemsSource="{x:Bind Shop.PackShop}" IsItemClickEnabled="True"
+                                              ItemClick="ShowBuyButtonPacksGridView" LosingFocus="UnselectOnLosingFocus" SelectionMode="None">
                                         <GridView.ItemsPanel>
                                             <ItemsPanelTemplate>
                                                 <ItemsWrapGrid Orientation="Vertical"/>
@@ -344,7 +359,19 @@
                                         </GridView.ItemsPanel>
                                         <GridView.ItemTemplate>
                                             <DataTemplate x:DataType="model:ConsumablePack">
-                                                <Image Source="{x:Bind Image}" Height="201" Width="150"/>
+                                                <Grid Width="160">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="110"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <Image Source="{x:Bind Image}" Grid.Column="0" Height="190" Width="110" HorizontalAlignment="Left"/>
+                                                    <Border HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1" Style="{StaticResource SelectButtonContainer}" Height="50" Width="50" Visibility="{x:Bind ButtonVisibility, Mode=OneWay}">
+                                                        <Button Name="BuyPackButton" Content="{x:Bind Price, Converter={StaticResource Price}}" Visibility="{x:Bind ButtonVisibility, Mode=OneWay}"
+                Command="{Binding Path=BuyPackCommand, ElementName=Shop_Page}"
+                CommandParameter="{Binding}"/>
+                                                    </Border>
+
+                                                </Grid>
                                             </DataTemplate>
                                         </GridView.ItemTemplate>
                                     </GridView>

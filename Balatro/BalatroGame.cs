@@ -159,7 +159,10 @@ namespace Balatro
             {
                 Player.Cards.Remove(c);
             }
-            
+
+  
+            Player.PlayedCardsDisplay.Clear();
+            Player.PlayedCards.Clear();
             Player.SelectedCards.Clear();
 
             if (Player.TotalChips >= Threshold) NextRound();

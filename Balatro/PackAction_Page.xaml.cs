@@ -28,38 +28,44 @@ namespace Balatro
         Visibility ShowCardsGrid;
         BalatroGame Game => App.CurrentGame;
         Frame MainFrame => App.MainFrame;
-        ObservableCollection<Card> ModifyableCards;
-        int ChosenCards;
-        Random Random;
+        ObservableCollection<Card> ModifyableCards = new ObservableCollection<Card>();
+        int ChosenCards = 0;
+        Random Random = new Random();
         ConsumablePack ConsumablePack;
-        IConsumable? SelectedCard;
+        IConsumable? SelectedConsumableCard;
         RelayCommand UseCardCommand;
         public PackAction_Page()
         {
             InitializeComponent();
-            ModifyableCards = new ObservableCollection<Card>();
-            Random = new Random();
             UseCardCommand = new RelayCommand(UseCard, CanUseCard);
         }
 
-        private bool CanUseCard() => SelectedCard is not null && SelectedCard.CanUse(Game.Player);
+        private void Init()
+        {
+            SelectedConsumableCard = null;
+            Game.Player.SelectedCards.Clear();
+            ModifyableCards.Clear();
+            ChosenCards = 0;
+        }
+
+        private bool CanUseCard() => SelectedConsumableCard is not null && SelectedConsumableCard.CanUse(Game.Player) && ChosenCards > 0 && ChosenCards <= ConsumablePack.ChooseUpTo;
 
         private void UseCard()
         {
-            ++ChosenCards;
-            SelectedCard!.AddEffect(Game.Player);
-            if (ChosenCards == ConsumablePack.ChooseUpTo) MainFrame.Navigate(typeof(ShopPage));
-            SelectedCard = null;
-            Game.Player.SelectedCards.Clear();
+            SelectedConsumableCard!.AddEffect(Game.Player);
+            MainFrame.Navigate(typeof(ShopPage));
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
 
+            Init();
+
             if(e.Parameter is ConsumablePack Pack)
             {
-                if(Pack.PackType is Enums.PackType.ARCANA || Pack.PackType is Enums.PackType.CELESTIAL)
+                if(Pack.PackType is Enums.PackType.ARCANA || Pack.PackType is Enums.PackType.CELESTIAL || 
+                    Pack.PackType is Enums.PackType.SPECTRAL)
                 {
                     ShowCardsGrid = Visibility.Visible;
                     FillCardList();
@@ -95,8 +101,8 @@ namespace Balatro
         {
             if(sender is IConsumable Consumable)
             {
-                if (Consumable == SelectedCard) SelectedCard = null;
-                else SelectedCard = Consumable;
+                if (Consumable == SelectedConsumableCard) SelectedConsumableCard = null;
+                else SelectedConsumableCard = Consumable;
             }
         }
 
@@ -104,8 +110,9 @@ namespace Balatro
         {
             if(sender is Card c)
             {
-                if (Game.Player.SelectedCards.Remove(c)) return;
+                if (Game.Player.SelectedCards.Remove(c)) { --ChosenCards; return; }
                 Game.Player.SelectedCards.Add(c);
+                ++ChosenCards;
             }
         }
     }
