@@ -27,6 +27,7 @@ namespace Balatro
         private RelayCommand? SmallBCmd;
         private RelayCommand? BigBCmd;
         private RelayCommand? BossBCmd;
+        private List<Card> DrawnCards = new();
         public IBossBlind BossBlind {
             get;
             set
@@ -199,6 +200,10 @@ namespace Balatro
         public async void NextRound()
         {
             await Task.Delay(200);
+
+            Player.Deck!.Cards.AddRange(DrawnCards);
+            DrawnCards.Clear();
+
             ++Round;
 
             GiveMoney();
@@ -311,7 +316,9 @@ namespace Balatro
             while(Player.Cards.Count != Player.CurrentCardHoldingSize)
             {
                 await Task.Delay(300);
-                Player.Cards.Add(Player.DrawFromDeck());
+                Card c = Player.DrawFromDeck();
+                Player.Cards.Add(c);
+                DrawnCards.Add(c);
             }
         }
 

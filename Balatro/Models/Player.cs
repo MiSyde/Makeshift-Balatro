@@ -195,7 +195,7 @@ namespace Balatro.Models
 
         public Card DrawFromDeck()
         {
-            Card c = Deck.Cards[Random.Shared.Next(0, Deck.CurrentSize)];
+            Card c = Deck!.Cards[Random.Shared.Next(0, Deck.CurrentSize)];
             Deck.Remove(c);
             return c;
         }

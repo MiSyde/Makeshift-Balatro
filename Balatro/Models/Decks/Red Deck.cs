@@ -34,37 +34,37 @@ namespace Balatro.Models.Decks
             {
                 Cards.Add(new Card(new BitmapImage(new Uri("ms-appx:///Assets/CardImages/Spades/" + i + ".png")), i, false, SuitType.Spades, i));
             }
-            Cards.Add(new Card(new BitmapImage(new Uri("ms-appx:///Assets/CardImages/Spades/Jack.png")), 10, true, SuitType.Spades, 11, FaceCard.Jack));
-            Cards.Add(new Card(new BitmapImage(new Uri("ms-appx:///Assets/CardImages/Spades/Queen.png")), 10, true, SuitType.Spades, 12, FaceCard.Queen));
-            Cards.Add(new Card(new BitmapImage(new Uri("ms-appx:///Assets/CardImages/Spades/King.png")), 10, true, SuitType.Spades, 13, FaceCard.King));
-            Cards.Add(new Card(new BitmapImage(new Uri("ms-appx:///Assets/CardImages/Spades/Ace.png")), 10, true, SuitType.Spades, 14, FaceCard.Ace));
+            Cards.Add(new Card(new BitmapImage(new Uri("ms-appx:///Assets/CardImages/Spades/11.png")), 10, true, SuitType.Spades, 11, FaceCard.Jack));
+            Cards.Add(new Card(new BitmapImage(new Uri("ms-appx:///Assets/CardImages/Spades/12.png")), 10, true, SuitType.Spades, 12, FaceCard.Queen));
+            Cards.Add(new Card(new BitmapImage(new Uri("ms-appx:///Assets/CardImages/Spades/13.png")), 10, true, SuitType.Spades, 13, FaceCard.King));
+            Cards.Add(new Card(new BitmapImage(new Uri("ms-appx:///Assets/CardImages/Spades/14.png")), 10, true, SuitType.Spades, 14, FaceCard.Ace));
 
             for (int i = 2; i < 11; ++i)
             {
                 Cards.Add(new Card(new BitmapImage(new Uri("ms-appx:///Assets/CardImages/Hearts/" + i + ".png")), i, false, SuitType.Hearts, i));
             }
-            Cards.Add(new Card(new BitmapImage(new Uri("ms-appx:///Assets/CardImages/Hearts/Jack.png")), 10, true, SuitType.Hearts, 11, FaceCard.Jack));
-            Cards.Add(new Card(new BitmapImage(new Uri("ms-appx:///Assets/CardImages/Hearts/Queen.png")), 10, true, SuitType.Hearts, 12, FaceCard.Queen));
-            Cards.Add(new Card(new BitmapImage(new Uri("ms-appx:///Assets/CardImages/Hearts/King.png")), 10, true, SuitType.Hearts, 13, FaceCard.King));
-            Cards.Add(new Card(new BitmapImage(new Uri("ms-appx:///Assets/CardImages/Hearts/Ace.png")), 10, true, SuitType.Hearts, 14, FaceCard.Ace));
+            Cards.Add(new Card(new BitmapImage(new Uri("ms-appx:///Assets/CardImages/Hearts/11.png")), 10, true, SuitType.Hearts, 11, FaceCard.Jack));
+            Cards.Add(new Card(new BitmapImage(new Uri("ms-appx:///Assets/CardImages/Hearts/12.png")), 10, true, SuitType.Hearts, 12, FaceCard.Queen));
+            Cards.Add(new Card(new BitmapImage(new Uri("ms-appx:///Assets/CardImages/Hearts/13.png")), 10, true, SuitType.Hearts, 13, FaceCard.King));
+            Cards.Add(new Card(new BitmapImage(new Uri("ms-appx:///Assets/CardImages/Hearts/14.png")), 10, true, SuitType.Hearts, 14, FaceCard.Ace));
 
             for (int i = 2; i < 11; ++i)
             {
                 Cards.Add(new Card(new BitmapImage(new Uri("ms-appx:///Assets/CardImages/Clubs/" + i + ".png")), i, false, SuitType.Clubs, i));
             }
-            Cards.Add(new Card(new BitmapImage(new Uri("ms-appx:///Assets/CardImages/Clubs/Jack.png")), 10, true, SuitType.Clubs, 11, FaceCard.Jack));
-            Cards.Add(new Card(new BitmapImage(new Uri("ms-appx:///Assets/CardImages/Clubs/Queen.png")), 10, true, SuitType.Clubs, 12, FaceCard.Queen));
-            Cards.Add(new Card(new BitmapImage(new Uri("ms-appx:///Assets/CardImages/Clubs/King.png")), 10, true, SuitType.Clubs, 13, FaceCard.King));
-            Cards.Add(new Card(new BitmapImage(new Uri("ms-appx:///Assets/CardImages/Clubs/Ace.png")), 10, true, SuitType.Clubs, 14, FaceCard.Ace));
+            Cards.Add(new Card(new BitmapImage(new Uri("ms-appx:///Assets/CardImages/Clubs/11.png")), 10, true, SuitType.Clubs, 11, FaceCard.Jack));
+            Cards.Add(new Card(new BitmapImage(new Uri("ms-appx:///Assets/CardImages/Clubs/12.png")), 10, true, SuitType.Clubs, 12, FaceCard.Queen));
+            Cards.Add(new Card(new BitmapImage(new Uri("ms-appx:///Assets/CardImages/Clubs/13.png")), 10, true, SuitType.Clubs, 13, FaceCard.King));
+            Cards.Add(new Card(new BitmapImage(new Uri("ms-appx:///Assets/CardImages/Clubs/14.png")), 10, true, SuitType.Clubs, 14, FaceCard.Ace));
 
             for (int i = 2; i < 11; ++i)
             {
                 Cards.Add(new Card(new BitmapImage(new Uri("ms-appx:///Assets/CardImages/Diamonds/" + i + ".png")), i, false, SuitType.Diamonds, i));
             }
-            Cards.Add(new Card(new BitmapImage(new Uri("ms-appx:///Assets/CardImages/Diamonds/Jack.png")), 10, true, SuitType.Diamonds, 11, FaceCard.Jack));
-            Cards.Add(new Card(new BitmapImage(new Uri("ms-appx:///Assets/CardImages/Diamonds/Queen.png")), 10, true, SuitType.Diamonds, 12, FaceCard.Queen));
-            Cards.Add(new Card(new BitmapImage(new Uri("ms-appx:///Assets/CardImages/Diamonds/King.png")), 10, true, SuitType.Diamonds, 13, FaceCard.King));
-            Cards.Add(new Card(new BitmapImage(new Uri("ms-appx:///Assets/CardImages/Diamonds/Ace.png")), 10, true, SuitType.Diamonds, 14, FaceCard.Ace));
+            Cards.Add(new Card(new BitmapImage(new Uri("ms-appx:///Assets/CardImages/Diamonds/11.png")), 10, true, SuitType.Diamonds, 11, FaceCard.Jack));
+            Cards.Add(new Card(new BitmapImage(new Uri("ms-appx:///Assets/CardImages/Diamonds/12.png")), 10, true, SuitType.Diamonds, 12, FaceCard.Queen));
+            Cards.Add(new Card(new BitmapImage(new Uri("ms-appx:///Assets/CardImages/Diamonds/13.png")), 10, true, SuitType.Diamonds, 13, FaceCard.King));
+            Cards.Add(new Card(new BitmapImage(new Uri("ms-appx:///Assets/CardImages/Diamonds/14.png")), 10, true, SuitType.Diamonds, 14, FaceCard.Ace));
 
             Image = new BitmapImage(new Uri("ms-appx:///Assets/DeckImages/Red_Deck.png"));
         }

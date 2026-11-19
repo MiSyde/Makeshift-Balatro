@@ -48,10 +48,11 @@ namespace Balatro
             ChosenCards = 0;
         }
 
-        private bool CanUseCard() => SelectedConsumableCard is not null && SelectedConsumableCard.CanUse(Game.Player) && ChosenCards > 0 && ChosenCards <= ConsumablePack.ChooseUpTo;
+        private bool CanUseCard() => SelectedConsumableCard is not null && SelectedConsumableCard.CanUse(Game.Player);
 
         private void UseCard()
         {
+            ++ChosenCards;
             SelectedConsumableCard!.AddEffect(Game.Player);
             MainFrame.Navigate(typeof(ShopPage));
         }
@@ -81,14 +82,14 @@ namespace Balatro
         {
             base.OnNavigatingFrom(e);
 
-            Game.Player.Deck.Cards.AddRange(ModifyableCards);
+            Game.Player.Deck!.Cards.AddRange(ModifyableCards);
             ModifyableCards.Clear();
             Game.Player.SelectedCards.Clear();
         }
 
         private void FillCardList()
         {
-            List<Card> d = Game.Player.Deck.Cards;
+            List<Card> d = Game.Player.Deck!.Cards;
             for (int i = 0; i < 12; ++i)
             {
                 Card c = d[Random.Next(0, d.Count - 1)];
@@ -110,9 +111,8 @@ namespace Balatro
         {
             if(sender is Card c)
             {
-                if (Game.Player.SelectedCards.Remove(c)) { --ChosenCards; return; }
+                if (Game.Player.SelectedCards.Remove(c)) { return; }
                 Game.Player.SelectedCards.Add(c);
-                ++ChosenCards;
             }
         }
     }

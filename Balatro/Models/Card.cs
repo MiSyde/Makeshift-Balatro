@@ -27,7 +27,7 @@ namespace Balatro.Models
         public bool IsFaceCard { get; }
         public FaceCard? FaceCardType { get; }
         public SuitType SuitType { get; }
-        public BitmapImage Image { get; }
+        public BitmapImage Image { get; set; }
         public Guid Id { get; }
         public IEffect? Seal { get; set; }
         public Modifier Modifier { get; set; }
@@ -37,7 +37,7 @@ namespace Balatro.Models
 
         public string Name { get; } = string.Empty;
 
-        public string Description { get; }
+        public string Description { get; set; }
 
 
         public Card(BitmapImage Image, int Value, bool IsFaceCard, SuitType SType, int RankOrder, FaceCard? FCType = null)
@@ -51,8 +51,13 @@ namespace Balatro.Models
             Id = new Guid();
             Modifier = Modifier.BASE;
             AdditionalEnhancements = new List<Enhancement>();
-            if (IsFaceCard) Description = Helper.GetDescription(FCType!) + " of " + Helper.GetDescription(SType);
-            else Description = Value.ToString() + " of " + Helper.GetDescription(SType);
+            
+        }
+
+        public void SetDescription()
+        {
+            if (IsFaceCard) Description = Helper.GetDescription(FaceCardType!) + " of " + Helper.GetDescription(SuitType);
+            else Description = Value.ToString() + " of " + Helper.GetDescription(SuitType);
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

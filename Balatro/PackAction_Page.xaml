@@ -10,8 +10,9 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="60*"/>
             <RowDefinition Height="40*"/>
+            <RowDefinition Height="50*"/>
+            <RowDefinition Height="10*"/>
         </Grid.RowDefinitions>
 
         <GridView Grid.Row="0" ItemsSource="{x:Bind ModifyableCards, Mode=OneWay}" VerticalAlignment="Center" HorizontalAlignment="Center"
@@ -23,7 +24,7 @@
                   ItemClick="PackItemClick">
         </GridView>
         
-        <Border Style="{StaticResource InactiveButtonContainer}">
+        <Border Style="{StaticResource InactiveButtonContainer}" Grid.Row="2">
             <Button Content="Use Card" Command="{x:Bind UseCardCommand}"/>
         </Border>
 
