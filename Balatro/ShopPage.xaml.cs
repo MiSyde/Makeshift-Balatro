@@ -61,8 +61,9 @@ public sealed partial class ShopPage : Page
     {
         switch (Item)
         {
-            case IPassiveJoker:
+            case IPassiveJoker: 
                 Game.Player.Jokers.Add((IPassiveJoker) Item);
+                Item.AddEffect(Game.Player);
                 break;
             case IJoker:
                 Game.Player.Jokers.Add((IJoker)Item);

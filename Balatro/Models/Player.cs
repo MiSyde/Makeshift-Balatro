@@ -223,9 +223,9 @@ namespace Balatro.Models
         {
             foreach(IJoker joker in Jokers)
             {
+                if (joker is IPassiveJoker) continue;
                 ApplyModifier(joker);
                 await Task.Delay(300);
-                if (joker is IPassiveJoker) continue;
                 joker.AddEffect(this);
             }
         }
