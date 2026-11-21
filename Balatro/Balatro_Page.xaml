@@ -23,7 +23,7 @@
             <ColumnDefinition Width="74*"/>
         </Grid.ColumnDefinitions>
 
-        <Grid Grid.Column="0" Name="SpaceGrid" Background="Green"/>
+        <Grid Grid.Column="0" Name="SpaceGrid"/>
 
         <Grid Name="InfoGrid" Grid.Column="1" Background="#2f3a39" BorderThickness="2,0,2,0" BorderBrush="{x:Bind game.BlindColor}">
 
@@ -255,17 +255,17 @@
 
                 <Grid Name="CardGrid" Grid.Column="0">
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="20*"/>
+                        <RowDefinition Height="35*"/>
                         <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="10*"/>
                     </Grid.RowDefinitions>
 
                     <GridView Name="SelectedCardsGridView" Grid.Row="0" ItemsSource="{x:Bind game.Player.PlayedCardsDisplay, Mode=OneWay}" IsItemClickEnabled="False" HorizontalAlignment="Center" VerticalAlignment="Center"
                               SelectionMode="None">
                         <GridView.ItemsPanel>
                             <ItemsPanelTemplate>
-                                <ItemsWrapGrid Orientation="Vertical"/>
+                                <ItemsWrapGrid Orientation="Horizontal"/>
                             </ItemsPanelTemplate>
                         </GridView.ItemsPanel>
                         <GridView.ItemTemplate>
@@ -276,10 +276,10 @@
                     </GridView>
 
                     <GridView ItemsSource="{x:Bind game.Player.Cards, Mode=OneWay}" HorizontalAlignment="Center" VerticalAlignment="Center" IsItemClickEnabled="True" 
-            SelectionMode="Multiple" IsMultiSelectCheckBoxEnabled="False" Name="PlayerCards" Grid.Row="1" SelectionChanged="PlayerCards_SelectionChanged">
+            SelectionMode="Multiple" IsMultiSelectCheckBoxEnabled="False" Name="PlayerCards" Grid.Row="1" SelectionChanged="PlayerCards_SelectionChanged" >
                         <GridView.ItemsPanel>
                             <ItemsPanelTemplate>
-                                <ItemsWrapGrid Orientation="Vertical"/>
+                                <ItemsWrapGrid Orientation="Horizontal"/>
                             </ItemsPanelTemplate>
                         </GridView.ItemsPanel>
                         <GridView.ItemTemplate>

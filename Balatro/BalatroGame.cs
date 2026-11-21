@@ -155,12 +155,12 @@ namespace Balatro
             await DisplayCards();
 
             await Player.CalculateChips();
+            await Task.Delay(1000);
 
             foreach (Card c in Player.SelectedCards.ToList())
             {
                 Player.Cards.Remove(c);
             }
-
   
             Player.PlayedCardsDisplay.Clear();
             Player.PlayedCards.Clear();

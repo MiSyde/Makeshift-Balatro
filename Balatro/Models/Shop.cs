@@ -90,6 +90,7 @@ namespace Balatro.Models
             Vouchers = Helper.GenerateClassesInNamespace<IVoucher>("Balatro.Models.Vouchers");
             Planets = Helper.GenerateClassesInNamespace<IEffect>("Balatro.Models.Planets");
             Tarots = Helper.GenerateClassesInNamespace<IEffect>("Balatro.Models.Tarots");
+            Spectrals = Helper.GenerateClassesInNamespace<IEffect>("Balatro.Models.Spectrals");
             Cards = new List<Card>();
             Cards.Add(new Card(new Microsoft.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///Assets/JokerImages/Joker.png")), 1, true, Enums.SuitType.Diamonds, 1, Enums.FaceCard.Ace));
         }
