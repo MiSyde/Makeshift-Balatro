@@ -25,9 +25,9 @@
 
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition/> <!--Arrow button-->
+                <ColumnDefinition Width="Auto"/> <!--Arrow button-->
                 <ColumnDefinition/> <!--Deck-->
-                <ColumnDefinition/> <!--Arrow button-->
+                <ColumnDefinition Width="Auto"/> <!--Arrow button-->
             </Grid.ColumnDefinitions>
 
             <Border Grid.Column="0">
@@ -72,9 +72,9 @@
 
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition/> <!--Arrow button-->
+                <ColumnDefinition Width="Auto"/> <!--Arrow button-->
                 <ColumnDefinition/> <!--Stake-->
-                <ColumnDefinition/> <!--Arrow button-->
+                <ColumnDefinition Width="Auto"/> <!--Arrow button-->
             </Grid.ColumnDefinitions>
 
             <Border Grid.Column="0" Style="{StaticResource NextRoundContainer}">
@@ -90,7 +90,7 @@
                         <!--Stake info-->
                     </Grid.ColumnDefinitions>
 
-                    <Image Grid.Column="0"/>
+                    <Image Grid.Column="0" Source="{Binding Path=CurrentDeck.Image, Mode=OneWay}"/>
 
                     <Grid>
                         <Grid.RowDefinitions>
@@ -98,9 +98,9 @@
                             <RowDefinition/> <!--Stake info-->
                         </Grid.RowDefinitions>
 
-                        <TextBlock Grid.Row="0"/>
+                        <TextBlock Grid.Row="0" Text="{Binding Path=CurrentDeck.Name, Mode=OneWay}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 
-                        <RichTextBlock Grid.Row="1"/>
+                        <TextBlock Grid.Row="1" Text="{Binding Path=CurrentDeck.Description, Mode=OneWay}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                     </Grid>
                 </Grid>
             </Border>
@@ -112,7 +112,7 @@
         </Grid>
 
         <Border Grid.Row="2" Style="{StaticResource ChipsContainer}">
-            <Button Content="Confirm" Click="Close_Click"/>
+            <Button Content="Confirm" Click="Confirm_Click"/>
         </Border>
         
         <Border Grid.Row="3" Style="{StaticResource NextRoundContainer}">

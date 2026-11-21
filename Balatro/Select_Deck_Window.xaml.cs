@@ -1,5 +1,6 @@
 using Balatro.Models;
 using Balatro.Models.Decks;
+using Balatro.Models.Stakes;
 using Balatro.Util;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Windowing;
@@ -33,6 +34,7 @@ namespace Balatro
         private NativeMethods.WndProcDelegate? newWndProc;
         private IntPtr oldWndProc;
         public RoundaboutList<IDeck> Decks { get; } = new RoundaboutList<IDeck>();
+        public RoundaboutList<IStake> Stakes { get; } = new RoundaboutList<IStake>();
         public IDeck CurrentDeck
         {
             get;
@@ -45,7 +47,20 @@ namespace Balatro
                 }
             }
         }
+        public IStake CurrentStake
+        {
+            get;
+            set
+            {
+                if (field != value)
+                {
+                    field = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CurrentStake)));
+                }
+            }
+        }
         private int CurrentDeckIndex { get; set; }
+        private int CurrentStakeIndex { get; set; }
         public event PropertyChangedEventHandler? PropertyChanged;
 
         public Select_Deck_Window(IntPtr parentHwnd, List<IDeck> Decks)
@@ -115,6 +130,12 @@ namespace Balatro
             }
         }
 
+        private void Confirm_Click(object sender, RoutedEventArgs e)
+        {
+            CurrentStake.ApplyStake(App.CurrentGame, App.Shop);
+            Close();
+        }
+
         private void Close_Click(object sender, RoutedEventArgs e)
         {
             Close();
@@ -122,8 +143,20 @@ namespace Balatro
 
         private void UpdateDeck()
         {
+            IDeck prev = CurrentDeck;
             CurrentDeck = Decks[CurrentDeckIndex];
+
+            if(prev.GetType() != CurrentDeck.GetType())
+            {
+                CurrentStakeIndex = 0;
+                UpdateStake();
+            }
         }
+        private void UpdateStake()
+        {
+            CurrentStake = Stakes[CurrentStakeIndex];
+        }
+
 
         private void Left_Click_Deck(object sender, RoutedEventArgs e)
         {
@@ -139,12 +172,14 @@ namespace Balatro
 
         private void Left_Click_Stake(object sender, RoutedEventArgs e)
         {
-
+            --CurrentStakeIndex;
+            UpdateStake();
         }
 
         private void Right_Click_Stake(object sender, RoutedEventArgs e)
         {
-
+            ++CurrentStakeIndex;
+            UpdateStake();
         }
     }
 }

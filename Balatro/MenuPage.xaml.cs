@@ -1,5 +1,6 @@
 using Balatro.Models;
 using Balatro.Models.Decks;
+using Balatro.Models.Stakes;
 using Balatro.Util;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI;
