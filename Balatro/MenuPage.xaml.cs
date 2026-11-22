@@ -30,6 +30,7 @@ public sealed partial class MenuPage : Page
 {
     private Frame MainFrame => App.MainFrame;
     private List<IDeck> Decks { get; } = [];
+    private List<IStake> Stakes { get; } = [];
     private IDeck? SelectedDeck { get; set; } = null;
     RelayCommand PlayCommand { get; }
     Select_Deck_Window? deckWindow;
@@ -40,6 +41,8 @@ public sealed partial class MenuPage : Page
         InitializeComponent();
         NavigationCacheMode = NavigationCacheMode.Required;
         Decks = Helper.GenerateUnlocked<IDeck>("Balatro.Models.Decks");
+        Stakes = Helper.GenerateUnlocked<IStake>("Balatro.Models.Stakes");
+        StakeProgressManager.Load();
         PlayCommand = new RelayCommand(Play, CanPlay);
     }
 
@@ -59,7 +62,7 @@ public sealed partial class MenuPage : Page
         var windowId = XamlRoot.ContentIslandEnvironment.AppWindowId;
         mainHwnd = Win32Interop.GetWindowFromWindowId(windowId);
 
-        deckWindow = new Select_Deck_Window(mainHwnd, Decks);
+        deckWindow = new Select_Deck_Window(mainHwnd, Decks, Stakes);
         deckWindow.Closed += DeckWindow_Closed;
 
         var deckHwnd = WindowNative.GetWindowHandle(deckWindow);
@@ -89,5 +92,10 @@ public sealed partial class MenuPage : Page
             PlayButtonBorder.Style = style;
         }
 
+    }
+
+    private void Exit_Click(object sender, RoutedEventArgs e)
+    {
+        App.Current.Exit();
     }
 }

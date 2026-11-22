@@ -7,7 +7,7 @@ namespace Balatro.Models.Stakes
 {
     public class White_Stake : IStake
     {
-        public BitmapImage Image => new(new Uri("ms-appx:///Assets/Stakes/White_Stake.png"));
+        public BitmapImage Image => new(new Uri("ms-appx:///Assets/StakeImages/White_Stake.png"));
 
         public string Name => "White Stake";
 

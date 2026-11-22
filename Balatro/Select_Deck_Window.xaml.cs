@@ -11,6 +11,7 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
+using Microsoft.UI.Xaml.Shapes;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -59,17 +60,19 @@ namespace Balatro
                 }
             }
         }
-        private int CurrentDeckIndex { get; set; }
-        private int CurrentStakeIndex { get; set; }
+        private int CurrentDeckIndex { get; set; } = 0;
+        private int CurrentStakeIndex { get; set; } = 0;
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        public Select_Deck_Window(IntPtr parentHwnd, List<IDeck> Decks)
+        public Select_Deck_Window(IntPtr parentHwnd, List<IDeck> Decks, List<IStake> Stakes)
         {
             InitializeComponent();
             RootGrid.DataContext = this;
 
             this.Decks.SetContents(Decks);
+            this.Stakes.SetContents(Stakes);
             CurrentDeck = Decks[0];
+            UpdateStake();
 
             this.parentHwnd = parentHwnd;
             hwnd = WindowNative.GetWindowHandle(this);
@@ -155,6 +158,13 @@ namespace Balatro
         private void UpdateStake()
         {
             CurrentStake = Stakes[CurrentStakeIndex];
+            var Unlocked = StakeProgressManager.GetDiff(CurrentDeck.Name);
+            for(int i = 0; i <= Unlocked; ++i)
+            {
+                string name = $"Stake{i}";
+                Rectangle? rect = UnlockedDiffsStack.Children.OfType<Rectangle>().FirstOrDefault(rt => rt.Name == name);
+                rect?.Fill = StakeProgressManager.Colors[i];
+            }
         }
 
 

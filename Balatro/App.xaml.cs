@@ -1,6 +1,7 @@
 ﻿using Balatro.Enums;
 using Balatro.Models;
 using Balatro.Models.Achievement;
+using Balatro.Models.Stakes;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -42,6 +43,7 @@ namespace Balatro
         public App()
         {
             InitializeComponent();
+            StakeProgressManager.Load();
         }
 
         /// <summary>
@@ -52,6 +54,11 @@ namespace Balatro
         {
             _window = new MainWindow();
             _window.Activate();
+            _window.Closed += (sender, args) =>
+            {
+                AchievementManager.SaveProgress();
+                StakeProgressManager.Save();
+            };
         }
     }
 }

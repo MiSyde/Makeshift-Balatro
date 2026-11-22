@@ -23,29 +23,34 @@
             <RowDefinition Height="Auto"/> <!--Back-->
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0">
+        <Grid Name="DeckGrid" Grid.Row="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/> <!--Arrow button-->
                 <ColumnDefinition/> <!--Deck-->
                 <ColumnDefinition Width="Auto"/> <!--Arrow button-->
             </Grid.ColumnDefinitions>
 
-            <Border Grid.Column="0">
-                <Button Content="&lt;" Click="Left_Click_Deck"/>
+            <Border Grid.Column="0" Style="{StaticResource NextRoundContainer}">
+                <Button Content="&lt;" Click="Left_Click_Deck" FontFamily="{StaticResource PixelBig}" FontSize="54"/>
             </Border>
 
-            <Grid Grid.Column="1">
-                <Border>
-                    <Grid>
+            <Grid Grid.Column="1" Name="DeckInfoGrid" Padding="0,20,0,20">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                
+                <Border Style="{StaticResource DarkContainer}" Grid.Row="0">
+                    <Grid Padding="10">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition/> <!--Deck image-->
-                            <ColumnDefinition/> <!--Deck info-->
-                            <ColumnDefinition/> <!--Beaten difficulties w/ deck-->
+                            <ColumnDefinition Width="30*"/> <!--Deck image-->
+                            <ColumnDefinition Width="60*"/> <!--Deck info-->
+                            <ColumnDefinition Width="10*"/> <!--Beaten difficulties w/ deck-->
                         </Grid.ColumnDefinitions>
 
-                        <Image Grid.Column="0" Source="{Binding Path=CurrentDeck.Image, Mode=OneWay}"/>
+                        <Image Grid.Column="0" Source="{Binding Path=CurrentDeck.Image, Mode=OneWay}" Width="240" Height="321" Margin="5"/>
 
-                        <Border Grid.Column="1">
+                        <Border Grid.Column="1" Style="{StaticResource GrayContainer}">
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto"/>
@@ -53,24 +58,41 @@
                                 </Grid.RowDefinitions>
                                 
                                 <TextBlock Grid.Row="0" Text="{Binding Path=CurrentDeck.Name, Mode=OneWay}"
-                                           HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center"/>
+                                           HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center"
+                                           FontFamily="{StaticResource PixelBig}" FontSize="54"/>
 
-                                <Border Grid.Row="1">
-                                    <TextBlock Text="{Binding Path=CurrentDeck.Description, Mode=OneWay}"
-                                               HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center"/>
+                                <Border Grid.Row="1" Background="White" Padding="100" Margin="20">
+                                    <TextBlock Foreground="Black" Text="{Binding Path=CurrentDeck.Description, Mode=OneWay}"
+                                               HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center"
+                                               FontFamily="{StaticResource PixelBig}" FontSize="36"/>
                                 </Border>
                             </Grid>
                         </Border>
+
+                        <StackPanel Grid.Column="2" x:Name="UnlockedDiffsStack">
+                            <Rectangle Width="30" Height="20" x:Name="Stake7" Fill="#2f3a39" Margin="10"/>
+                            <Rectangle Width="30" Height="20" x:Name="Stake6" Fill="#2f3a39" Margin="10"/>
+                            <Rectangle Width="30" Height="20" x:Name="Stake5" Fill="#2f3a39" Margin="10"/>
+                            <Rectangle Width="30" Height="20" x:Name="Stake4" Fill="#2f3a39" Margin="10"/>
+                            <Rectangle Width="30" Height="20" x:Name="Stake3" Fill="#2f3a39" Margin="10"/>
+                            <Rectangle Width="30" Height="20" x:Name="Stake2" Fill="#2f3a39" Margin="10"/>
+                            <Rectangle Width="30" Height="20" x:Name="Stake1" Fill="#2f3a39" Margin="10"/>
+                            <Rectangle Width="30" Height="20" x:Name="Stake0"  Fill="#2f3a39" Margin="10"/>
+                        </StackPanel>
                     </Grid>
                 </Border>
+
+                <StackPanel Grid.Row="1" Name="DeckEllipses">
+                    <Ellipse Fill="White" Width="10" Height="10" Name="RedDeckEllipse"/>
+                </StackPanel>
             </Grid>
 
-            <Border Grid.Column="2">
-                <Button Content=">" Click="Right_Click_Deck"/>
+            <Border Grid.Column="2" Style="{StaticResource NextRoundContainer}">
+                <Button Content=">" Click="Right_Click_Deck" FontFamily="{StaticResource PixelBig}" FontSize="54"/>
             </Border>
         </Grid>
 
-        <Grid>
+        <Grid Grid.Row="1" Name="StakeGrid" Margin="0,20,0,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/> <!--Arrow button-->
                 <ColumnDefinition/> <!--Stake-->
@@ -78,46 +100,73 @@
             </Grid.ColumnDefinitions>
 
             <Border Grid.Column="0" Style="{StaticResource NextRoundContainer}">
-                <Button Click="Left_Click_Stake" Content="&lt;"/>
+                <Button Click="Left_Click_Stake" Content="&lt;" FontFamily="{StaticResource PixelBig}" FontSize="54"/>
             </Border>
 
             <Border Grid.Column="1">
                 <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <!--Image-->
-                        <ColumnDefinition/>
-                        <!--Stake info-->
-                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    
+                    <Grid Grid.Row="0" Name="StakeInfoGrid" Padding="0,20,0,20">
 
-                    <Image Grid.Column="0" Source="{Binding Path=CurrentDeck.Image, Mode=OneWay}"/>
+                        <Border Style="{StaticResource DarkContainer}">
+                            <Grid Padding="10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="30*"/>
+                                    <!--Deck image-->
+                                    <ColumnDefinition Width="60*"/>
+                                    <!--Deck info-->
+                                    <ColumnDefinition Width="10*"/>
+                                    <!--Beaten difficulties w/ deck-->
+                                </Grid.ColumnDefinitions>
 
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition/> <!--Stake name-->
-                            <RowDefinition/> <!--Stake info-->
-                        </Grid.RowDefinitions>
+                                <Image Grid.Column="0" Source="{Binding Path=CurrentStake.Image, Mode=OneWay}" Width="116" Height="116" Margin="5"/>
 
-                        <TextBlock Grid.Row="0" Text="{Binding Path=CurrentDeck.Name, Mode=OneWay}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                <Border Grid.Column="1" Style="{StaticResource GrayContainer}">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
 
-                        <TextBlock Grid.Row="1" Text="{Binding Path=CurrentDeck.Description, Mode=OneWay}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                        <TextBlock Grid.Row="0" Text="{Binding Path=CurrentStake.Name, Mode=OneWay}"
+                               HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center"
+                               FontFamily="{StaticResource PixelBig}" FontSize="54"/>
+
+                                        <Border Grid.Row="1" Background="White" Padding="100,10,100,10" Margin="20">
+                                            <TextBlock Foreground="Black" Text="{Binding Path=CurrentStake.Description, Mode=OneWay}"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center"
+                                   FontFamily="{StaticResource PixelBig}" FontSize="36"/>
+                                        </Border>
+                                    </Grid>
+                                </Border>
+                            </Grid>
+                        </Border>
                     </Grid>
+                    
+                    <StackPanel Grid.Row="1" Name="StakeEllipses">
+                        <Ellipse Fill="White" Width="10" Height="10" Name="WhiteStakeEllipse"/>
+                    </StackPanel>
                 </Grid>
+               
             </Border>
-            
 
             <Border Grid.Column="2" Style="{StaticResource NextRoundContainer}">
-                <Button Click="Right_Click_Stake" Content=">"/>
+                <Button Click="Right_Click_Stake" Content=">" FontFamily="{StaticResource PixelBig}" FontSize="54"/>
             </Border>
         </Grid>
 
-        <Border Grid.Row="2" Style="{StaticResource ChipsContainer}">
-            <Button Content="Confirm" Click="Confirm_Click"/>
+        <Border Grid.Row="2" Style="{StaticResource ChipsContainer}" Width="400" Height="75" Margin="0,50,0,0">
+            <Button Content="Confirm" Click="Confirm_Click" VerticalAlignment="Center" HorizontalAlignment="Center"
+                    Width="400" Height="75" FontFamily="{StaticResource PixelBig}" FontSize="54"/>
         </Border>
-        
-        <Border Grid.Row="3" Style="{StaticResource NextRoundContainer}">
-            <Button Content="Back" Click="Close_Click"/>
+
+        <Border Grid.Row="3" Style="{StaticResource NextRoundContainer}" Margin="10,20,10,10">
+            <Button Content="Back" Click="Close_Click" FontFamily="{StaticResource PixelBig}" FontSize="36"
+                    VerticalAlignment="Center" HorizontalAlignment="Center"/>
         </Border>
-        
     </Grid>
 </Window>

@@ -28,6 +28,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
             <Button Content="Select your deck" Click="Select_Deck"/>
@@ -35,6 +36,11 @@
             <Border Name="PlayButtonBorder" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="100" Style="{StaticResource ChipsContainer}" Width="350" Height="200">
                 <Button Content="Play" Command="{x:Bind PlayCommand}" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" CornerRadius="0" IsEnabledChanged="Play_IsEnabledChanged"
             FontFamily="{StaticResource PixelBig}" FontSize="150" VerticalAlignment="Stretch" HorizontalAlignment="Center"/>
+            </Border>
+
+            <Border Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="100" Style="{StaticResource MultiplierContainer}" Width="350" Height="200">
+                <Button Content="Exit" Click="Exit_Click" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" CornerRadius="0"
+FontFamily="{StaticResource PixelBig}" FontSize="150" VerticalAlignment="Stretch" HorizontalAlignment="Center"/>
             </Border>
         </Grid>
     </Grid>
