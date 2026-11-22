@@ -33,4 +33,5 @@
 - Animations and more advanced graphical effects
 - Actual achievements
 - Joker and Consumable selling
-- Ordering by Suit and Rank 
+- Ordering by Suit and Rank
+- Graphical Element sizes are currently only tailored to 2560 x 1440, on 1920 x 1080 some visual bugs may occur (and on lower/higher ones as well)
